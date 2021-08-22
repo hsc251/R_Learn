@@ -34,7 +34,8 @@ cacheSolve <- function(x, ...) {
     return(inv)
   }
   
-  ## otherwise, the following statement will initiate inverse calculation
+  ## otherwise, the following statement will initiate inverse calculation to
+  ## return the inverse.
   mat.input = x$get()
   inv = solve(mat.input,...)
   
