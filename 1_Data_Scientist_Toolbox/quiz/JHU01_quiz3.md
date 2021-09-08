@@ -4,7 +4,7 @@ Description: This is the summary quiz Colin took during his learning journey for
 
 Question 1
 ----------
-What is a good example of a message to accompany a commit?
+What is a good example of a message to accompany a commit? </br>
 
 - [x] Modified linear model of height to include new covariate, genotype
 
@@ -14,11 +14,11 @@ What is a good example of a message to accompany a commit?
 </br>
 
 Remarks: </br>
-When applying for commit, ensure the description or version control is detailed regarding changed details.
+When applying for commit, ensure the description or version control is detailed regarding changed details. </br>
 
 Question 2
 ----------
-On each repository page in GitHub, in the top right hand corner there are three options. They are:
+On each repository page in GitHub, in the top right hand corner there are three options. They are: </br>
 
 - [x] Watch, star, fork
 
@@ -28,11 +28,11 @@ On each repository page in GitHub, in the top right hand corner there are three 
 </br>
 
 Remarks: </br>
-Can be seen in the GitHub Repo page. 
+Can be seen in the GitHub Repo page. </br>
 
 Question 3
 ----------
-Which of the following will initiate a git repository locally?
+Which of the following will initiate a git repository locally? </br>
 
 - [x] git init
 
@@ -42,12 +42,11 @@ Which of the following will initiate a git repository locally?
 </br>
 
 Remarks: </br>
-N/A
-
+N/A </br>
 
 Question 4
 ----------
-What is the order of commands to send a file to GitHub from within RStudio?
+What is the order of commands to send a file to GitHub from within RStudio? </br>
 
 - [ ] Commit → Push
 
@@ -56,10 +55,11 @@ What is the order of commands to send a file to GitHub from within RStudio?
 - [ ] Pull → Push → Commit
 
 Remarks: </br>
+N/A</br>
 
 Question 5
 ----------
-How do you add all of the contents of a directory to version control?
+How do you add all of the contents of a directory to version control? </br>
 
 - [x] git add .
 
@@ -68,3 +68,4 @@ How do you add all of the contents of a directory to version control?
 - [ ] git commit -m "Message"
 
 Remarks: </br>
+N/A </br>
