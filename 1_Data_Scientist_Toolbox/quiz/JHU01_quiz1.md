@@ -1,10 +1,10 @@
 # (JHU Coursera) The Data Scientist's Toolbox Quiz 1 Summary
 
-Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.
+Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.</br>
 
 Question 1
 ----------
-Which of these is NOT one of the main skills embodied by data scientists?
+Which of these is NOT one of the main skills embodied by data scientists? </br>
 
 - [ ] Hacking Skills
 
@@ -14,11 +14,11 @@ Which of these is NOT one of the main skills embodied by data scientists?
 </br>
 
 Remarks: </br>
-Data science's core main skills for data scientists are primarily **Hacking Skilss**, **Math & Statistics Knowledge** and **Substantive Expertise** 
+Data science's core main skills for data scientists are primarily **Hacking Skilss**, **Math & Statistics Knowledge** and **Substantive Expertise** </br>
 
 Question 2
 ----------
-What is the most important thing in Data Science?
+What is the most important thing in Data Science? </br>
 
 - [x] The question you are trying to answer
 
@@ -28,11 +28,11 @@ What is the most important thing in Data Science?
 </br>
 
 Remarks: </br>
-N/A
+N/A </br>
 
 Question 3
 ----------
-Which of these might be a good title for a forum post?
+Which of these might be a good title for a forum post? </br>
 
 - [ ] URGENT! R isn't working!
 
@@ -42,18 +42,19 @@ Which of these might be a good title for a forum post?
 </br>
 
 Remarks: </br>
-N/A
+N/A </br>
 
 
 Question 4
 ----------
-What's the first step in the data science process?
+What's the first step in the data science process? </br>
 
 - [ ] Communicate your findings
 
 - [ ] Exploring the data
 
 - [x] Generating the question
+</br>
 
 Remarks: </br>
 The data science process are listed below </br>
@@ -61,13 +62,14 @@ Generate Question → Find/Generate Data → Analyze Data (Exploring & Modelling
 
 Question 5
 ----------
-Which of these is an example of a quantitative variable?
+Which of these is an example of a quantitative variable? </br>
 
 - [x] Latitude
 
 - [ ] Occupation
 
 - [ ] Education Level
+</br>
 
 Remarks: </br>
-**Quantitative** data are generally in a continuous numerical form, while **Qualitative** data are mostly categorical
+**Quantitative** data are generally in a continuous numerical form, while **Qualitative** data are mostly categorical </br>
