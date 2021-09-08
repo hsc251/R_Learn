@@ -10,7 +10,7 @@ Which of these is NOT one of the main skills embodied by data scientists?
 
 - [x] Machine Learning
 
-- [ ] Math and Status
+- [ ] Math and Statistics
 </br>
 
 Remarks: </br>
