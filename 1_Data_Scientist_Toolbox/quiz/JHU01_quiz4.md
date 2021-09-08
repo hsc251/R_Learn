@@ -4,7 +4,7 @@ Description: This is the summary quiz Colin took during his learning journey for
 
 Question 1
 ----------
-What is the format for including a link that appears as blue text in your markdown document?
+What is the format for including a link that appears as blue text in your markdown document? </br>
 
 - [x] [text that is shown](link.com)
 
@@ -14,11 +14,11 @@ What is the format for including a link that appears as blue text in your markdo
 </br>
 
 Remarks: </br>
-When applying for commit, ensure the description or version control is detailed regarding changed details.
+When applying for commit, ensure the description or version control is detailed regarding changed details. </br>
 
 Question 2
 ----------
-Which of the following describes a predictive analysis?
+Which of the following describes a predictive analysis? </br>
 
 - [x] Use data collected in the past to predict values in future
 
@@ -38,7 +38,7 @@ Inferential | Use small sample of data to represent the population at large
 Predictive | Use current data to make predictions about future data.
 Causal | Analyze the cause and effect of a data's relationship 
 Mechanistic | understand the exact changes in variables that lead to exact changes in other variables.
-
+</br>
 
 Question 3
 ----------
@@ -53,36 +53,38 @@ What type of analysis is this?
 </br>
 
 Remarks: </br>
-N/A
+N/A </br>
 
 Question 4
 ----------
-What might a confounder be in an experiment looking at the relationship between the prevalence of white hair in a population and wrinkles?
+What might a confounder be in an experiment looking at the relationship between the prevalence of white hair in a population and wrinkles? </br>
 
 - [x] Age
 
 - [ ] Socioeconomic status
 
 - [ ] Sex
+</br>
 
 Remarks: </br>
-Counfounder is an extraneous variable that may affect the relationship between dependent and independent variables, so in this case age is a critical factor for relation with respect to white hair and wrinkles
+Counfounder is an extraneous variable that may affect the relationship between dependent and independent variables, so in this case age is a critical factor for relation with respect to white hair and wrinkles </br>
 
 
 Question 5
 ----------
-Which one of the following is an example of structured data?
+Which one of the following is an example of structured data? </br>
 
 - [ ] The text from a series of books
 
 - [ ] Lung x-ray images
 
 - [x] A table of names and student grades
+</br>
 
 Remarks: </br>
 Structured data are generally included with long tables, spreadsheets, or databases with columns and rows of information. </br>
 
-Meanwhile, unstructured data type can include the following.
+Meanwhile, unstructured data type can include the following.</br>
 * Text files and documents
 * Audio files
 * Video files
@@ -91,3 +93,4 @@ Meanwhile, unstructured data type can include the following.
 * Image files
 * Sensor files
 * Websites & applications
+</br>
