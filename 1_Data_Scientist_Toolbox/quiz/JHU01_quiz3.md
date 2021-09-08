@@ -53,6 +53,7 @@ What is the order of commands to send a file to GitHub from within RStudio? </br
 - [x] Stage → Commit Message → Commit → Push
 
 - [ ] Pull → Push → Commit
+</br>
 
 Remarks: </br>
 N/A</br>
@@ -66,6 +67,7 @@ How do you add all of the contents of a directory to version control? </br>
 - [ ] cd ~/dir/name/of/path/to/file
 
 - [ ] git commit -m "Message"
+</br>
 
 Remarks: </br>
 N/A </br>
