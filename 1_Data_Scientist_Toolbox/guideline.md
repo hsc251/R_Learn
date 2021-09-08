@@ -14,4 +14,4 @@ Quiz # | Link
 </br>
 
 ## Notes
-[Notes Link] https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/notes.md
+[Notes Link](https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/notes.md)
