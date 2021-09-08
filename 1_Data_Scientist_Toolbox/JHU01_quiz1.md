@@ -1,6 +1,6 @@
 # (JHU Coursera) The Data Scientist's Toolbox Quiz 1 Summary
 
-### This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.
+Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.
 
 Question 1
 ----------
