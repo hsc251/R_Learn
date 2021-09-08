@@ -7,9 +7,9 @@ This is the summary pages from the quizzes and additional materials which I do t
 ## Quizzes
 Quiz # | Link 
 --- | --- 
-1 | [Quiz] (https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz1.md)
-2 | [Quiz] (https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz2.md)
-3 | [Quiz] (https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz3.md)
-4 | [Quiz] (https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz4.md)
+1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz1.md)
+2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz2.md)
+3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz3.md)
+4 | [Quiz](https://github.com/hsc251/RLearn/blob/master/1_Data_Scientist_Toolbox/quiz/JHU01_quiz4.md)
 
 
