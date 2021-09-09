@@ -6,6 +6,7 @@ Question 1
 ----------
 What is a good example of a message to accompany a commit? </br>
 
+### Answer
 - [x] Modified linear model of height to include new covariate, genotype
 
 - [ ] Fixed problem with linear model
@@ -13,13 +14,14 @@ What is a good example of a message to accompany a commit? </br>
 - [ ] Updated thing
 </br>
 
-Remarks: </br>
+### Remarks
 When applying for commit, ensure the description or version control is detailed regarding changed details. </br>
 
 Question 2
 ----------
 On each repository page in GitHub, in the top right hand corner there are three options. They are: </br>
 
+### Answer
 - [x] Watch, star, fork
 
 - [ ] Pull, clone, fork
@@ -27,13 +29,14 @@ On each repository page in GitHub, in the top right hand corner there are three 
 - [ ] Commit, contributors, issues
 </br>
 
-Remarks: </br>
+### Remarks
 Can be seen in the GitHub Repo page. </br>
 
 Question 3
 ----------
 Which of the following will initiate a git repository locally? </br>
 
+### Answer
 - [x] git init
 
 - [ ] git remote add
@@ -41,13 +44,14 @@ Which of the following will initiate a git repository locally? </br>
 - [ ] git boom
 </br>
 
-Remarks: </br>
+### Remarks
 N/A </br>
 
 Question 4
 ----------
 What is the order of commands to send a file to GitHub from within RStudio? </br>
 
+### Answer
 - [ ] Commit → Push
 
 - [x] Stage → Commit Message → Commit → Push
@@ -55,13 +59,14 @@ What is the order of commands to send a file to GitHub from within RStudio? </br
 - [ ] Pull → Push → Commit
 </br>
 
-Remarks: </br>
+### Remarks
 N/A</br>
 
 Question 5
 ----------
 How do you add all of the contents of a directory to version control? </br>
 
+### Answer
 - [x] git add .
 
 - [ ] cd ~/dir/name/of/path/to/file
@@ -69,5 +74,5 @@ How do you add all of the contents of a directory to version control? </br>
 - [ ] git commit -m "Message"
 </br>
 
-Remarks: </br>
+### Remarks
 N/A </br>
