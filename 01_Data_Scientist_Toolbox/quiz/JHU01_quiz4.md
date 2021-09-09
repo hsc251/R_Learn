@@ -6,6 +6,7 @@ Question 1
 ----------
 What is the format for including a link that appears as blue text in your markdown document? </br>
 
+### Answer
 - [x] [text that is shown](link.com)
 
 - [ ] (link.com)[text that is shown]
@@ -13,13 +14,14 @@ What is the format for including a link that appears as blue text in your markdo
 - [ ] (text that is shown)[link.com]
 </br>
 
-Remarks: </br>
+### Remarks
 When applying for commit, ensure the description or version control is detailed regarding changed details. </br>
 
 Question 2
 ----------
 Which of the following describes a predictive analysis? </br>
 
+### Answer
 - [x] Use data collected in the past to predict values in future
 
 - [ ] Finding if one variable is related to another one
@@ -45,6 +47,7 @@ Question 3
 We collect data on all the songs in the Spotify catalogue and want to summarize how many are country western, hip-hop, classic rock, or other. </br>
 What type of analysis is this?
 
+### Answer
 - [ ] Exploratory
 
 - [x] Descriptive
@@ -52,13 +55,14 @@ What type of analysis is this?
 - [ ] Predictive
 </br>
 
-Remarks: </br>
+### Remarks
 N/A </br>
 
 Question 4
 ----------
 What might a confounder be in an experiment looking at the relationship between the prevalence of white hair in a population and wrinkles? </br>
 
+### Answer
 - [x] Age
 
 - [ ] Socioeconomic status
@@ -66,7 +70,7 @@ What might a confounder be in an experiment looking at the relationship between 
 - [ ] Sex
 </br>
 
-Remarks: </br>
+### Remarks
 Counfounder is an extraneous variable that may affect the relationship between dependent and independent variables, so in this case age is a critical factor for relation with respect to white hair and wrinkles </br>
 
 
@@ -74,6 +78,7 @@ Question 5
 ----------
 Which one of the following is an example of structured data? </br>
 
+### Answer
 - [ ] The text from a series of books
 
 - [ ] Lung x-ray images
@@ -81,7 +86,7 @@ Which one of the following is an example of structured data? </br>
 - [x] A table of names and student grades
 </br>
 
-Remarks: </br>
+### Remarks
 Structured data are generally included with long tables, spreadsheets, or databases with columns and rows of information. </br>
 
 Meanwhile, unstructured data type can include the following.</br>
