@@ -47,7 +47,7 @@ In R the following are all atomic data types EXCEPT: (Select all that apply) </b
 </br>
 
 ### Remarks
-The 4 freedoms of free software are the items which were **NOT** selected.</br>
+The 5 atomic data types are **numeric**, **character**, **integer**, **logical** and **complex**.</br>
 
 Question 4
 ----------
