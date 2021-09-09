@@ -9,7 +9,7 @@ The R language is a dialect of which of the following programming languages? </b
 - [ ] Java
 </br>
 
-Remarks: </br>
+### Remarks
 R is a dialect of the S language which was developed at Bell Labs.</br>
 
 Question 2
@@ -26,7 +26,7 @@ The definition of free software consists of four freedoms (freedoms 0 through 3)
 - [x] The freedom to sell the software for any price.
 </br>
 
-Remarks: </br>
+### Remarks
 The 4 freedoms of free software are the items which were **NOT** selected.</br>
 
 Question 3
@@ -46,7 +46,7 @@ In R the following are all atomic data types EXCEPT: (Select all that apply) </b
 - [ ] complex
 </br>
 
-Remarks: </br>
+### Remarks
 The 4 freedoms of free software are the items which were **NOT** selected.</br>
 
 Question 4
@@ -63,7 +63,7 @@ If I execute the expression x <- 4 in R, what is the class of the object 'x' as 
 - [ ] vector
 </br>
 
-Remarks: </br>
+### Remarks
 Use the following code to evaluate class of variable </br>
 ```R
 x <- 4
@@ -84,7 +84,7 @@ What is the class of the object defined by x <- c(4, TRUE)? </br>
 - [ ] character
 </br>
 
-Remarks: </br>
+### Remarks
 Use the following code to evaluate class of variable, and the numeric class is the "lowest common denominator" here and so all elements will be coerced into that class. </br>
 
 ```R
@@ -106,7 +106,7 @@ If I have two vectors x <- c(1,3, 5) and y <- c(3, 2, 10), what is produced by t
 - [ ] a vector of length 3
 </br>
 
-Remarks: </br>
+### Remarks
 The **rbind** function treats vectors as if they were rows of a matrix. It then takes those vectors and binds them together row-wise to create a matrix. If use **cbind**, then the vectors will be binded column-wise to create the matrix so it will be a matrix with 3 rows and 2 columns in this case.  </br>
 
 ```R
@@ -128,7 +128,7 @@ A key property of vectors in R is that </br>
 - [ ] elements of a vector can only be character or numeric
 </br>
 
-Remarks: </br>
+### Remarks
 N/A </br>
 
 Question 8
@@ -143,8 +143,7 @@ Suppose I have a list defined as x <- list(2, "a", "b", TRUE). What does x[[2]] 
 - [x] a character vector containing the letter "a".
 </br>
 
-
-Remarks: </br>
+### Remarks
 Can use the following code to verify the input </br>
 
 ```R
@@ -168,7 +167,7 @@ Suppose I have a vector x <- 1:4 and a vector y <- 2. What is produced by the ex
 - [ ] a numeric vector with elements 1, 2, 3, 6.
 </br>
 
-Remarks: </br>
+### Remarks
 Since the default vector format for numbers are numeric (unless indicated as integer during the naming stage), so the two vector's addition would be considered as a vector. Use the following codes to validate the results. </br>
 
 ```R
@@ -194,8 +193,7 @@ Suppose I have a vector x <- c(3, 5, 1, 10, 12, 6) and I want to set all element
 - [x] x[x %in% 1:5] <- 0
 </br>
 
-
-Remarks: </br>
+### Remarks
 * For x[x < 6] <- 0, the inner bracket is applied with logic condition and assign value towards logical evaluation for subsetting. </br>
 
 ```R
@@ -231,7 +229,10 @@ In the dataset provided for this Quiz, what are the column names of the dataset?
 - [ ] 1,2,3,4,5,6
 - [ ] Month, Day, Temp, Wind
 - [x] Ozone, Solar.R, Wind, Temp, Month, Day
+</br>
 
+### Remarks
+Use the following code to observe values </br>
 ```R
 # use read.csv to store the data frame for entering 
 quiz1 = read.csv("hw1_data.csv")
@@ -239,140 +240,237 @@ quiz1 = read.csv("hw1_data.csv")
 # Column names of the dataset 
 names(quiz1)
 ```
+</br>
 
 Question 12
 -----------
-Extract the first 2 rows of the data frame and print them to the console. What does the output look like?
+Extract the first 2 rows of the data frame and print them to the console. What does the output look like? </br>
 
 ### Answer
 	  Ozone Solar.R Wind Temp Month Day
 	1    41     190  7.4   67     5   1
 	2    36     118  8.0   72     5   2
+</br>
+
+### Remarks
+Use the following code to observe values </br>
+```R
+# Use vector form to perform the data subsetting
+quiz1[1:2, ] or quiz1[c(1,2), ]
+```
+</br>
 
 ```R
-# First two rows 
-quiz_data[c(1,2),]
-
-OR
-
-# First two rows
-head(quiz_data,2)
+# Use head function to obtain the first 2 rows.
+head(quiz1, 2)
 ```
+</br>
 
 Question 13
 -----------
-How many observations (i.e. rows) are in this data frame?
+How many observations (i.e. rows) are in this data frame? </br>
 
 ### Answer
-153
+- [x] 153
+- [ ] 129
+- [ ] 45
+- [x] 160
+</br>
+
+### Remarks
+Use the following code to observe values  </br>
+```R
+# Use nrow to get the total number of rows in dataset
+nrow(quiz1)
+```
+</br>
 
 ```R
-nrow(quiz_data)
+# Use dim function to obtain both rows and column numbers in dataset.
+dim(quiz1)
 ```
+</br>
 
 Question 14
 -----------
-Extract the last 2 rows of the data frame and print them to the console. What does the output look like?
+Extract the last 2 rows of the data frame and print them to the console. What does the output look like? </br>
 
 ### Answer
 
 	   Ozone Solar.R Wind Temp Month Day
 	152    18     131  8.0   76     9  29
 	153    20     223 11.5   68     9  30
+</br>
+
+### Remarks
+Use the following code to observe values  </br>
+```R
+# Use vector form to perform the data subsetting
+quiz1[152:153, ] or quiz1[c(152,153), ]
+```
+</br>
 
 ```R
-tail(quiz_data, 2)
+# Use tail function to obtain the last 2 rows.
+tail(quiz1, 2)
 ```
+</br>
 
 Question 15
 -----------
-What is the value of Ozone in the 47th row?
+What is the value of Ozone in the 47th row? </br>
 
 ### Answer
-21
+- [ ] 34
+- [ ] 63
+- [x] 21
+- [ ] 18
+</br>
+
+### Remarks
+Use the following code to observe values </br>
+```R
+# Subset formulat 1
+quiz1[47, "Ozone"]
+```
+</br>
 
 ```R
-quiz_data[47, 'Ozone']
+# Subset formulat 2
+quiz1$Ozone[47]
 ```
+</br>
 
 Question 16
 -----------
-How many missing values are in the Ozone column of this data frame?
+How many missing values are in the Ozone column of this data frame? </br>
 
 ### Answer
-37
+- [ ] 9
+- [ ] 78
+- [ ] 43
+- [x] 37
+</br>
 
+### Remarks
+Use the following code to find value </br>
 ```R
-# Going back to data.frame because dont it hasnt been taught yet in this specialization
-quiz_data = read.csv('hw1_data.csv')
-sub = subset(quiz_data, is.na(Ozone))
-nrow(sub)
-
+# use is.na to get the logical vector for the Ozone column and sum up, since is.na will return to logical vector of 0 = FALSE and 1 = TRUE
+sum(is.na(quiz1$Ozone))
 ```
 
 ```R
-# Can also remmove Missing Values using Something like This
-quiz_data[complete.cases(quiz_data),]
+# Sapply can also be used and use is.na function setup.
+sum(sapply(quiz1$Ozone,is.na))
 ```
 
 Question 17
 -----------
-What is the mean of the Ozone column in this dataset? Exclude missing values (coded as NA) from this calculation.
+What is the mean of the Ozone column in this dataset? Exclude missing values (coded as NA) from this calculation. </br>
 
 ### Answer
-42.1
+- [ ] 53.2
+- [ ] 18.0
+- [ ] 31.5
+- [x] 42.1
+</br>
 
-### Explanation
-The 'mean' function can be used to calculate the mean.
+### Remarks
+Use to following code to summarize the mean setup. </br>
 
 ```R
-hw1 = read.csv('hw1_data.csv')
-sub = subset(hw1, !is.na(Ozone), select = Ozone)
-apply(sub, 2, mean) 
+# Use na.omit to eliminate the data frame before calculating mean
+q1_17 = na.omit(quiz1)
+mean(q1_17$Ozone)
 ```
+</br>
+
+```R
+# Use complete cases as logical factor and subsetting existing database before calculating mean.
+FULL = complete.cases(quiz1)
+q1_17 = quiz1[FULL, ]
+mean(q1_17$Ozone)
+```
+</br>
 
 Question 18
 -----------
-Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. What is the mean of Solar.R in this subset?
+Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. What is the mean of Solar.R in this subset? </br>
 
 ### Answer
-212.8
+- [ ] 205.0
+- [ ] 334.0
+- [ ] 185.9
+- [x] 212.8
+</br>
+
+### Remarks
+Use to following code to summarize the mean setup. </br>
 
 ```R
-quiz_data = read.csv('hw1_data.csv')
-sub = subset(quiz_data, Ozone > 31 & Temp > 90, select = Solar.R)
-apply(sub, 2, mean)
+# Use na.omit to eliminate the missing values based on the which subsetting condition.
+q1_18 = na.omit(quiz1[which(quiz1$Ozone>31 & quiz1$Temp>90),]) 
+mean(q1_18$Solar.R)
 ```
+</br>
+
+```R
+# Use complete cases as logical factor and subsetting existing database before calculating mean.
+FULL = complete.cases(quiz1)
+quiz11 = quiz1[FULL, ]
+q1_18 = quiz11[which(quiz11$Ozone > 31 & quiz11$Temp >90), ]
+mean(q1_18$Solar.R)
+```
+</br>
 
 Question 19
 -----------
-What is the mean of "Temp" when "Month" is equal to 6?
+What is the mean of "Temp" when "Month" is equal to 6? </br>
 
 ### Answer
-79.1
+- [x] 79.1
+- [ ] 75.3
+- [ ] 90.2
+- [ ] 85.6
+</br>
 
-### Explanation
+### Remarks
+Use to following code to summarize the mean setup. </br>
 
 ```R
-quiz_data = read.csv('hw1_data.csv')
-sub = subset(hw1, Month == 6, select = Temp)
-apply(sub, 2, mean)
+# Use which filter to get the conditional setup for average calculation
+q1_19 = quiz1[which(quiz1$Month == 6), ] 
+mean(q1_19$Temp)
+
+or
+
+q1_19 = quiz1[which(quiz1[, "Month"] == 6), ] 
+mean(q1_19[, "Temp"])
 ```
+</br>
 
 Question 20
 -----------
-What was the maximum ozone value in the month of May (i.e. Month = 5)?
+What was the maximum ozone value in the month of May (i.e. Month = 5)? </br>
 
 ### Answer
-115
+- [x] 115
+- [ ] 18
+- [ ] 97
+- [ ] 100
+</br>
 
-### Explantion
+### Remarks
+Use to following code to summarize the mean setup. </br>
 
 ```R
-quiz_data = read.csv('hw1_data.csv')
-sub = subset(quiz_data, Month == 5 & !is.na(Ozone), select = Ozone)
-apply(sub, 2, max)
+# Use which filter to get the conditional setup for the column summary
+q1_20 = quiz1[which(quiz1$Month == 5), ] 
+summary(q1_20$Ozone)
 
-NOTE: If we wanted more columns to display for sub we can achieve this by the following:
-sub = subset(quiz_data, Month == 5 & !is.na(Ozone), select = c(Ozone, Solar.R, Day))
+or
+
+q1_20 = quiz1[which(quiz1[, "Month"] == 5), ] 
+summary(q1_20[, "Ozone"])
 ```
+</br>
