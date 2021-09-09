@@ -7,7 +7,7 @@ Question 1
 What is the format for including a link that appears as blue text in your markdown document? </br>
 
 ### Answer
-- [x] [text that is shown](link.com)
+- [x] [text that is shown] (link.com)
 
 - [ ] (link.com)[text that is shown]
 
