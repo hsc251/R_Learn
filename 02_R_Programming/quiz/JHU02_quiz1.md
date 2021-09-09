@@ -274,7 +274,7 @@ How many observations (i.e. rows) are in this data frame? </br>
 - [x] 153
 - [ ] 129
 - [ ] 45
-- [x] 160
+- [ ] 160
 </br>
 
 ### Remarks
