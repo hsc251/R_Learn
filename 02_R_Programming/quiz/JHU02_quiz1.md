@@ -1,3 +1,7 @@
+# (JHU Coursera) R Programming Quiz 1 Summary
+
+Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.</br>
+
 Question 1
 ----------
 The R language is a dialect of which of the following programming languages? </br>
