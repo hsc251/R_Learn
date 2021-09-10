@@ -1,3 +1,7 @@
+# (JHU Coursera) R Programming Quiz 3 Summary
+
+Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.</br>
+
 Question 1
 ----------
 Take a look at the 'iris' dataset that comes with R. The data can be loaded with the code: </br>
