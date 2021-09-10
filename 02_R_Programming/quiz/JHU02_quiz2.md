@@ -1,3 +1,7 @@
+# (JHU Coursera) R Programming Quiz 2 Summary
+
+Description: This is the summary quiz Colin took during his learning journey for JHU's Data Science's coursera courses for beginner.</br>
+
 Question 1
 ----------
 Suppose I define the following function in R </br>
