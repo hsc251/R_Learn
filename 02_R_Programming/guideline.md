@@ -10,7 +10,7 @@ Quiz # | Link
 1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/quiz/JHU02_quiz1.md)
 2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/quiz/JHU02_quiz2.md)
 3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/quiz/JHU02_quiz3.md)
-4 | [Quiz]
+4 | [Quiz](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/quiz/JHU02_quiz4.md)
 </br>
 
 ## Notes
