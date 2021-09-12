@@ -26,7 +26,7 @@ hist(as.numeric(outcome[,11]), xlab = "Deaths"
 ```
 </br>
 
-## Part 2 - Find Best Hospital in a State ([best.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/best.R))
+### Part 2 - Find Best Hospital in a State ([best.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/best.R))
 
 ```R
 best <- function(state, outcome){
@@ -105,7 +105,7 @@ Error in best("NY", "hert attack") : invalid outcome
 ```
 </br>
 
-## Part 3 - Ranking Hospitals by Outcome in a State ([rankhospital.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankhospital.R))
+### Part 3 - Ranking Hospitals by Outcome in a State ([rankhospital.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankhospital.R))
 
 ```R
 rankhospital <- function(state, outcome, num){
@@ -196,7 +196,7 @@ rankhospital('MN','heart attack',5000)
 ```
 </br>
 
-## Part 4 - Ranking Hospitals in All States ([rankall.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankall.R))
+### Part 4 - Ranking Hospitals in All States ([rankall.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankall.R))
 
 ```R
 rankall <- function(outcome, num = "best"){
