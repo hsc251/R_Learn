@@ -17,7 +17,7 @@ Quiz # | Link
 Assignment # | Link 
 --- | --- 
 1 | [Assignment](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projects/JHU02_PA01.md)
-2 | [Assignment]
+2 | [Assignment](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projects/JHU02_PA02.md) 
 3 | [Assignment]
 </br>
 
