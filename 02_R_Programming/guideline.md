@@ -18,7 +18,7 @@ Assignment # | Link
 --- | --- 
 1 | [Assignment](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projects/JHU02_PA01.md)
 2 | [Assignment](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projects/JHU02_PA02.md) 
-3 | [Assignment]
+3 | [Assignment](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projects/JHU02_PA03.md)
 </br>
 
 ## Notes
