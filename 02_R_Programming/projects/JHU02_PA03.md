@@ -12,7 +12,7 @@ The Hospital Compare website contains a broad range of data, and this assignment
 
 Based on the data for this program assignment, the following tasks shall be executed.
 
-### Part 1 - Plot 30 Day Mortality Rates for Heart Attack
+### Part 1 - Plot 30 Day Mortality Rates for Heart Attack ([histplot.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/histplot.R))
 
 ```R
 # read off the data.table library
@@ -26,7 +26,7 @@ hist(as.numeric(outcome[,11]), xlab = "Deaths"
 ```
 </br>
 
-## Part 2 - Find Best Hospital in a State 
+## Part 2 - Find Best Hospital in a State ([best.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/best.R))
 
 ```R
 best <- function(state, outcome){
@@ -105,7 +105,7 @@ Error in best("NY", "hert attack") : invalid outcome
 ```
 </br>
 
-## Part 3 - Ranking Hospitals by Outcome in a State
+## Part 3 - Ranking Hospitals by Outcome in a State ([rankhospital.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankhospital.R))
 
 ```R
 rankhospital <- function(state, outcome, num){
@@ -196,7 +196,7 @@ rankhospital('MN','heart attack',5000)
 ```
 </br>
 
-## Part 4 - Ranking Hospitals in All States
+## Part 4 - Ranking Hospitals in All States ([rankall.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/rankall.R))
 
 ```R
 rankall <- function(outcome, num = "best"){
