@@ -167,7 +167,7 @@ completeA(directory = 'specdata',id = c(10,20,34,100,200,310))
 ```
 </br>
 
-### Part 3 ([corr.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/corr.R)
+### Part 3 ([corr.R](https://github.com/hsc251/RLearn/blob/master/02_R_Programming/projectcodes/corr.R))
 ```R
 corr <- function(directory,threshold =0){
   # implement the file list for directories
