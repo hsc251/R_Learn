@@ -20,7 +20,7 @@ download.file(url, file.path(path, 'project3.zip'))
 unzip(zipfile = 'project3.zip')
 
 
-# Load Activity Lables & Name respecitvely
+# Load Activity Labels & Name respectively
 activityL <- fread(file.path(path, "UCI HAR Dataset/activity_labels.txt")
               ,col.names = c('classLabels', 'activityName'))
 
