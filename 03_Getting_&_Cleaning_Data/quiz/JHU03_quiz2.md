@@ -118,7 +118,7 @@ How many characters are in the 10th, 20th, 30th and 100th lines of HTML from thi
 </br>
 
 ### Remarks
-Use the following code to evaluate class of variable </br>
+Use the following code to evaluate the number of characters within each sentence. </br>
 ```R
 
 # define URL for HTML file
@@ -150,7 +150,7 @@ Read this [data set](https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.f
 </br>
 
 ### Remarks
-Use the following code to evaluate class of variable </br>
+Use the following code to evaluate the summarized setup. </br>
 ```R
 
 # define URL for HTML file
