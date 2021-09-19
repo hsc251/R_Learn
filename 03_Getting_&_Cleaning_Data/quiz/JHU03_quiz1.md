@@ -90,7 +90,7 @@ How many restaurants have zipcode 21231? </br>
 </br>
 
 ### Remarks
-Use the following code to evaluate class of variable </br>
+Use the following code to evaluate number of matches. </br>
 ```R
 
 # define URL for XML file
