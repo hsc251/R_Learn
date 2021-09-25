@@ -54,7 +54,7 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot1.png)
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project1/plot1.png)
 
 ## Plot 2 Setup
 ```R
@@ -95,7 +95,7 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot2.png)
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project1/plot2.png)
 
 
 ## Plot 3 Setup
@@ -144,7 +144,7 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot3.png)
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project1/plot3.png)
 
 ## Plot 4 Setup
 ```R
@@ -205,4 +205,4 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot4.png)
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project1/plot4.png)
