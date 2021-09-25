@@ -54,6 +54,8 @@ dev.off()
 ```
 </br>
 
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot1.png)
+
 ## Plot 2 Setup
 ```R
 # Load the data.table package for the function execution
@@ -92,6 +94,9 @@ plot(x = PDB_F2[,dateTime], y = PDB_F2[,Global_active_power], type = "l"
 dev.off()
 ```
 </br>
+
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot2.png)
+
 
 ## Plot 3 Setup
 ```R
@@ -138,6 +143,8 @@ legend("topright", col = c("black","red","blue")
 dev.off()
 ```
 </br>
+
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot3.png)
 
 ## Plot 4 Setup
 ```R
@@ -196,3 +203,6 @@ plot(x = PDB_F4[,dateTime], y = PDB_F4[,Global_reactive_power], type = "l"
 
 dev.off()
 ```
+</br>
+
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/projects/plot4.png)
