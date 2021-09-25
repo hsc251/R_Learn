@@ -14,8 +14,8 @@ Quiz # | Link
 ## Programming Assignments
 Assignment # | Link 
 --- | --- 
-1 | [Assignment]
-2 | [Assignment]
+1 | [Exploratory Data Analysis Project 1](https://github.com/hsc251/RLearn/tree/master/04_Exploratory_Data_Analysis/project1)
+2 | [Exploratory Data Analysis Project 2]
 </br>
 
 ## Notes
