@@ -101,7 +101,7 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project2/PA2_plot1.png)
+![](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/project2/PA2_plot2.png)
 
 
 ## Plot 3 Setup
