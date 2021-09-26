@@ -1,0 +1,73 @@
+---
+title: "Reproducible Research Project 1"
+author: "Hsin Chih Chen"
+date: "2021/9/26"
+output:
+  md_document:
+    variant: markdown_github
+---
+
+github repo for the record are all within [Hsin Chih Chen's R Learn Repo](https://github.com/hsc251/RLearn)
+
+## Introduction 
+
+This assignment's data sources comes from personal activity monitoring device, the device collects data at 5 mins interval throughout the day. The data consists of 2 months of data from an annoymous individual collected between Oct and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. 
+
+The data consists of the following variables:
+  * Steps: Number of steps taking in a 5 min interval (missing values are coded as NA)
+  * date: The date on which the measurement was taken in YYYY-MM-DD format.
+  * interval: Identifier for the 5 mins interval in which measurement was taken.
+
+The dataset is saved as a CSV file and total of 17,568 observations. Please refer to the [dataset link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) to download.
+
+## Step Wise Preparations for Questions to be Desired
+  * Step1: Execute the environment and data gathering setup before deploy data download & transformation.
+  
+  * Step 2: Calculate total number of steps taken per day, before calculate mean/median for the total number of steps taken per day.
+  
+  * 
+
+You can also embed plots, for example:
+
+## Execute the environment and data gathering setup before deploy data download & transformation.
+
+```{r}
+## Load necessary libraries
+library(data.table)
+library(ggplot2)
+
+## Set URL and download file into designated directory
+PA1URL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+download.file(PA1URL, "PA01.zip",method = "curl")
+unzip("PA01.zip", exdir = "PA01")
+
+## Read csv file into data.table
+activity <- fread(input = "PA01/activity.csv")
+```
+
+## Calculate mean total number of steps taken per day?
+
+1. Calculate total number of steps taken per day?
+```{r}
+## pre-check the data.table structure
+str(activity)
+
+## Use the lapply for the sum function (false inclusive) to calculate the total steps per day. 
+Total_S <- activity[,c(lapply(.SD, sum, na.rm = FALSE)), .SDcols = c("steps"), by = .(date)]
+
+head(Total_S,10)
+```
+
+2. Draw the histogram for the particular setup
+```{r}
+## write the png filing
+png("05_PA1_plot1.png")
+
+## use ggplot to initiate the setup for bar plot
+ggplot(Total_S, aes(x = steps)) +
+  geom_histogram(fill = "red", binwidth = 1000) +
+  labs(title = "Daily Steps Distribution", xlab = "Steps", y = "Frequency")
+
+## close png write in.
+dev.off()
+```
