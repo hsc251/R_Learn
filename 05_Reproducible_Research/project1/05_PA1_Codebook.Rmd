@@ -2,7 +2,9 @@
 title: "Reproducible Research Project 1"
 author: "Hsin Chih Chen"
 date: "2021/9/27"
-output: html_document
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 github repo for the record are all within [Hsin Chih Chen's R Learn Repo](https://github.com/hsc251/RLearn)
