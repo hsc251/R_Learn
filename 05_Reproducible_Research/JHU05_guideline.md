@@ -1,4 +1,4 @@
-# Exploratory Data Analysis
+# Reproducible Research
 
 Author: Hsin Chih (Colin) Chen </br>
 
