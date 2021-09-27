@@ -182,7 +182,7 @@ dev.off()
 | Type of Estimate                       | Mean\_Steps | Median\_Steps |
 |----------------------------------------|-------------|---------------|
 | First Part (with NA)                   | 10766.19    | 10765         |
-| Second Part (fillin in NA with mean)   | 10751.74	   | 10656         |
+| Second Part (fill in in NA with mean)  | 10751.74	   | 10656         |
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
