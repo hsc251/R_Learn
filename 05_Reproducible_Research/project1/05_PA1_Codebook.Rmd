@@ -39,10 +39,12 @@ The dataset is saved as a CSV file and total of 17,568 observations. Please refe
 ## Load necessary libraries
 library(data.table)
 library(ggplot2)
+
 ## Set URL and download file into designated directory
 PA1URL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 download.file(PA1URL, "PA01.zip",method = "curl")
 unzip("PA01.zip", exdir = "PA01")
+
 ## Read csv file into data.table
 activity <- fread(input = "PA01/activity.csv")
 ```
@@ -53,6 +55,7 @@ activity <- fread(input = "PA01/activity.csv")
 ```{r}
 ## pre-check the data.table structure
 str(activity)
+
 ## Use the lapply for the sum function (false inclusive) to calculate the total steps per day. 
 Total_S <- activity[,c(lapply(.SD, sum, na.rm = FALSE)), .SDcols = c("steps"), by = .(date)]
 
@@ -64,10 +67,12 @@ head(Total_S,10)
 ```{r}
 ## write the png filing
 png("05_PA1_plot1.png")
+
 ## use ggplot to initiate the setup for bar plot
 ggplot(Total_S, aes(x = steps)) +
   geom_histogram(fill = "red", binwidth = 1000) +
   labs(title = "Daily Steps Distribution", xlab = "Steps", y = "Frequency")
+
 ## close png write in.
 dev.off()
 ```
@@ -84,14 +89,18 @@ Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.r
 ```{r}
 ## pre-check the data.table structure
 str(activity)
+
 ## Use the lapply to calculate the total steps per day by interval 
 Inter <- activity[,c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)]
+
 ## write the png filing
 png("05_PA1_plot2.png")
+
 ## use ggplot to initiate the setup for line plot.
 ggplot(Inter, aes(x = interval, y = steps)) +
   geom_line(color = "red", size = 1) +
   labs(title = "Average Daily Steps", xlab = "Interval", y = "Avg. Steps per Day")
+
 ## close png write in.
 dev.off()
 
@@ -131,14 +140,18 @@ fwrite(x = activity, file = "PA01/fixed.csv", quote = FALSE)
 ```{r}
 ## total number of steps per day
 Total_S2 <- activity[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)]
+
 ## mean & median total number of steps taken per day based on updated data
 Total_S2[,.(Steps_Avg = mean(steps), Steps_Med = median(steps))]
+
 ## write the png filing
 png("05_PA1_plot3.png")
+
 ## use ggplot to initiate the setup for bar plot
 ggplot(Total_S2, aes(x = steps)) +
   geom_histogram(fill = "red", binwidth = 1000) +
   labs(title = "Daily Steps Distribution", xlab = "Steps", y = "Frequency")
+
 ## close png write in.
 dev.off()
 ```
@@ -150,11 +163,14 @@ dev.off()
 ```{r}
 ## Read off the original CSV again before manipulate the dataset
 active2 <- fread(input = "PA01/activity.csv")
+
 ## Check current dataset structure from the actual CSV
 str(active2)
+
 ## Reconstruct the data format for designated setup (in this case POSI date)
 active2[, date := as.POSIXct(date, format = "%Y-%m-%d")]
 active2[, `Day of Week` := weekdays(x = date)]
+
 ## Use grepl to search similar pattern strings and categorize them as factors
 active2[grepl(pattern = "Monday|Tuesday|Wednesday|Thursday|Friday", x = `Day of Week`), "weekday or weekend"] <- "weekday"
 active2[grepl(pattern = "Saturday|Sunday", x = `Day of Week`), "weekday or weekend"] <- "weekend"
@@ -167,12 +183,16 @@ head(active2,10)
 ```{r}
 ## Replace the data with average of steps first
 active2[is.na(steps), "steps"] <- active2[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps")]
+
 ## Execute the interval data while sorting by interval with weekday or weekend
 Inter2 <- active2[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval, `weekday or weekend`)] 
+
 ## Setup the png file for output display.
 png("05_PA1_plot4.png")
+
 ## Plot
 ggplot(Inter2 , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Week Type", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
+
 ## close png write in.
 dev.off()
 ```
