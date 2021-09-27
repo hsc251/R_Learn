@@ -90,7 +90,7 @@ Inter <- activity[,c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by 
 png("05_PA1_plot2.png")
 ## use ggplot to initiate the setup for line plot.
 ggplot(Inter, aes(x = interval, y = steps)) +
-  geom_line(fill = "red", size = 1) +
+  geom_line(color = "red", size = 1) +
   labs(title = "Average Daily Steps", xlab = "Interval", y = "Avg. Steps per Day")
 ## close png write in.
 dev.off()
