@@ -132,7 +132,7 @@ fwrite(x = activity, file = "PA01/fixed.csv", quote = FALSE)
 ## total number of steps per day
 Total_S2 <- activity[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)]
 ## mean & median total number of steps taken per day based on updated data
-Total_S2[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
+Total_S2[,.(Steps_Avg = mean(steps), Steps_Med = median(steps))]
 ## write the png filing
 png("05_PA1_plot3.png")
 ## use ggplot to initiate the setup for bar plot
