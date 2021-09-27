@@ -74,6 +74,9 @@ dev.off()
 
 ```R
 Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.rm = TRUE))]
+
+    ##    Steps_Avg     Steps_Med
+    ## 1:   10766.19        10765
 ```
 </br>
 
@@ -110,6 +113,9 @@ head(Total_S,10)
 
 ```R
 Inter[steps == max(steps), .(max_inter = interval)]
+
+    ##    max_interval
+    ## 1:          835
 ```
 </br>
 
@@ -120,6 +126,8 @@ Inter[steps == max(steps), .(max_inter = interval)]
 ```R
 ## Count amount of rows where the steps are missing in the column.
 nrow(activity[is.na(steps),])
+
+[1] 2304
 ```
 </br>
 
@@ -160,6 +168,12 @@ dev.off()
 ```
 
 ![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot3.png)
+
+| Type of Estimate                       | Mean\_Steps | Median\_Steps |
+|----------------------------------------|-------------|---------------|
+| First Part (with Na)                   | 10766.19    | 10765         |
+| Second Part (fillin in na with mean)   | 10751.74    | 10656         |
+
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
