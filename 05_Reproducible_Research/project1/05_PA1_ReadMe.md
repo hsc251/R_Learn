@@ -86,6 +86,9 @@ dev.off()
 
 ```R
 Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.rm = TRUE))]
+
+    ##     Steps_Avg    Steps_Med
+    ## 1:   10766.19        10765
 ```
 </br>
 
@@ -159,6 +162,9 @@ Total_S2 <- activity[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)]
 ## mean & median total number of steps taken per day based on updated data
 Total_S2[,.(Steps_Avg = mean(steps), Steps_Med = median(steps))]
 
+    ##     Steps_Avg    Steps_Med
+    ## 1:   10751.74        10656
+
 ## write the png filing
 png("05_PA1_plot3.png")
 
@@ -172,6 +178,11 @@ dev.off()
 ```
 
 ![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot3.png)
+
+| Type of Estimate                       | Mean\_Steps | Median\_Steps |
+|----------------------------------------|-------------|---------------|
+| First Part (with NA)                   | 10766.19    | 10765         |
+| Second Part (fillin in NA with mean)   | 10751.74	   | 10656         |
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
