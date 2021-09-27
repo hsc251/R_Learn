@@ -4,12 +4,12 @@ Author: Hsin Chih (Colin) Chen </br>
 
 This assignment's data sources comes from personal activity monitoring device, the device collects data at 5 mins interval throughout the day. The data consists of 2 months of data from an annoymous individual collected between Oct and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. </br>
 
-The data consists of the following variables:
-  * steps: Number of steps taking in a 5 min interval (missing values are coded as NA)
-  * date: The date on which the measurement was taken in YYYY-MM-DD format.
-  * interval: Identifier for the 5 mins interval in which measurement was taken.
+The data consists of the following variables: </br>
+  * steps: Number of steps taking in a 5 min interval (missing values are coded as NA)</br>
+  * date: The date on which the measurement was taken in YYYY-MM-DD format.</br>
+  * interval: Identifier for the 5 mins interval in which measurement was taken.</br>
 
-The dataset is saved as a CSV file and total of 17,568 observations. Please refer to the [dataset link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) to download.
+The dataset is saved as a CSV file and total of 17,568 observations. Please refer to the [dataset link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) to download.</br>
 
 ## Critical Steps for the Project
 
@@ -49,6 +49,18 @@ Total_S <- activity[,c(lapply(.SD, sum, na.rm = FALSE)), .SDcols = c("steps"), b
 
 ## demonstrate the extracted data layout.
 head(Total_S,10)
+
+    ##           date steps
+    ##  1: 2012-10-01    NA
+    ##  2: 2012-10-02   126
+    ##  3: 2012-10-03 11352
+    ##  4: 2012-10-04 12116
+    ##  5: 2012-10-05 13294
+    ##  6: 2012-10-06 15420
+    ##  7: 2012-10-07 11015
+    ##  8: 2012-10-08    NA
+    ##  9: 2012-10-09 12811
+    ## 10: 2012-10-10  9900
 ```
 </br>
 
@@ -74,9 +86,6 @@ dev.off()
 
 ```R
 Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.rm = TRUE))]
-
-    ##    Steps_Avg     Steps_Med
-    ## 1:   10766.19        10765
 ```
 </br>
 
@@ -113,9 +122,6 @@ head(Total_S,10)
 
 ```R
 Inter[steps == max(steps), .(max_inter = interval)]
-
-    ##    max_interval
-    ## 1:          835
 ```
 </br>
 
@@ -126,8 +132,6 @@ Inter[steps == max(steps), .(max_inter = interval)]
 ```R
 ## Count amount of rows where the steps are missing in the column.
 nrow(activity[is.na(steps),])
-
-[1] 2304
 ```
 </br>
 
@@ -168,12 +172,6 @@ dev.off()
 ```
 
 ![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot3.png)
-
-| Type of Estimate                       | Mean\_Steps | Median\_Steps |
-|----------------------------------------|-------------|---------------|
-| First Part (with Na)                   | 10766.19    | 10765         |
-| Second Part (fillin in na with mean)   | 10751.74    | 10656         |
-
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
