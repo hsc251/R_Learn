@@ -36,8 +36,14 @@ stormT <- as.data.table(stormF)
 ### 2.2: Verify Data Structure & Column Names
 
 ```r
+# Sometimes the Crop and Prop Damage were loaded as character, therefore I applied with conversion to as numeric.
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("PROPDMG")]
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("CROPDMG")]
+
+# Re-check the structure of the data.table
 str(stormT)
 ```
+</br>
 
 ### 2.3: Subset Data
 
@@ -112,6 +118,7 @@ stormT[, CROPDMGEXP := cropDmgExp[as.character(stormT[, CROPDMGEXP])]]
 stormT[is.na(PROPDMGEXP), PROPDMGEXP := 10^0]
 stormT[is.na(CROPDMGEXP), CROPDMGEXP := 10^0]
 ```
+</br>
 
 ### 2.5: Generate Economic Cost Columns by calculation
 
@@ -119,6 +126,7 @@ stormT[is.na(CROPDMGEXP), CROPDMGEXP := 10^0]
 # Mutate data table by add extra columns for the calculation
 stormT <- stormT[, .(EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP, Cost_Prop = PROPDMG * PROPDMGEXP, CROPDMG, CROPDMGEXP, Cost_Crop = CROPDMG * CROPDMGEXP)]
 ```
+</br>
 
 ### 2.6: Calculate Total Property and Crop Cost
 
@@ -133,7 +141,7 @@ Cost_Total <- Cost_Total [1:10, ]
 # Check the structure by only showing the top 5 EVTYPE which caused high costs.
 head(Cost_Total, 5)
 ```
-
+</br>
 
 The results are as follows </br>
 No. | EVTYPE | Cost_Prop | Cost_Crop | Cost_Total 
@@ -143,7 +151,7 @@ No. | EVTYPE | Cost_Prop | Cost_Crop | Cost_Total
 3 | TSTM WIND | 1336460.6 | 109202.6 | 1445663
 4 | HAIL | 691327.7 | 579596.3 | 1270924 
 5 | FLOOD | 900001.5 | 168037.9 | 1068039
- 
+</br>
 
 
 ### 2.7: Calculate Total Fatalities and Injuries
@@ -167,7 +175,7 @@ No. | EVTYPE | FATALITIES | INJURIES | TOTAL INJURIES
 3 | FLASH FLOOD | 978 | 1777 | 2755
 4 | HEAT | 937 | 2100 | 3037 
 5 | LIGHTNING | 816 | 5230 | 6046
-
+</br>
 
 3: Results
 ------------------
@@ -179,6 +187,7 @@ Melt the data.table for bar graph format with sub levels </br>
 chaos <- melt(Inj_Tot, id.vars="EVTYPE", variable.name = "Chaos_Level")
 head(chaos, 5)
 ```
+</br>
 
 The results are as follows </br>
 No. | EVTYPE | Chaos_Level | Value
@@ -188,6 +197,7 @@ No. | EVTYPE | Chaos_Level | Value
 3 | FLASH FLOOD | FATALITIES | 978
 4 | HEAT | FATALITIES | 937
 5 | LIGHTNING | FATALITIES | 816  
+</br>
 
 ```r
 # Generate Chart
@@ -210,6 +220,9 @@ InjuryChart = InjuryChart + ggtitle("Top 10 US Fataility Events") + theme(plot.t
 
 InjuryChart
 ```
+</br>
+
+![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project2/05_PA2_InjuryChart.png)
 
 ### 3.2: Events which caused the Greatest Economic Consequences
 
@@ -218,6 +231,7 @@ Melt the data.table for bar graph format with sub levels </br>
 eimpact <- melt(Cost_Tot, id.vars="EVTYPE", variable.name = "Damage_Type")
 head(eimpact, 5)
 ```
+</br>
 
 ```r
 # Generate Chart
@@ -240,3 +254,6 @@ econChart = econChart + ggtitle("Top 10 US Storm Events with Strong Economic Imp
 
 econChart
 ```
+</br>
+
+![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project2/05_PA2_econChart.png)
