@@ -36,6 +36,11 @@ stormT <- as.data.table(stormF)
 ### 2.2: Verify Data Structure & Column Names
 
 ``` {r StructureCheck}
+# Sometimes the Crop and Prop Damage were loaded as character, therefore I applied with conversion to as numeric.
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("PROPDMG")]
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("CROPDMG")]
+
+# Re-check the structure of the data.table
 str(stormT)
 ```
 
@@ -143,7 +148,6 @@ Inj_Tot <- stormT[, .(FATALITIES = sum(FATALITIES), INJURIES = sum(INJURIES), TO
 # Order by Reverse with Total Cost to see the top 10 EVTYPE failure
 Inj_Tot <- Inj_Tot[order(-FATALITIES), ]
 Inj_Tot <- Inj_Tot[1:10, ]
-
 head(Inj_Tot, 5)
 ```
 
@@ -176,7 +180,6 @@ InjuryChart = InjuryChart + theme(axis.text.x = element_text(angle=45, hjust=1))
 
 # Set and centerlized the chart title
 InjuryChart = InjuryChart + ggtitle("Top 10 US Fataility Events") + theme(plot.title = element_text(hjust = 0.5))
-
 InjuryChart
 ```
 
@@ -185,11 +188,11 @@ InjuryChart
 Melt the data.table for bar graph format with sub levels </br>
 
 ```{r CostResults}
-eimpact <- melt(Cost_Tot, id.vars="EVTYPE", variable.name = "Damage_Type")
+eimpact <- melt(Cost_Total, id.vars="EVTYPE", variable.name = "Damage_Type")
 head(eimpact, 5)
 ```
 
-```r
+```{r CostChart}
 # Generate Chart
 econChart <- ggplot(eimpact, aes(x = reorder(EVTYPE, -value), y = value))
 
@@ -207,6 +210,5 @@ econChart = econChart + theme(axis.text.x = element_text(angle=45, hjust=1))
 
 # Set and centerlized the chart title
 econChart = econChart + ggtitle("Top 10 US Storm Events with Strong Economic Impact") + theme(plot.title = element_text(hjust = 0.5))
-
 econChart
 ```
