@@ -14,8 +14,8 @@ Quiz # | Link
 ## Programming Assignments
 Assignment # | Link 
 --- | --- 
-1 | [Reproducible Research Project 1]
-2 | [Reproducible Research Project 2]
+1 | [Reproducible Research Project 1](https://github.com/hsc251/RLearn/tree/master/05_Reproducible_Research/project1)
+2 | [Reproducible Research Project 2](https://github.com/hsc251/RLearn/tree/master/05_Reproducible_Research/project2)
 </br>
 
 ## Notes
