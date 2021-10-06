@@ -1,0 +1,96 @@
+---
+title: "Statistical Inference Project Pt 2"
+author: "Hsin Chih Chen"
+date: "10/6/2021"
+output: html_document
+---
+
+## Introduction
+
+The ToothGrowth data in R datasets will be analyzed accordingly to find the data summary and use hypothesis tests to compare the tooth growth factor by either the supplement type and does type.
+
+## Preliminary Setup & Store Data
+
+```{r}
+# load graphing tool interface package
+library(ggplot2)
+
+# initialize data category
+Tooth <- ToothGrowth
+```
+
+## Provide Initial Summaries for the data structure.
+```{r}
+# General summaries for the data frame
+summary(Tooth)
+
+# Examine the characteristics for each section
+str(Tooth)
+```
+
+## Plot Tooth grow length and dose by splitting the supplement
+```{r}
+# Use boxplot by having the classified grid for supplement
+  ggplot(aes(x = as.factor(dose),y = len), data = Tooth) +     geom_boxplot(aes(fill = dose)) + 
+  xlab("Dose (mg)") + 
+  ylab("Tooth Length")+ 
+  facet_grid(~ supp) + 
+  ggtitle("Tooth Length & Dose Amount by Supplement")
+```
+
+## Plot Tooth grow length and supplement by splitting the dosage amount
+```{r}
+# Use boxplot by having the classified grid for dosage
+  ggplot(aes(x = supp,y = len), data = Tooth)+ 
+  geom_boxplot(aes(fill = supp)) + 
+  xlab("Supplement") + 
+  ylab("Tooth Length") + 
+  facet_grid(~ dose) + 
+  ggtitle("Tooth Length & Dose Amount by Dosage")
+```
+
+## Have Initial Hypothesis Test for the supplement classification
+
+In this Hypothesis testing, the following hypothesis test is listed below:
+
+H0 = Both supplement will generate the same impact towards tooth length growth.
+H1 = Both supplement will generate different impact towards tooth length growth.
+
+```{r}
+# Use 2 sample t-test to compare
+t.test(len ~ supp, data = Tooth)
+```
+
+## Have Initial Hypothesis Test for the dosage classification
+
+In this Hypothesis testing, the following hypothesis test is listed below:
+
+H0 = Both dosage will generate the same impact towards tooth length growth.
+H1 = Both dosage will generate different impact towards tooth length growth.
+
+```{r}
+# Use 2 sample t-test to compare where the dosage is 0.5 and 1
+Tooth1 <- subset(Tooth, Tooth$dose %in% c(0.5,1))
+t.test(len ~ dose, data = Tooth1)
+```
+
+```{r}
+# Use 2 sample t-test to compare where the dosage is 1 and 2
+Tooth2 <- subset(Tooth, Tooth$dose %in% c(1,2))
+t.test(len ~ dose, data = Tooth2)
+```
+
+```{r}
+# Use 2 sample t-test to compare where the dosage is 0.5 and 2
+Tooth3 <- subset(Tooth, Tooth$dose %in% c(0.5,2))
+t.test(len ~ dose, data = Tooth3)
+```
+
+## Statistical Conclusion
+
+Based on the t-test results and p-value description, the following conclusions are made.
+
+1. Supplement type will NOT contribute different impact towards the tooth length based on the given p-value. 
+
+
+2. Dosage type will contribute different impact towards the tooth length based on the given p-value across all 3 factors of dosage. (H0 was rejected)
