@@ -130,7 +130,7 @@ Which of the following is required to implement a literate programming system? <
 ### Remarks
 N/A </br>
 
-Question 9
+Question 10
 ----------
 What is one way in which the knitr system differs from Sweave? </br>
 
