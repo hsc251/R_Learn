@@ -121,6 +121,8 @@ pnorm(16, mean = 15, sd = 1) - pnorm(14, mean = 15, sd = 1)
 ```
 </br>
 
+![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2_q5exp.jpg)
+
 Question 7
 ----------
 Consider a standard uniform density. The mean for this density is .5 and the variance is 1 / 12. You sample 1,000 observations from this distribution and take the sample mean, what value would you expect it to be near? </br>
