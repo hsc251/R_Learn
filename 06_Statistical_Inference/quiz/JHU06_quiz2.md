@@ -9,7 +9,7 @@ What is the variance of the distribution of the average an IID draw of n observa
 (Hints look at lecture 2 around 5:30 and chapter 4 problem 4). </br>
 
 ### Answer
-- [x] σ<sup>2 / n
+- [x] σ<sup>2</sup> /n 
 - [ ] σ / n
 - [ ] σ<sup>2
 - [ ] 2σ / sqrt(n)
@@ -100,6 +100,9 @@ pbinom(3, size = 5, prob = 0.5, lower.tail = FALSE)
 ```
 </br>
 
+![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2_q5exp.jpg)
+
+
 Question 6
 ----------
 The respiratory disturbance index (RDI), a measure of sleep disturbance, for a specific population has a mean of 15 (sleep events per hour) and a standard deviation of 10. They are not normally distributed. Give your best estimate of the probability that a sample mean RDI of 100 people is between 14 and 16 events per hour? </br>
@@ -120,8 +123,6 @@ pnorm(16, mean = 15, sd = 1) - pnorm(14, mean = 15, sd = 1)
 ## [1] 0.6827
 ```
 </br>
-
-![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2_q5exp.jpg)
 
 Question 7
 ----------
