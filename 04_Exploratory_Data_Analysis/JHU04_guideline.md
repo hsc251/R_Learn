@@ -7,8 +7,8 @@ This is the summary pages from the quizzes and additional materials which I do t
 ## Quizzes
 Quiz # | Link 
 --- | --- 
-1 | [Quiz]
-2 | [Quiz]
+1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/quiz/JHU04_quiz1.md)
+2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/04_Exploratory_Data_Analysis/quiz/JHU04_quiz2.md)
 </br>
 
 ## Programming Assignments
