@@ -63,7 +63,7 @@ Question 4
 Refer to the previous question. Brain volume for adult women is about 1,100 cc for women with a standard deviation of 75 cc. Consider the sample mean of 100 random adult women from this population. What is the 95th percentile of the distribution of that sample mean? </br>
 
 ### Answer
-- [ ] approximately 1112 cc
+- [x] approximately 1112 cc
 - [ ] approximately 1110 cc
 - [ ] approximately 1115 cc
 - [ ] approximately 1088 cc
@@ -87,7 +87,7 @@ You flip a fair coin 5 times, about what's the probability of getting 4 or 5 hea
 - [ ] 3%
 - [ ] 12%
 - [ ] 6%
-- [ ] 19%
+- [x] 19%
 </br>
 
 ### Remarks
