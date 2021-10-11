@@ -7,9 +7,9 @@ This is the summary pages from the quizzes and additional materials which I do t
 ## Quizzes
 Quiz # | Link 
 --- | --- 
-1 | [Quiz]
-2 | [Quiz]
-3 | [Quiz]
+1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz1.md)
+2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2.md)
+3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz3.md)
 4 | [Quiz]
 </br>
 
