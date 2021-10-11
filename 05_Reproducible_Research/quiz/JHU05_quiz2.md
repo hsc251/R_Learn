@@ -23,8 +23,8 @@ When writing a document in R Markdown, how do you denote the beginning of an R c
 ### Answer
 - [ ] ```
 - [x] ```{r}
-- [ ] <rcode>
-- [ ] <code>
+- [ ] `<rcode>`
+- [ ] `<code>`
 </br>
 
 ### Remarks
