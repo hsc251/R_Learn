@@ -39,7 +39,6 @@ Which of the following is an example of a reproducible study? </br>
 - [ ] The study's original authors re-run their computer code on their analytic data and confirm publicly that the findings match those of the published results.
 - [ ] The study's analytic data are publicly available, but the computer code is not.
 - [x] The study's analytic data and computer code for the data analysis are publicly available. When the code is run on the analytic data, the findings are identical to the published results.
-
 - [ ] The study's analytic data and computer code are not publicly available, but the study was simple enough to be repeated by an independent investigator.
 </br>
 
@@ -124,7 +123,7 @@ Which of the following is required to implement a literate programming system? <
 - [ ] A program that views PDF files.
 - [ ] A Unix-based computer system.
 - [ ] A web server for publishing documents.
-- [ ] A programming language like R.
+- [x] A programming language like R.
 </br>
 
 ### Remarks
@@ -137,7 +136,7 @@ What is one way in which the knitr system differs from Sweave? </br>
 ### Answer
 - [ ] knitr is written in python instead of R.
 - [ ] knitr lacks features like caching of code chunks.
-- [ ] knitr allows for the use of markdown instead of LaTeX.
+- [x] knitr allows for the use of markdown instead of LaTeX.
 - [ ] knitr was developed by Friedrich Leisch.
 </br>
 
