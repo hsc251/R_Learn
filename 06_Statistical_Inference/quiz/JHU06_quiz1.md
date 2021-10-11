@@ -11,7 +11,7 @@ Consider influenza epidemics for two parent heterosexual families. Suppose that 
 ### Answer
 - [ ] 5%
 - [ ] 6%
-- [ ] 11%
+- [x] 11%
 - [ ] 17%
 </br>
 
