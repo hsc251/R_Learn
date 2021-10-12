@@ -42,6 +42,7 @@ round(pval,3)
 
 ## [1] 0.087
 ```
+</br>
 
 Question 2
 ----------
@@ -70,6 +71,7 @@ CI = μ + c(-1,1) * qt(quant, df = n - 1) * σ / sqrt(n)
 
 ## [1] 1077 1123
 ```
+</br>
 
 Question 3
 ----------
@@ -94,6 +96,9 @@ round(b$p.value, 2)
 
 ## [1] 0.31
 ```
+</br>
+
+![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz4_q3exp.jpg) </br>
 
 Question 4
 ----------
@@ -122,6 +127,7 @@ round(test$p.value, 2)
 
 ## [1] 0.03
 ```
+</br>
 
 Question 5
 ----------
@@ -155,6 +161,7 @@ print(p)
 
 ## [1] 0.003504094
 ```
+</br>
 
 Question 6
 ----------
