@@ -10,7 +10,7 @@ Quiz # | Link
 1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz1.md)
 2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2.md)
 3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz3.md)
-4 | [Quiz]
+4 | [Quiz](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz4.md)
 </br>
 
 ## Programming Assignments
