@@ -141,8 +141,25 @@ Students were given two hard tests and scores were normalized to have empirical 
 </br>
 
 ### Remarks
-N/A </br>
+![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1_q5.jpg)
 
+```R
+corYX <- .4
+quiz1 <- 1.5
+
+# Scores are normalized so slope (beta1) is corYX
+beta1 <- corYX  
+
+# Beta0 is 0 since scores are normalized
+beta0 <- 0
+
+quiz2 <- beta0 + beta1 * quiz1
+quiz2
+
+# Answer
+# 0.6
+```
+</br>
 
 Question 6
 ----------
