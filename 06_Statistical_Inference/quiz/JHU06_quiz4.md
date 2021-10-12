@@ -38,7 +38,7 @@ exam <- data.frame(sub_no, base, week2)
 ## Execute t_test for the paired group comparison between the populations. 
 t_test <- t.test(x = exam$base, y = exam$week2, alt = "two.sided", paired = TRUE)
 p <- t_test$p.value
-round(pval,3)
+round(p,3)
 
 ## [1] 0.087
 ```
@@ -67,7 +67,7 @@ n <- 9
 ## Setup calculation for confidence interval
 quant = 0.975 ## Have confidence interval is 95% (2.5% on both sides) 
 CI = μ + c(-1,1) * qt(quant, df = n - 1) * σ / sqrt(n)
-
+print(round(CI))
 
 ## [1] 1077 1123
 ```
@@ -91,7 +91,7 @@ Refer to the following R code to see the calculated result. </br>
 ## Setup the mean, sample size and standard deviation for binomial test.
 n <- 4
 x <- 3
-b <- binom.test(x = x n = n, alt = "greater")
+b <- binom.test(x = x, n = n, alt = "greater")
 round(b$p.value, 2)
 
 ## [1] 0.31
