@@ -200,7 +200,7 @@ sd_place <- 1.8
 sp <- sqrt(((n_treat - 1)*sd_treat^2 + (n_place - 1)*sd_place^2) / (n_treat + n_place - 2))
 
 ## Calculate the t-score interval (for new minus old)
-(avg_treat - avg_place) + c(-1,1) * qt(0.95, n_treat + n_place - 2) * s * sqrt(1/n_treat + 1/n_place)
+(avg_treat - avg_place) + c(-1,1) * qt(0.95, n_treat + n_place - 2) * sp * sqrt(1/n_treat + 1/n_place)
 
 ## [1] -5.364 -2.636
 ```
