@@ -2,15 +2,19 @@
 title: "Regression Models Projects"
 author: "Hsin Chih Chen"
 date: "10/13/2021"
-output: pdf_document
+output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# Project Introduction
 
-## Preliminary Setup
+This project assignment is to look at a data set of car collections in 1974 (**mtcars**), and the two main questions this project would like to know the following questions.
 
+1. "Is automatic or manual transmission better for MPG"?
+2. "Quantify the MPG difference between automatic and manual transmissions"
+
+# Preliminary Setup & Understanding the Data Structure.
+
+Load the respective libraries for plotting before implementing the statistics commands.
 ```{r}
 library(datasets)
 library(ggplot2)
@@ -18,15 +22,24 @@ library(ggplot2)
 # load data table into the abbreviation
 mtc <- mtcars
 
-# Use factor to label transmission
-mtc$Transmission <- as.factor(mtc$am)
-levels(mtc$Transmission) <- c("Auto", "Manual")
+# Understand the data structure
+sapply(mtc, class)
+```
 
-ggplot(data = mtc, aes(x = Transmission, y = mpg))+ geom_boxplot + ggtitle("")
+And by looking at the data structure, variable *am* is the transmission type (where 0 = automatic and 1 = manual from **?mtcars**'s justification). Therefore the model will definitely have this as an inclusion.
+
+# Initial Model Setup.
+
+In this particular model, we have used the factor labels to place the am as an identified parameter to indicate the 2 different population for comparison. 
+```{R}
+# Use factor to label transmission
+mtc$am <- factor(mtc$am, labels = c("Auto", "Manual"))
+
+ggplot(data = mtc, aes(x = am, y = mpg))+ geom_boxplot(aes(fill = am)) + ggtitle("Transmission Type's Miles Per Gallon Comparison Plot")
 
 fit <- lm(mpg ~ am, data =mtc)
 ```
 
+https://github.com/jlnguyen/07-regression/blob/master/cp_regression.Rmd
 
 https://rpubs.com/ashmachado/164701
-https://github.com/jlnguyen/07-regression
