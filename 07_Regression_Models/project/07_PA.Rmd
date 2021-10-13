@@ -28,18 +28,67 @@ sapply(mtc, class)
 
 And by looking at the data structure, variable *am* is the transmission type (where 0 = automatic and 1 = manual from **?mtcars**'s justification). Therefore the model will definitely have this as an inclusion.
 
-# Initial Model Setup.
+# Default Model Setup.
 
-In this particular model, we have used the factor labels to place the am as an identified parameter to indicate the 2 different population for comparison. 
+In this particular model, we have used the factor labels to place the am as an identified parameter to indicate the 2 different population for comparison. The associated plot is attached with the code below:
+
 ```{R}
 # Use factor to label transmission
 mtc$am <- factor(mtc$am, labels = c("Auto", "Manual"))
 
-ggplot(data = mtc, aes(x = am, y = mpg))+ geom_boxplot(aes(fill = am)) + ggtitle("Transmission Type's Miles Per Gallon Comparison Plot")
-
-fit <- lm(mpg ~ am, data =mtc)
+# Use ggplot to obtain the boxplot between the 2 transmission type
+ggplot(data = mtc, aes(x = am, y = mpg)) + 
+geom_boxplot(aes(fill = am)) +
+ggtitle("Transmission Type's Miles Per Gallon Comparison Plot")
 ```
 
+```{R}
+# Generate the model between mpg and transmission type.
+fit_am <- lm(mpg ~ am, data =mtc)
+summary(fit_am)$coef
+anova(fit_am)
+```
+By default, the ANOVA's hypothesis testing is given below.
+
+H0_ = Manual & Automatic will impact the mpg in the same way.
+H1_ = Manual & Automatic will impact the mpg in the different way.
+
+Based on the ANOVA summary and given box-plot, it indicates that the H0_ should be rejected which indicates the contribution between transmission type certainly will impact the mpg output.
+
+# More Thorough Model Selection Approach
+
+In general, all parameters within the data frame shall be considered to evaluate the plotting. Therefore, this section will initiate the VIF examination while considering the collinearities within the parameters. 
+
+```{R}
+# Install the VIF evaluation packages
+install.packages("VIF")
+library(VIF)
+
+# Use the entire parameters to summarize the fit data
+fit_all <- lm(mpg ~. , data = mtcars)
+vif(fit_all)
+```
+
+The VIF criteria is given below with the rule of thumb:
+
+| VIF | Status of Parameters |
+| --- | --- |
+| VIF = 1 | Uncorrelated (and zero inflation) |
+| 1 < VIF < 5 | Moderately correlated |
+| VIF > 5 to 10 | Highly correlated |
+
+After identifying the VIF for each parameter, seems like the displacement (disp) and cylinder (cyl) are the high collinearity product. Therefore these 2 parameters shall be removed before resetting the model.
+
+```{R}
+# Generate the model after removing the collinearity parameters.
+fit_adv <- lm(mpg ~ am + disp + cyl, data = mtcars)
+summary(fit_adv)$coef
+```
+
+```{R}
+# Compare with the model types.
+anova(fit_am, fit_adv, fit_all)
+```
 https://github.com/jlnguyen/07-regression/blob/master/cp_regression.Rmd
 
 https://rpubs.com/ashmachado/164701
