@@ -9,7 +9,7 @@ Quiz # | Link
 --- | --- 
 1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1.md)
 2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2.md)
-3 | [Quiz]
+3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz3.md)
 4 | [Quiz]
 </br>
 
