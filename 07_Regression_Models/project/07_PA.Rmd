@@ -1,0 +1,28 @@
+---
+title: "Regression Models Projects"
+author: "Hsin Chih Chen"
+date: "10/13/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Preliminary Setup
+
+```{r}
+library(datasets)
+library(ggplot2)
+
+# load data table into the abbreviation
+mtc <- mtcars
+
+# Use factor to label transmission
+mtc$Transmission <- as.factor(mtc$am)
+levels(mtc$Transmission) <- c("Auto", "Manual")
+
+ggplot(data = mtc, aes(x = Transmission, y = mpg))+ geom_boxplot + ggtitle("")
+
+fit <- lm(mpg ~ am, data =mtc)
+```
