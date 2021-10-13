@@ -8,7 +8,7 @@ This is the summary pages from the quizzes and additional materials which I do t
 Quiz # | Link 
 --- | --- 
 1 | [Quiz](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1.md)
-2 | [Quiz]
+2 | [Quiz](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2.md)
 3 | [Quiz]
 4 | [Quiz]
 </br>
