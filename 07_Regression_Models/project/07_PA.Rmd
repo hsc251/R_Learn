@@ -26,3 +26,7 @@ ggplot(data = mtc, aes(x = Transmission, y = mpg))+ geom_boxplot + ggtitle("")
 
 fit <- lm(mpg ~ am, data =mtc)
 ```
+
+
+https://rpubs.com/ashmachado/164701
+https://github.com/jlnguyen/07-regression
