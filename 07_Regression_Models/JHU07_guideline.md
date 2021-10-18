@@ -16,7 +16,7 @@ Quiz # | Link
 ## Programming Assignments
 Assignment # | Link 
 --- | --- 
-1 | [Regression Models Project]
+1 | [Regression Models Project](https://github.com/hsc251/RLearn/tree/master/07_Regression_Models/project)
 </br>
 
 ## Notes
