@@ -6,7 +6,17 @@ output: html_document
 ---
 
 # Project Summary
-The general overview for this project is to analyze how well the 6 participants lifting their barbells where the accelerometers are placed on the belt, forearm, arm and dumbell. While the performance of barbell lifts correctly and incorrectly in 5 different ways. 
+The general overview for this project is to analyze how well the 6 participants lifting their barbells where the accelerometers are placed on the belt, forearm, arm and dumbbell. While the performance of barbell lifts correctly and incorrectly in 5 different ways. 
+
+# Summary
+
+Based on the following investigation code below, the following rule of thumb has been initiated.
+
+1. Data is cleaned to avoid coercion with NA values.
+2. 19,622 experiments for training data are divided by 60/40 portion to generate the models and accuracy of measurement.
+3. Based on classification tree model, the accuracy is roughly 49% and it's insufficient to predict the data under 95% confidence of interval.
+4. Based on the k-fold = 5 while using the random forest model to predict with test data. The accuracy is 99% for the prediction under 95% confidence interval.
+
 
 # Load Libraries and Read Data
 
@@ -17,6 +27,7 @@ library(rpart)
 library(rattle)
 library(parallel)
 library(doParallel)
+library(randomForest)
 ```
 
 ## Obtain & Examine Data
@@ -118,12 +129,3 @@ print(test_predict)
 # write off results
 write.csv(test_predict, file.path(path,'results.csv'))
 ```
-
-# Summary
-
-Based on the following investigation, the following rule of thumb has been initiated.
-
-1. Data is cleaned to avoid coercion with NA values.
-2. 19,622 experiments for training data are divided by 60/40 portion to generate the models and accuracy of measurement.
-3. Based on classification tree model, the accuracy is roughly 49% and it's insufficient to predict the data under 95% confidence of interval.
-4. Based on the k-fold = 5 while using the random forst model to predict with test data. The accuracy is 99% for the prediction under 95% confidence interval.
