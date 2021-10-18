@@ -1,0 +1,129 @@
+---
+title: "Practical Machine Learning Project"
+author: "Hsin Chih Chen"
+date: "10/18/2021"
+output: html_document
+---
+
+# Project Summary
+The general overview for this project is to analyze how well the 6 participants lifting their barbells where the accelerometers are placed on the belt, forearm, arm and dumbell. While the performance of barbell lifts correctly and incorrectly in 5 different ways. 
+
+# Load Libraries and Read Data
+
+## Library Loading & Setup
+```{R Load Library}
+library(caret)
+library(rpart)
+library(rattle)
+library(parallel)
+library(doParallel)
+```
+
+## Obtain & Examine Data
+```{R Data Obtainment}
+# URL setup and download
+
+train_URL <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+test_URL <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+path <- getwd()
+download.file(train_URL, file.path(path,'train.csv'))
+download.file(test_URL, file.path(path,'test.csv'))
+
+# Load data while neglecting the NA string 
+
+train_set <- read.csv("train.csv", na.strings = c("NA", "#DIV/0!", ""), header = TRUE)
+test_set <- read.csv("test.csv", na.strings = c("NA", "#DIV/0!", ""), header = TRUE)
+
+# Verify Dimension for the data set
+
+dim(train_set)
+dim(test_set)
+```
+
+# Data Filtering & Subsetting
+```{R Tidy Data}
+# Eliminate the columns with NA values by using is.na is true for columns 
+
+train_check <- train_set[,colSums(is.na(train_set)) == 0]
+test_check <- test_set[,colSums(is.na(test_set)) == 0]
+
+# Remove columns where the information is invalid (from participants and time stamps) while set them as factors for the classe
+
+train_clean <- train_check[,-c(1:7)]
+test_clean <- test_check[,-c(1:7)]
+
+# Re-check the dimensions for the filtered dataset 
+
+dim(train_clean)
+dim(test_clean)
+
+# validating the samples for each classe
+table(train_clean$classe)
+```
+
+# Data Partitioning
+```{R Data Partition}
+# Use the training set for training & validation with 60/40 proportion
+train_div <- createDataPartition(train_clean$classe, p = 0.60)[[1]]
+train_partial <- train_clean[train_div,]
+valid_partial <- train_clean[-train_div,]
+```
+
+# Prediction_Classification Tree Model
+```{R Classification Tree Plot}
+ct_model <- train(classe~., data = train_partial, method = "rpart")
+fancyRpartPlot(ct_model$finalModel)
+```
+
+```{R Classification Tree Prediction}
+predict_val <- predict(ct_model, newdata = valid_partial)
+cm_ct <- confusionMatrix(predict_val,as.factor(valid_partial$classe))
+cm_ct$overall["Accuracy"]
+```
+
+# Prediction_Random Forest Model
+```{R Random Forest Model Code}
+# Use k_fold = 5 for cross validation
+cluster <- makeCluster(detectCores() - 1)
+registerDoParallel(cluster)
+cross_val <- trainControl(method = "cv", number = 5, allowParallel = TRUE)
+rf_model <- train(classe~., data = train_partial,method="rf",trControl = cross_val)
+
+# Terminate parallel computing
+stopCluster(cluster)
+registerDoSEQ()
+```
+
+```{R Random Forest Prediciton}
+predict_val_rf<- predict(rf_model, newdata = valid_partial)
+cm_rf<-confusionMatrix(predict_val_rf,as.factor(valid_partial$classe))
+cm_rf$overall["Accuracy"]
+```
+
+```{R Random Forest Plotting}
+plot(rf_model$finalModel,main="Random Forest Model Error Rate")
+```
+
+```{R Random Forest Variable Display}
+varImp(rf_model)
+```
+
+# Predict with Test Data
+
+```{R}
+# Use test data to predict with rf model
+test_predict <- predict(rf_model, test_clean)
+print(test_predict)
+
+# write off results
+write.csv(test_predict, file.path(path,'results.csv'))
+```
+
+# Summary
+
+Based on the following investigation, the following rule of thumb has been initiated.
+
+1. Data is cleaned to avoid coercion with NA values.
+2. 19,622 experiments for training data are divided by 60/40 portion to generate the models and accuracy of measurement.
+3. Based on classification tree model, the accuracy is roughly 49% and it's insufficient to predict the data under 95% confidence of interval.
+4. Based on the k-fold = 5 while using the random forst model to predict with test data. The accuracy is 99% for the prediction under 95% confidence interval.
