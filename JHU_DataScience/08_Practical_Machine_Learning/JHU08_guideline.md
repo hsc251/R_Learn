@@ -16,7 +16,7 @@ Quiz # | Link
 ## Programming Assignments
 Assignment # | Link 
 --- | --- 
-1 | [Practical Machine Learning Project](https://github.com/hsc251/RLearn/tree/master/08_Practical_Machine_Learning/project)
+1 | [Practical Machine Learning Project](https://github.com/hsc251/RLearn/tree/master/JHU_DataScience/08_Practical_Machine_Learning/project)
 </br>
 
 ## Notes
