@@ -80,7 +80,7 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot1.png)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/05_Reproducible_Research/project1/05_PA1_plot1.png)
 
 3. Calculate & report the mean and median of total number of steps taken per day. </br>
 
@@ -119,7 +119,7 @@ head(Total_S,10)
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot2.png)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/05_Reproducible_Research/project1/05_PA1_plot2.png)
  
 2. Which 5-mins interval, on average across all the days in the dataset, contains the maximum number of steps? </br>
 
@@ -177,7 +177,7 @@ ggplot(Total_S2, aes(x = steps)) +
 dev.off()
 ```
 
-![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot3.png)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/05_Reproducible_Research/project1/05_PA1_plot3.png)
 
 | Type of Estimate                       | Mean\_Steps | Median\_Steps |
 |----------------------------------------|-------------|---------------|
@@ -227,4 +227,4 @@ dev.off()
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/05_Reproducible_Research/project1/05_PA1_plot4.png)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/05_Reproducible_Research/project1/05_PA1_plot4.png)
