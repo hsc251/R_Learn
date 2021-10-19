@@ -1,0 +1,38 @@
+---
+title: "Data Product - R Markdown and Leaflet"
+author: "Hsin Chih Chen"
+date: "10/19/2021"
+output: html_document
+---
+
+# Project Description
+This project is to demonstrate the maps via Leaflet function while display the designed widget via hosts like GitHub, RPubs or NeoCities. The webpage must contain the date which the document is created.
+
+# The Spin Off
+My map will demonstrate my favorite spots from Taiwan where as the spots have the responsive cooridnates to be displayed. 
+
+```{R}
+# Load leaflet library for setup.
+library(leaflet)
+
+# Setup the geographic location.
+lats<-c(25.122220, 24.382706,24.055471,23.259900)
+lons<-c(121.864699,121.223305,120.432857,120.107972)
+
+# Label the location and city vectors
+places <-c('Ying Yang Sea', 'Snow Mountain', 'Lukang Old Street','Beimen Salt Field')
+states <-c('New Taipei City', 'Taichung City', 'Changhua County','Tainan City')
+
+# Accumulate all information in one data frame for plotting
+tw_geo <- data.frame(lat=lats, lng=lons, places=places, states=states, citycolor=c("#40C589","#FCFE4C","#03088E","#ED0F68") )
+```
+
+```{R}
+# Execute the leaflet Setup while add necessary Setups 
+tw_geo %>% 
+  leaflet()%>%
+  addTiles()%>%
+  addCircleMarkers(color=tw_geo$citycolor, popup = tw_geo$places)%>% 
+  addLegend(labels = states[1:4], colors = c("#40C589","#FCFE4C","#03088E","#ED0F68")) %>%
+  addProviderTiles(providers$OpenStreetMap)
+```
