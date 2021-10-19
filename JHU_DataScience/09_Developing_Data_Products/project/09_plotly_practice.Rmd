@@ -1,0 +1,68 @@
+---
+title: "Data Products - Plotly Practice"
+author: "Hsin Chih Chen"
+date: "10/19/2021"
+output: ioslides_presentation
+---
+
+```{R Library Loading, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(plotly)
+library(tidyr)
+library(dplyr)
+```
+
+## Basic Scatter Plot
+
+### Scatter Plot with Markers Mode as default associated with colors and size.
+```{R, warning = FALSE, message = FALSE, echo = TRUE}
+plot_ly(iris, x = iris$Sepal.Width, y = iris$Petal.Width, mode = "markers", color = as.factor(iris$Species),size = iris$Sepal.Length)
+```
+
+### Scatter Plot with Markers Mode as default associated with continuous colors
+```{R, warning = FALSE, message = FALSE, echo = TRUE}
+plot_ly(iris, x = iris$Sepal.Width, y = iris$Petal.Width, mode = "markers", color = iris$Sepal.Length)
+```
+
+## Histogram
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+plot_ly(x = mtcars$mpg, type="histogram")
+```
+
+## Boxplot
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+plot_ly(x = as.factor(mtcars$cyl),y=mtcars$mpg,color = as.factor(mtcars$cyl),type="box")
+```
+
+## Heatmap
+Are useful for displaying three dimensional data in two dimensions, 
+using color for the third dimension,
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+terrain1 <- matrix(rnorm(100*100),nrow=100, ncol=100)
+plot_ly(z=terrain1, type= "heatmap")
+```
+
+
+## Surface 
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+terrain2 <- matrix(sort(rnorm(100*100)),nrow=100, ncol=100)
+plot_ly(z=terrain2, type= "surface")
+```
+
+
+## Choroplet map
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+state_pop <- data.frame(State=state.abb, Pop=as.vector(state.x77[,1]))
+state_pop$hover <- with(state_pop, paste(State,'<br>',"Population:", Pop))
+borders <- list(color = toRGB("red"))
+map_options <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+plot_ly(state_pop, z=state_pop$Pop, text = state_pop$hover, locations = state_pop$State, type= 'choropleth', locationmode = 'USA states', color=state_pop$Pop, colors= 'Blues', marker=list(line=borders)) %>% layout(title='US Population in 1975', geo=map_options)
+```

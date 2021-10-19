@@ -1,0 +1,43 @@
+---
+title: "Data Products - Plotly"
+author: "Hsin Chih Chen"
+date: "10/19/2021"
+output: ioslides_presentation
+---
+
+## Project Description
+This project will demonstrate the `plotly` package's practice and demonstrate with the datasets built within in R for description. 
+
+In this case, I have selected the air quality data (removing the NA values) to evaluate the comparison by months for wind level and Ozone level. 
+
+```{R Library Loading, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(plotly)
+library(tidyr)
+```
+
+## Data Cleaning & Arrangement for Air Quality
+```{R Data Sorting, warning=FALSE, message=FALSE, echo=TRUE}
+# Remove NA items for the data
+air_clean <- na.omit(airquality)
+
+# Convert the Month as factors to classify the setup
+air_clean$Month <- as.factor(air_clean$Month)
+```
+
+## Use Box Plot to demonstrate the Ozone level by Month
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+format(Sys.time())
+plot_ly(air_clean, x = air_clean$Month, y=air_clean$Ozone, color=air_clean$Month, type="box")%>% 
+  layout(title='Ozone Level by Month')
+```
+
+## Use Box Plot to demonstrate the wind level by Month
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+format(Sys.time(), "%a %b %d %X %Y")
+plot_ly(air_clean, x = air_clean$Month, y=air_clean$Wind, color=air_clean$Month, type="box")%>% 
+  layout(title='Wind Level by Month')
+```
