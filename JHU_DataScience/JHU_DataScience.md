@@ -8,13 +8,10 @@ This is the summary pages from the quizzes and additional materials throughout t
 Course # | Link 
 --- | --- 
 1 | [Data Scientist Toolbox](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/01_Data_Scientist_Toolbox/JHU01_guideline.md)
-2 | [R Programming]
+2 | [R Programming](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/02_R_Programming/JHU02_guideline.md)
 3 | [Getting & Cleaning_Data]
 4 | [Exploratory Data Analysis]
 5 | [Reproducible Research]
 6 | [Statistical Inference]
-7 | [R
+7 | [Regression Models]
 </br>
-
-## Notes
-[Notes Link](https://github.com/hsc251/RLearn/blob/master/01_Data_Scientist_Toolbox/notes.md)
