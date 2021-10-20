@@ -141,4 +141,4 @@ A web site [link](www.medicine.ox.ac.uk/bandolier/band64/b64-7.html) for home pr
 </br>
 
 ### Remarks
-![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/Pregnancy%20Probability%20Calculation.png) </br>
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/06_Statistical_Inference/quiz/Pregnancy%20Probability%20Calculation.png) </br>
