@@ -72,7 +72,7 @@ Question 2
 ----------
 Consider the previous problem, give the estimate of the residual standard deviation (formula is listed below). </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2_q2.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz2_q2.jpg)
 
 ### Answer
 - [ ] 0.4358
@@ -112,7 +112,7 @@ Question 3
 ----------
 In the mtcars data set, fit a linear regression model of weight (predictor) on mpg (outcome). Get a 95% confidence interval (formula below) for the expected mpg at the average weight. What is the lower endpoint? </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2_q3.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz2_q3.jpg)
 
 ### Answer
 - [ ] -4.00
@@ -163,7 +163,7 @@ Question 5
 ----------
 Consider again the mtcars data set and a linear regression model with mpg as predicted by weight (1,000 lbs). A new car is coming weighing 3000 pounds. Construct a 95% prediction interval (formula below) for its mpg. What is the upper endpoint? </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2_q5.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz2_q5.jpg)
 
 ### Answer
 - [ ] 21.25
@@ -266,7 +266,7 @@ Question 8
 ----------
 I have an outcome, Y, and a predictor, X and fit a linear regression model with Y=β0+β1X+ϵ to obtain β^0 and β^1. What would be the consequence to the subsequent slope and intercept if I were to refit the model with a new regressor, X+c for some constant, c? </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2_q8.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz2_q8.jpg)
 
 ### Answer
 - [ ] The new slope would be β^1+c
@@ -303,7 +303,7 @@ Question 9
 ----------
 Refer back to the mtcars data set with mpg as an outcome and weight (wt) as the predictor. About what is the ratio of the the sum of the squared errors, When comparing a model with just an intercept (denominator) to the model with the intercept and slope (numerator)? </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz2_q9.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz2_q9.jpg)
 
 ### Answer
 - [x] 0.25
