@@ -15,8 +15,8 @@ Quiz # | Link
 ## Programming Assignments
 Assignment # | Link 
 --- | --- 
-1 | [R Markdown and Leaflet](https://github.com/hsc251/RLearn/blob/master/09_Data_Products/project/09_PA1.Rmd)
-2 | [R Markdown Presentation & Plotly]
+1 | [R Markdown and Leaflet](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/09_Developing_Data_Products/project/09_PA1.Rmd)
+2 | [R Markdown Presentation & Plotly](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/09_Developing_Data_Products/project/09_PA2.Rmd)
 3 | [Shiny Application and Reproducible Pitch]
 </br>
 
