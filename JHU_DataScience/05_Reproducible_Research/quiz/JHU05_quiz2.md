@@ -8,7 +8,7 @@ Who created Markdown? </br>
 
 ### Answer
 - [ ] Yihui Xie
-- [ ] John Gruber
+- [x] John Gruber
 - [ ] Robert Gentleman
 - [ ] Hadley Wickham
 </br>
