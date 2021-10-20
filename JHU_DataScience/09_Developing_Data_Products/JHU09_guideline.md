@@ -1,4 +1,4 @@
-# Data Products
+# Developing Data Products
 
 Author: Hsin Chih (Colin) Chen </br>
 
