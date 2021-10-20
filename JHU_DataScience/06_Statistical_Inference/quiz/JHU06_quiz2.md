@@ -100,7 +100,7 @@ pbinom(3, size = 5, prob = 0.5, lower.tail = FALSE)
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz2_q5exp.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/06_Statistical_Inference/quiz/JHU06_quiz2_q5exp.jpg)
 
 
 Question 6
