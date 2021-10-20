@@ -1,5 +1,5 @@
 ---
-title: "Data Products - Plotly Practice"
+title: "Plotly Practice"
 author: "Hsin Chih Chen"
 date: "10/19/2021"
 output: ioslides_presentation
