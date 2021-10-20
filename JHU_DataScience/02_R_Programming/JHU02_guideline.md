@@ -20,6 +20,3 @@ Assignment # | Link
 2 | [Assignment](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/02_R_Programming/projects/JHU02_PA02.md) 
 3 | [Assignment](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/02_R_Programming/projects/JHU02_PA03.md)
 </br>
-
-## Notes
-[Notes Link]
