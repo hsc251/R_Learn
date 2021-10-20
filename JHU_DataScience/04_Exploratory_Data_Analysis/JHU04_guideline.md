@@ -17,6 +17,3 @@ Assignment # | Link
 1 | [Exploratory Data Analysis Project 1](https://github.com/hsc251/RLearn/tree/master/JHU_DataScience/04_Exploratory_Data_Analysis/project1)
 2 | [Exploratory Data Analysis Project 2](https://github.com/hsc251/RLearn/tree/master/JHU_DataScience/04_Exploratory_Data_Analysis/project2)
 </br>
-
-## Notes
-[Notes Link]
