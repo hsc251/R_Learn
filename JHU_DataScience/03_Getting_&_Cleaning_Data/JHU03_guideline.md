@@ -18,6 +18,3 @@ Assignment # | Link
 --- | --- 
 1 | [Assignment](https://github.com/hsc251/RLearn/tree/master/JHU_DataScience/03_Getting_%26_Cleaning_Data/project)
 </br>
-
-## Notes
-[Notes Link]
