@@ -98,7 +98,7 @@ round(b$p.value, 2)
 ```
 </br>
 
-![](https://github.com/hsc251/RLearn/blob/master/06_Statistical_Inference/quiz/JHU06_quiz4_q3exp.jpg) </br>
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/06_Statistical_Inference/quiz/JHU06_quiz4_q3exp.jpg) </br>
 
 Question 4
 ----------
