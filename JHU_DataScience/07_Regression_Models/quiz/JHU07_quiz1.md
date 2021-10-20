@@ -19,7 +19,7 @@ w <- c(2, 1, 3, 1)
 </br>
 
 Give the value of μ that minimizes the least squares equation </br>
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1_q1equ.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz1_q1equ.jpg)
 
 ### Answer
 - [ ] 1.077
@@ -113,7 +113,7 @@ Consider data with an outcome (Y) and a predictor (X). The standard deviation of
 </br>
 
 ### Remarks
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1_q4.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz1_q4.jpg)
 
 Refer to the following R code to see the calculated result. </br>
 
@@ -141,7 +141,7 @@ Students were given two hard tests and scores were normalized to have empirical 
 </br>
 
 ### Remarks
-![](https://github.com/hsc251/RLearn/blob/master/07_Regression_Models/quiz/JHU07_quiz1_q5.jpg)
+![](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/07_Regression_Models/quiz/JHU07_quiz1_q5.jpg)
 
 ```R
 corYX <- .4
