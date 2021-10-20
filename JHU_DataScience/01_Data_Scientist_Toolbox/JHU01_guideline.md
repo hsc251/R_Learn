@@ -12,6 +12,3 @@ Quiz # | Link
 3 | [Quiz](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/01_Data_Scientist_Toolbox/quiz/JHU01_quiz3.md)
 4 | [Quiz](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/01_Data_Scientist_Toolbox/quiz/JHU01_quiz4.md)
 </br>
-
-## Notes
-[Notes Link](https://github.com/hsc251/RLearn/blob/master/JHU_DataScience/01_Data_Scientist_Toolbox/JHU01_notes.md)
