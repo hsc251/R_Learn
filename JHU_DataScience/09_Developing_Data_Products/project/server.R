@@ -12,6 +12,9 @@ str(TS_Raw)
 TS_Raw$PM2.5 <- as.numeric(TS_Raw$PM2.5)
 TS_Raw$PM10 <- as.numeric(TS_Raw$PM10)
 
+## Covert the date as official date
+TS_Raw$Time <- as.Date(TS_Raw$Time)
+
 ## Filter Data for complete cases and verify structure agian
 TS_Clean <- TS_Raw[complete.cases(TS_Raw),]
 str(TS_Clean)
@@ -19,106 +22,115 @@ str(TS_Clean)
 # Setup Shiny Server for the setup 
 shinyServer(
   function(input, output){
-  
+    
+    # Generate the prediction model for each individual contributions
     fit1 <- lm(PM2.5 ~ SO2, data = TS_Clean)
     fit2 <- lm(PM2.5 ~ O3, data = TS_Clean)
     fit3 <- lm(PM2.5 ~ CO, data = TS_Clean)
     
+    # Establish the prediction Model & Plotting for SO2
+    
+    ## Generate the prediction value based on the given input of ozone
     fit1_pred <- reactive({
-      SO2_input <- input$SO2
+      SO2_input <- input$SO2_input
       predict(fit1, newdata = data.frame(SO2 = SO2_input))
     })
     
+    ## Generate the output plots based on the given information
+    output$SO2_Plot <- renderPlotly({
+      ## Define input for ozone from existing data and limits
+      SO2_input <- input$SO2_input
+      x2min = min(TS_Clean$SO2) - 0.5
+      x2max = max(TS_Clean$SO2) + 0.5
+      y2min = min(TS_Clean$PM2.5) + 0.5
+      y2max = max(TS_Clean$PM2.5) + 0.5
+      
+      ## Generate the model based on existed data points 
+      p1 <- ggplot(TS_Clean, aes(x = SO2, y = PM2.5, 
+                                 ylab = "PM 2.5", xlab = "SO2"), 
+                   bty = "n", 
+                   pch = 16,
+                   xlim = c(x2min, y2min), 
+                   ylim = c(y2min, y2max)) + 
+        geom_point()
+      
+      p1 <- p1 + stat_smooth(method = 'lm', color = "#FFED5F", lwd = 2)
+      p1 <- p1 + ggtitle("Tamsui PM 2.5 vs SO2 Level Prediction")
+      
+      ## Add the prediction point in the existing model plot
+      p1 <- p1 + geom_point(x = SO2_input, y = fit1_pred(), col = "#BB0000", pch = 16, cex = 6)
+      
+      ggplotly(p1) 
+    })
+    
+    # Establish the prediction Model & Plotting for O3
+    
+    ## Generate the prediction value based on the given input of ozone
     fit2_pred <- reactive({
-      O3_input <- input$O3
+      O3_input <- input$O3_input
       predict(fit2, newdata = data.frame(O3 = O3_input))
     })
     
-    fit3_pred <- reactive({
-      CO_input <- input$CO
-      predict(fit3, newdata = data.frame(CO = CO_input))
-    })
-    
-    output$fit1 <- renderText({
-      fit1_pred()
-    })
-    
-    output$fit2 <- renderText({
-      fit2_pred()
-    })
-    
-    output$fit3 <- renderText({
-      fit3_pred()
-    })
-
-    output$SO2_Plot <- renderPlotly({
-      SO2_input <- input$SO2_input
-      x1min = min(TS_Clean$SO2)-0.5
-      x1max = max(TS_Clean$SO2)+0.5
-      y1min = min(TS_Clean$PM2.5)+0.5
-      y1max = max(TS_Clean$PM2.5)+0.5
-      
-      a1 <- ggplot(TS_Clean, aes(x = SO2, y = PM2.5, 
-                  ylab = "PM 2.5", xlab = "SO2"), 
-                  bty = "n", 
-                  pch = 16,
-                  size = TS_Clean$PM2.5,
-                  xlim = c(x1min, y1min), 
-                  ylim = c(y1min, y1max)) + 
-                  geom_point()
-      
-      a1 <- a1 + stat_smooth(method = 'lm', color = "#BB0000", lwd = 2)
-      a1 <- a1+ ggtitle("Tamsui PM 2.5 vs Sulfur Dioxide Level Prediction")
-      a1 <- a1 + geom_point(x = SO2_input, y = fit1_pred(), col = "#FBFFA2", pch = 16, cex = 6)
-      
-      ggplotly(a1) 
-    })
-    
+    ## Generate the output plots based on the given information
     output$O3_Plot <- renderPlotly({
+      ## Define input for ozone from existing data and limits
       O3_input <- input$O3_input
       x2min = min(TS_Clean$O3) - 0.5
       x2max = max(TS_Clean$O3) + 0.5
       y2min = min(TS_Clean$PM2.5) + 0.5
       y2max = max(TS_Clean$PM2.5) + 0.5
-      
-      a2 <- ggplot(TS_Clean, aes(x = O3, y = PM2.5, 
+
+      ## Generate the model based on existed data points 
+      p2 <- ggplot(TS_Clean, aes(x = O3, y = PM2.5, 
                                  ylab = "PM 2.5", xlab = "O3"), 
                    bty = "n", 
                    pch = 16,
-                   size = TS_Clean$PM2.5,
                    xlim = c(x2min, y2min), 
                    ylim = c(y2min, y2max)) + 
-        geom_point()
+                   geom_point()
       
-      a2 <- a2 + stat_smooth(method = 'lm', color = "#50B9FF", lwd = 2)
-      a2 <- a2+ ggtitle("Tamsui PM 2.5 vs Ozone Level Prediction")
-      a2 <- a2 + geom_point(x = O3_input, y = fit2_pred(), col = "#A4FDE2", pch = 16, cex = 6)
+      p2 <- p2 + stat_smooth(method = 'lm', color = "#50B9FF", lwd = 2)
+      p2 <- p2+ ggtitle("Tamsui PM 2.5 vs Ozone Level Prediction")
       
-      ggplotly(a2) 
+      ## Add the prediction point in the existing model plot
+      p2 <- p2 + geom_point(x = O3_input, y = fit2_pred(), col = "#A4FDE2", pch = 16, cex = 6)
+      
+      ggplotly(p2) 
+    })
+
+    # Establish the prediction Model & Plotting for CO
+    
+    ## Generate the prediction value based on the given input of carbon dioxide
+    fit3_pred <- reactive({
+      CO_input <- input$CO_input
+      predict(fit3, newdata = data.frame(CO = CO_input))
     })
     
+    ## Generate the output plots based on the given information
     output$CO_Plot <- renderPlotly({
+      ## Define input for carbon dioxide from existing data and limits
       CO_input <- input$CO_input
       x3min = min(TS_Clean$CO) - 0.05
       x3max = max(TS_Clean$CO) + 0.05
       y3min = min(TS_Clean$PM2.5) + 0.5
       y3max = max(TS_Clean$PM2.5) + 0.5
       
-      a3 <- ggplot(TS_Clean, aes(x = CO, y = PM2.5, 
+      ## Generate the model based on existed data points
+      p3 <- ggplot(TS_Clean, aes(x = CO, y = PM2.5, 
                                  ylab = "PM 2.5", xlab = "CO"), 
                    bty = "n", 
                    pch = 16,
-                   size = TS_Clean$PM2.5,
                    xlim = c(x3min, y3min), 
-                   ylim = c(y3min, y3max)) + 
-      geom_point()
+                   ylim = c(y3min, y3max)) + geom_point()
       
    
-      a3 <- a3 + stat_smooth(method = 'lm', color = "#F0389F", lwd = 2)
-      a3 <- a3+ ggtitle("Tamsui PM 2.5 vs Carbon Monoxide Level Prediction")
-      a3 <- a3 + geom_point(x = CO_input, y = fit3_pred(), col = "#64047D", pch = 16, cex = 6)
+      p3 <- p3 + stat_smooth(method = 'lm', color = "#F0389F", lwd = 2)
+      p3 <- p3 + ggtitle("Tamsui PM 2.5 vs Carbon Monoxide Level Prediction")
       
-      ggplotly(a3) 
+      ## Add the prediction point in the existing model plot
+      p3 <- p3 + geom_point(x = CO_input, y = fit3_pred(), col = "#64047D", pch = 16, cex = 6)
+      
+      ggplotly(p3) 
     })
   }
 )
