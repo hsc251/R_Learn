@@ -27,7 +27,7 @@ shinyUI(fluidPage(
                     
   # Generate a row with a sidebar
   sidebarLayout(      
-    # Define the sidebar with one input
+    # Define the sidebar with required inputs
     sidebarPanel(
       numericInput("SO2_input",
                   "Enter Sulfur Dioxide for Prediction:",
