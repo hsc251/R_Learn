@@ -1,9 +1,5 @@
 library(shiny)
 
-## Filter Data for complete cases and verify structure agian
-TS_Clean <- TS_Raw[complete.cases(TS_Raw),]
-str(TS_Clean)
-
 # Use a fluid Bootstrap layout
 shinyUI(fluidPage(    
 
@@ -14,18 +10,18 @@ shinyUI(fluidPage(
   sidebarLayout(      
     # Define the sidebar with one input
     sidebarPanel(
-      sliderInput("SO2_input",
-                  "Drag the Sulfur Dioxide Value:",
+      numericInput("SO2_input",
+                  "Enter Sulfur Dioxide for Prediction:",
                   min = 0.00,
                   max = 10.00,
                   value = 1.70),
-      sliderInput("O3_input",
-                  "Drag the Ozone Value:",
+      numericInput("O3_input",
+                  "Enter Ozone for Prediction:",
                   min = 5.00,
                   max = 150.00,
                   value = 42.20),
-      sliderInput("CO_input",
-                  "Drag the Carbon Monoxide Value:",
+      numericInput("CO_input",
+                  "Enter Carbon Monoxide for Prediction:",
                   min = 0.00,
                   max = 2.00,
                   value = 0.21)),
@@ -33,9 +29,16 @@ shinyUI(fluidPage(
     # Create a spot for prediction plots
     mainPanel(
       tabsetPanel(type = "tabs", 
-                  tabPanel("Sulfur Dioxide", plotlyOutput("SO2_Plot")),
-                  tabPanel("Ozone", plotOutput("O3_Plot")),
-                  tabPanel("Carbon Monoxide", plotOutput("CO_Plot")))
+                  tabPanel("SO2", 
+                  h3("Predicted PM2.5 with predictor SO2:"),
+                  plotlyOutput("SO2",height = "300px", width = "100%")),
+                  tabPanel("OZone", 
+                  h3("Predicted PM2.5 with predictor O3:"),
+                  plotlyOutput("O3",height = "300px", width = "100%")),
+                  tabPanel("CO", 
+                  h3("Predicted PM2.5 with predictor CO:"),
+                  plotlyOutput("CO",height = "300px", width = "100%"))
+        )
       )
     )
   )
