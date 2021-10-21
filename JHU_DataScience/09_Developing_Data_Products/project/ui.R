@@ -1,22 +1,42 @@
-# This is the UI definition for the displacement calculation
-# Shiny web app.
-
 library(shiny)
 
-shinyUI(fluidPage(
-  headerPanel("Calculate Motion Displacement with Setup"),
-  sidebarPanel(
-    h5("Displacement is calculated via acceleration, velocity and given time travelled"),
-    numericInput("i_velocity", "Enter your initial velocity (m/s)", value = 6.9),
-    numericInput("acceleration", "Enter your acceleration (m/s2)", value = 9.8),
-    numericInput("t_time", "Enter your time (s)", value = 120),
-    submitButton("Calculate"),
-  ),
-  mainPanel(
-    h3("Results:"),
-    p("Calculated Displacement in meters are:"),
-    verbatimTextOutput("dist_travel"),
-    p("This is considered:"),
-    verbatimTextOutput("disp_length")
+## Filter Data for complete cases and verify structure agian
+TS_Clean <- TS_Raw[complete.cases(TS_Raw),]
+str(TS_Clean)
+
+# Use a fluid Bootstrap layout
+shinyUI(fluidPage(    
+
+  # Give the page a title
+  titlePanel("Tamsui Air Quality Prediction"),
+                    
+  # Generate a row with a sidebar
+  sidebarLayout(      
+    # Define the sidebar with one input
+    sidebarPanel(
+      sliderInput("SO2_input",
+                  "Drag the Sulfur Dioxide Value:",
+                  min = 0.00,
+                  max = 10.00,
+                  value = 1.70),
+      sliderInput("O3_input",
+                  "Drag the Ozone Value:",
+                  min = 5.00,
+                  max = 150.00,
+                  value = 42.20),
+      sliderInput("CO_input",
+                  "Drag the Carbon Monoxide Value:",
+                  min = 0.00,
+                  max = 2.00,
+                  value = 0.21)),
+    
+    # Create a spot for prediction plots
+    mainPanel(
+      tabsetPanel(type = "tabs", 
+                  tabPanel("Sulfur Dioxide", plotlyOutput("SO2_Plot")),
+                  tabPanel("Ozone", plotOutput("O3_Plot")),
+                  tabPanel("Carbon Monoxide", plotOutput("CO_Plot")))
+      )
+    )
   )
-))
+)
