@@ -24,6 +24,7 @@ library(ngram)
 library(ggplot2)
 library(dplyr)
 library(tm)
+library(data.table)
 ```
 
 ## Raw Data File Setup & Diagnosis
@@ -142,5 +143,51 @@ NumPunctRemoval <- function(x){
 cleaned <- tm_map(cleaned, content_transformer(URLRemoval))
 cleaned <- tm_map(cleaned, content_transformer(NumPunctRemoval))
 
-## 
+## Translate all sample to lower cases
+cleaned <- tm_map(cleaned, content_transformer(tolower))
+
+## Create Profanity Filter Source
+profanity <- read.csv("./capstone/final/en_us/en_profanity.csv", header = FALSE, sep = "\n")
+
+## Remove Profanity
+cleaned <- tm_map(cleaned, removeWords, profanity[,1])
+
+## Remove Stopwords
+cleaned <- tm_map(cleaned, removeWords, stopwords("english"))
+cleaned <- tm_map(cleaned, removeWords, stopwords("SMART"))
+
+## Quick demonstrate for dropped terms
+print(as.character(cleaned[[1]]))
+
+## Remove whitespaces
+cleaned <- tm_map(cleaned, stripWhitespace)
+print(as.character(cleaned[[1]]))
+
+## Save Clean Corpus
+saveRDS(cleaned, file = "./capstone/final/en_US/cleaned.rds")
+```
+
+## Initial Exploratory Data Analysis
+```{R Initial Data Analysis, echo = FALSE}
+## Generate the document term matrix with cleaned sample
+doc_corpus <- DocumentTermMatrix(cleaned)
+dim(doc_corpus)
+
+## Remove sparse terms 
+sdoc_corpus <- removeSparseTerms(doc_corpus, sparse = 0.995)
+dim(sdoc_corpus)
+
+## Establish Frequent Terms Calculation
+wordcount <- colSums(as.matrix(sdoc_corpus))
+length(wordcount)
+
+word_feat <- data.table(name = attributes(wordcount)$names, count = wordcount)
+
+## Check Most & Least Frequent Vocabs
+
+word_feat[order(-count)][1:10] ## Most Frequent
+
+word_feat[order(count)][1:10] ## Least Frequent
+
+#
 ```
