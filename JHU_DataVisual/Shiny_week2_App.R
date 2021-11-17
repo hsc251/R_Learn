@@ -46,10 +46,9 @@ ui <- navbarPage(theme = shinytheme("lumen"),
         tabPanel("Page 3",
                  sidebarLayout(
                      sidebarPanel(
-                         varSelectInput(inputId = "region",
+                         varSelectInput(inputId = "area",
                                         label = "Select Region",
-                                        data = "dat",
-                                        selected = "region",
+                                        data = dat,
                                         multiple = TRUE,
                                         selectize = TRUE)
                     ),
@@ -97,7 +96,11 @@ server<-function(input,output){
     })
     
     #####Hint: when you make the data table on page 3, you may need to adjust the height argument in the dataTableOutput function. Try a value of height=500
-        
+    output$dat_table <- renderDataTable({
+        dat %>%
+            filter(region %in% input$area)%>%
+            datatable(dat)
+    })    
 } 
 
 shinyApp(ui,server)
