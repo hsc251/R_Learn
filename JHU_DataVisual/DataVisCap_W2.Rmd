@@ -1,0 +1,61 @@
+---
+title: "Data Review"
+author: "Hsin Chih Chen"
+date: "11/23/2020"
+output: html_document
+---
+  
+```{r setup, include = FALSE}
+#####Make sure you load any required packages.
+
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+library(dplyr)
+```
+
+## Import Your Data
+
+```{r data_import}
+
+### The bwq.csv has been pre-downloaded and placed in working directy,
+### then I applied with read.csv function while considering the NA items before
+### removing the NA times to ensure all data has been filled accordingly.
+
+dat <- read.csv("bwq.csv", header = TRUE, na.strings = c("","NA","0",0)) %>%
+  na.omit()
+
+### After removing the NA items, there's 9963 full data to be considered
+```
+
+## Part 1
+
+```{r data1}
+# Water Temperature's distribution by Chicago Beaches
+ggplotly(graph1 <- dat %>%
+  ggplot(aes(x = Beach.Name, y = Water.Temperature, fill = Beach.Name)) +
+  geom_boxplot())
+```
+
+## Part 2
+
+
+```{r data2}
+# Wave Height's distribution by Chicago Beaches
+ggplotly(graph2 <- dat %>%
+           ggplot(aes(x = Beach.Name, y = Wave.Height, fill = Beach.Name)) +
+           geom_boxplot())
+```
+
+
+## Part 3
+
+```{r data3}
+# Average Turbidity by 
+ggplotly(dat3 <- dat %>%
+           select(Turbidity,Beach.Name) %>%
+           group_by(Beach.Name) %>%
+           summarize(avg_turbidity = mean(Turbidity)) %>%
+           ggplot(aes(x = Beach.Name, y = avg_turbidity, fill = Beach.Name))+
+           geom_bar(stat = 'identity'))
+```
