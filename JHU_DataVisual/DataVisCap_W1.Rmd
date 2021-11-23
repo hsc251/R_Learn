@@ -1,0 +1,57 @@
+---
+title: "Data Visualization Capstone Proposal"
+author: "Hsin Chih Chen"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project Topic
+
+My capstone project will be demonstrating the environment level for beach
+quality within the City of Chicago. This data is fascinating in a way where the
+wave height, water temperature and turbidity across different beaches in Chicago.
+
+Box plots, scatter plots with trends and bar charts will be applied to compare 
+between different beache's parameters and estimate each beach's condition.
+
+## Data Sources
+
+The link for Chicago's beach quality data is listed below: </br>
+https://www.kaggle.com/sveneschlbeck/chicago-beach-water-quality
+
+## Description of the Data
+
+The specific detail are listed in the following bullet points.
+
+* The time span is covered from Aug 2013 to Sep 2017 across 
+* 6 beaches were observed in the City of Chicago, IL of USA.
+* Water temperature, turbidity, wave height, wave period were measured via the 
+transducer sensor across the beaches in Chicago, IL
+* 34923 rows of data were entered, but there are some missing data within the rows. Therefore data cleaning and re-arrangement is required to evaluate correctly.
+
+The 10 variables are listed below: </br>
+  1. **Beach.Name**: *Name of Beaches in Chicago, IL* </br>
+  2. **Measurement.Timestamp**: *Time which the sensor obtained data* </br>
+  3. **Water.Temperature**: *Temperature data obtained from sensor*  </br>
+  4. **Turbidity**: *Purity of water based on sensor detection* </br>
+  5. **Transducer.Depth**: *Depth level for the transducer sensor*  </br>
+  6. **Wave.Height**: *Height gathered from transducer sensor*  </br>
+  7. **Wave.Period**: *Wave period estimated from transducer sensor*  </br>
+  8. **Battery.Life**: *Battery life for the sensor level* </br>
+  9. **Measurement.Timestamp.Label**: *Label for the measurement timestamp*  </br>
+  10. **Measurement.ID**: *Measurement ID serial*  </br>
+
+## Ideas about the figures that you will create to visualize this data:
+
+The following plots will be used to analyze the following data.
+
+  1. Box plot to compare distribution for water temperature across 6 beaches.
+  2. Box plot to compare distribution for wave height across 6 beaches.
+  3. Bar plot to compare the average turbidity across 6 beaches.
+  4. Scatter plot with smooth line for the turbidity distribution for 6 beaches.
+  5. Box plot to compare distribution of battery life for the sensors in beaches.
+  6. Bar plot to compare the average battery life across 6 beaches.
+  7. Wave Period Categories across different beaches.
