@@ -17,57 +17,35 @@ library(plotly)
 library(shiny)
 library(dplyr)
 library(lubridate)
-
 # Obtain Raw Data from Source
 URL <- "https://data.cityofchicago.org/api/views/qmqz-2xku/rows.csv?accessType=DOWNLOAD"
 download.file(URL,"bwq.csv",method = "curl")
-
 # Execute Data Import while removing the missing data entries.
 dat <- read.csv("bwq.csv", header = TRUE, na.strings = c("","NA","0",0)) 
 dat$Measurement.Timestamp <- parse_date_time(dat$Measurement.Timestamp, "mdy_HMS")
-
 # Rename Beach to Simplify Beach Names
 beach <- recode(dat$Beach.Name, "63rd Street Beach" = "63rd Street", "Calumet Beach" = "Calumet", "Montrose Beach" = "Montrose", "Ohio Street Beach" = "Ohio Street", "Osterman Beach" = "Osterman", "Rainbow Beach" = "Rainbow")
-
 # Replace Parameter Name after Recode
 dat$Beach.Name <- beach
-
 # Mutate with respective year and month
 dat <- dat %>%
   mutate(disp_year = year(Measurement.Timestamp), disp_month = month(Measurement.Timestamp)) %>%
+  mutate(year_month = paste(disp_year, disp_month, sep = "_")) %>%
   select(-Transducer.Depth) %>%
   filter(Wave.Height > 0) %>%
   arrange(Measurement.Timestamp)
-
 dat$disp_year <- as.character(dat$disp_year)
 dat$disp_month <- as.character(dat$disp_month)
-
 # Clean Data with na.values
 tidy <- na.omit(dat)
-
 # Generate the factors for filtering
-turb_year <- seq(min(tidy$disp_year),max(tidy$disp_year),1)
+year_factor <- seq(min(tidy$disp_year),max(tidy$disp_year),1)
 wave_year <- c(2014, 2015, 2016, 2018, 2019, 2020, 2021)
 beach_factor <- unique(tidy$Beach.Name)
 ```
 
-
-Page 1
+Summary
 ======
-
-
-Input{.sidebar}
------------------
-### Yearly Temperature Box Chart
-
-```{r Temperature Plot Input}
-selectInput(inputId = "beach_name",
-            label = "Select the beach",
-            choices = beach_factor,
-            multiple = FALSE,
-            selected = beach_factor)
-
-```
 
 Column
 ------
@@ -86,82 +64,144 @@ https://data.cityofchicago.org/Parks-Recreation/Beach-Water-Quality-Automated-Se
 This chart displays the water temperature boxplot distribution for each Chicago Beach recorded started from 2013. </br>
 
 
-*Remark:* </br>
-*1. The year 2013's data is incomplete, therefore the data was gathered from 2014 and onward.* </br>
-*2. Only Ohio Street Beach from Chicago has the continuous data from 2017 and onward, other beaches have only collected their time up to 2016.* </br>
-
-
-```{r Temperature Plot Rendering}
-renderPlotly(
-ggplotly(graph1 <- tidy %>%
-  filter(Beach.Name %in% input$beach_name & disp_year >= "2014") %>%
-  ggplot(aes(x = disp_year, y = Water.Temperature, fill = disp_year)) +
-    geom_boxplot()+
-      theme(axis.text.y = element_text(size = 12),
-            axis.text.x = element_text(size = 12),
-            axis.title = element_text(size = 12, face = "bold"),
-            title = element_text(size =10, face = "bold"),
-            legend.title = element_text(size = 10),
-            legend.text = element_text(size = 10),
-            legend.key.width = unit(0.5, 'cm'),
-            legend.key.height = unit(0.5, 'cm'),
-            legend.key.size = unit(0.5, 'cm')) + 
-      labs(x = "Year", y = "Temperature (Celsius)", title = "Water Temperature for Selected Beach by Years"), height = 690)
-)
-```
-
-Page 2
+Temperature
 ======
 
 
 Input{.sidebar}
 -----------------
-### Wave Height Violin Chart
+### Temperature Graph Input
 
-```{r Wave Height Plot Input}
-selectInput(inputId = "year_wave",
-            label = "Select the year ",
-            choices = wave_year,
+```{r Temperature Plot Input}
+selectInput(inputId = "beach_temp",
+            label = "Select the beach to display for temperature progress",
+            choices = beach_factor,
             multiple = FALSE,
-            selected = wave_year[1])
+            selected = beach_factor)
+
+sliderInput(inputId = "year_temp",
+            label = "Select the year to display for individual beach's average temperature",
+            min = min(year_factor),
+            max = max(year_factor),
+            value = year_factor[1])
 ```
 
 Column
 ------
-Background: </br>
+### Chicago Beaches' Temperature Distribution by Years
+```{r Graph 1 Setup}
+renderPlotly(
+ggplotly(graph1 <- tidy %>%
+  filter(Beach.Name %in% input$beach_temp & disp_year >= "2014") %>%
+  ggplot(aes(x = disp_year, y = Water.Temperature, fill = disp_year)) +
+    geom_boxplot()+
+      theme(axis.text.y = element_text(size = 9),
+            axis.text.x = element_text(size = 9),
+            axis.title = element_text(size = 9, face = "bold"),
+            title = element_text(size =10, face = "bold"),
+            legend.title = element_text(size = 9),
+            legend.text = element_text(size = 9),
+            legend.key.width = unit(0.5, 'cm'),
+            legend.key.height = unit(0.5, 'cm'),
+            legend.key.size = unit(0.5, 'cm'),
+            legend.position = "none") + 
+      labs(x = "Year", y = "Temperature (Celsius)"))
+)
+```
 
-</br>
-
-The data was gathered from the city of Chicago's beach data accumulated from 2013 to 2021 during the summer time. Data filtering and ensure the correct data was displayed to ensure no missing data or zeroes presented. </br>
-
-For the data link, please see the web address below: </br>
-https://data.cityofchicago.org/Parks-Recreation/Beach-Water-Quality-Automated-Sensors/qmqz-2xku </br>
-
-</br>
-
-This particular chart demonstrates the violin distribution in wave height for each Chicago Beach recorded started from 2013, it shows the year temperature distribution for respective years. </br>
-
-
-*Remark:* </br>
-*1. The data from 2013 and 2017 is incomplete, therefore the data was gathered from 2014 and onward.* </br>
-*2. Only Ohio Street Beach from Chicago has the continuous data from 2017 and onward, other beaches have only collected their time up to 2016.* </br>
-
-```{r Wave Height Plot Rendering}
+Column
+------
+### Chicago Beaches' Temperature Average by Years
+```{r Graph 2 Setup}
 renderPlotly(
 ggplotly(graph2 <- tidy %>%
+           filter(disp_year == input$year_temp) %>%
+           select(Water.Temperature,Beach.Name) %>%
+           group_by(Beach.Name) %>%
+           summarize(avg_watertemp = mean(Water.Temperature)) %>%
+           ggplot(aes(x = avg_watertemp, y = Beach.Name))+
+           geom_point(color = '#2F8C81', size = 2)+
+           geom_segment(aes(x = 0, xend = avg_watertemp,y = Beach.Name, yend = Beach.Name), color = "red") + 
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size = 9, face = "bold"),
+                 legend.position = "none") + 
+           labs(y = "Chicago Beach Location", x = "Average Temperature (Celsius)")
+         )
+)
+```
+
+
+
+Wave
+======
+
+
+Input{.sidebar}
+-----------------
+### Wave Graph Input
+
+```{r Wave Plot Input}
+selectInput(inputId = "year_wave",
+            label = "Select the year to observe the yearly progress for individual beach's wave height distribution",
+            choices = wave_year,
+            multiple = FALSE,
+            selected = wave_year[1])
+
+selectInput(inputId = "beach_wave",
+            label = "Select the beach to observe the wave period's distribution",
+            choices = beach_factor,
+            multiple = FALSE,
+            selected = beach_factor)
+```
+
+Column
+------
+### Chicago Beaches' Yearly Wave Height's Distribution
+```{r Wave Height Plot Rendering}
+renderPlotly(
+ggplotly(graph3 <- tidy %>%
            filter(disp_year == input$year_wave) %>%
            ggplot(aes(x = Beach.Name, y = Wave.Height, fill = Beach.Name)) +
            geom_violin()+ 
-           theme(axis.text.y = element_text(size = 11),
-                 axis.text.x = element_text(size = 11),
-                 axis.title = element_text(size = 12, face = "bold"),
-                 title = element_text(size =10, face = "bold"),
-                 legend.title = element_text(size = 10),
-                 legend.text = element_text(size = 10),
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size =9, face = "bold"),
+                 legend.title = element_text(size = 9),
+                 legend.text = element_text(size = 9),
                  legend.key.width = unit(0.5, 'cm'),
                  legend.key.height = unit(0.5, 'cm'),
-                 legend.key.size = unit(0.5, 'cm')) + 
-           labs(x = "Chicago Beach Location", y = "Wave Height (m)", title = "Chicago's Wave Height Distribution Coparison"), height = 690)
+                 legend.key.size = unit(0.5, 'cm'),
+                 legend.position = "none") + 
+           labs(x = "Chicago Beach Location", y = "Wave Height (m)")
+         )
+)
+```
+
+Column
+------
+### Chicago Beaches' Yearly Wave Period's Distribution
+```{r Wave period  Plot Rendering}
+renderPlotly(
+ggplotly(graph4 <- tidy %>%
+           filter(Beach.Name == input$beach_wave) %>%
+           filter(disp_year != "2013" & disp_year != "2017") %>%
+           select(Wave.Period,disp_year) %>%
+           ggplot(aes(x = disp_year, y = Wave.Period, fill = disp_year)) +
+           geom_violin()+
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size = 9, face = "bold"),
+                 legend.title = element_text(size = 9),
+                 legend.text = element_text(size = 9),
+                 legend.key.width = unit(0.5, 'cm'),
+                 legend.key.height = unit(0.5, 'cm'),
+                 legend.key.size = unit(0.5, 'cm'),
+                 legend.position = "none") + 
+           labs(x = "Chicago Beach Location", y = "Wave Period"))
 )
 ```
 
@@ -170,39 +210,28 @@ Page 3
 
 Input{.sidebar}
 -----------------
-### Turbidity Average Chart
-
+### Turbidity Impact Input
 ```{r Turbidity Plot Input}
 sliderInput(inputId = "year_turb",
             label = "Select the year ",
-            min = min(turb_year),
-            max = max(turb_year),
-            value = turb_year[1])
+            min = min(year_factor),
+            max = max(year_factor),
+            value = year_factor[1])
+
+selectInput(inputId = "beach_name3",
+            label = "Select the beach",
+            choices = beach_factor,
+            multiple = FALSE,
+            selected = beach_factor)
 ```
 
 Column
 ------
-
-Background: </br>
-
-</br>
-
-The data was gathered from the city of Chicago's beach data accumulated from 2013 to 2021 during the summer time. Data filtering and ensure the correct data was displayed to ensure no missing data or zeroes presented. </br>
-
-For the data link, please see the web address below: </br>
-https://data.cityofchicago.org/Parks-Recreation/Beach-Water-Quality-Automated-Sensors/qmqz-2xku </br>
-
-</br>
-
-This particular chart demonstrates the water temperature for each Chicago Beach recorded started from 2013, it shows the average turbidity for beaches for respective years. </br>
-
-
-*Remark:* </br>
-*1. Only Ohio Street Beach from Chicago has the continuous data from 2017 and onward, other beaches have only collected their time up to 2016.*
+### Turbidity Average Chart
 
 ```{r Turbidity Plot Rendering}
 renderPlotly(
-ggplotly(graph3 <- tidy %>%
+ggplotly(graph77 <- tidy %>%
            filter(disp_year == input$year_turb) %>%
            select(Turbidity,Beach.Name) %>%
            group_by(Beach.Name) %>%
@@ -213,7 +242,44 @@ ggplotly(graph3 <- tidy %>%
            theme(axis.text.y = element_text(size = 11),
                  axis.text.x = element_text(size = 11),
                  axis.title = element_text(size = 12, face = "bold"),
+                 title = element_text(size =13, face = "bold"),
+                 legend.position = "none") + 
+           labs(y = "Chicago Beach Location", x = "Average Turbidity (NTU)", title = "Average Turbidity Level Calculated"), height = 450)
+)
+```
+
+Column
+------
+### Turbidity Average Chart
+```{r Turbidity Dist Rendering}
+renderPlotly(
+ggplotly(graph88 <- tidy %>%
+           filter(Beach.Name == input$beach_name2) %>%
+           select(Turbidity,year_month) %>%
+           group_by(year_month) %>%
+           summarize(month_avg_turbidity = mean(Turbidity)) %>%
+           ggplot(aes(x = month_avg_turbidity, y = year_month))+
+           geom_bar(stat = 'identity')+
+           theme(axis.text.y = element_text(size = 11),
+                 axis.text.x = element_text(size = 11),
+                 axis.title = element_text(size = 12, face = "bold"),
                  title = element_text(size =13, face = "bold")) + 
-           labs(y = "Chicago Beach Location", x = "Average Turbidity (NTU)", title = "Average Turbidity Level Calculated"), height = 690)
+           labs(y = "Year & Month", x = "Average Turbidity (NTU)", title = "Average Turbidity Level for Individual Beach by Time"))
+)
+```
+
+### Turbidity Geom
+```{r Turbidity Points}
+renderPlotly(
+ggplotly(graph99 <- tidy %>%
+           filter(Beach.Name == input$beach_name3) %>%
+           select(Turbidity, Measurement.Timestamp) %>%
+           ggplot(aes(x = Measurement.Timestamp, y = Turbidity, size = Turbidity))+
+           geom_point(alpha = 0.7)+
+           theme(axis.text.y = element_text(size = 11),
+                 axis.text.x = element_text(size = 11),
+                 axis.title = element_text(size = 12, face = "bold"),
+                 title = element_text(size =13, face = "bold")) + 
+           labs(y = "Turbidity (NTU)", x = "Measured Time", title = "Turbidity Distribution"))
 )
 ```
