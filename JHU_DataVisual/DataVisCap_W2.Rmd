@@ -1,61 +1,138 @@
 ---
 title: "Data Review"
 author: "Hsin Chih Chen"
-date: "11/23/2020"
+date: "11/24/2021"
 output: html_document
 ---
-  
-```{r setup, include = FALSE}
-#####Make sure you load any required packages.
 
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(plotly)
-library(dplyr)
+library(lubridate)
 ```
 
-## Import Your Data
+## Data Import
 
-```{r data_import}
+Applying read.csv function while identifying the NA items, then use na.omit to 
+ensure the remaining data set has complete entries for all 10 variables.
 
-### The bwq.csv has been pre-downloaded and placed in working directy,
-### then I applied with read.csv function while considering the NA items before
-### removing the NA times to ensure all data has been filled accordingly.
+```{r Data Import & Wrangling}
+# Obtain Raw Data from Source
+URL <- "https://data.cityofchicago.org/api/views/qmqz-2xku/rows.csv?accessType=DOWNLOAD"
+download.file(URL,"bwq.csv",method = "curl")
 
-dat <- read.csv("bwq.csv", header = TRUE, na.strings = c("","NA","0",0)) %>%
-  na.omit()
+# Execute Data Import while removing the missing data entries.
+dat <- read.csv("bwq.csv", header = TRUE, na.strings = c("","NA","0",0)) 
+dat$Measurement.Timestamp <- parse_date_time(dat$Measurement.Timestamp, "mdy_HMS")
 
-### After removing the NA items, there's 9963 full data to be considered
+# Rename Beach to Simplify Beach Names
+beach <- recode(dat$Beach.Name, "63rd Street Beach" = "63rd Street", "Calumet Beach" = "Calumet", "Montrose Beach" = "Montrose", "Ohio Street Beach" = "Ohio Street", "Osterman Beach" = "Osterman", "Rainbow Beach" = "Rainbow")
+
+# Replace Parameter Name after Recode
+dat$Beach.Name <- beach
+
+# Mutate with respective year and month
+dat <- dat %>%
+  mutate(year = year(Measurement.Timestamp), month = month(Measurement.Timestamp)) %>%
+  select(-Transducer.Depth) %>%
+  filter(Wave.Height > 0) %>%
+  arrange(Measurement.Timestamp)
+
+dat$year <- as.character(dat$year)
+dat$month <- as.character(dat$month)
+
+# Clean Data with na.values
+tidy <- na.omit(dat)
 ```
 
-## Part 1
+## Graph 1
 
-```{r data1}
-# Water Temperature's distribution by Chicago Beaches
-ggplotly(graph1 <- dat %>%
-  ggplot(aes(x = Beach.Name, y = Water.Temperature, fill = Beach.Name)) +
-  geom_boxplot())
+This graph is to use the ggplotly to demonstrate the distribution quartile range for ohio street beach's water temperature from 2014 to 2021. The x axis contains the individual beach while the y axis is the water temperature in celsius.
+
+The following code chunk illustrates how I generated my data set for graph illustration.
+
+```{r Graph 1}
+# Select & Demonstrate the Structure of Tibble
+data1 <- tidy %>%
+  filter(Beach.Name == "Ohio Street") %>%
+  filter(year !=　"2013")
+
+# Examine Data Structure
+as_tibble(data1)
+
+# Plot Graph
+ggplotly(graph1 <- data1 %>%
+  ggplot(aes(x = year, y = Water.Temperature, fill = year)) +
+    geom_boxplot()+
+      theme(axis.text.y = element_text(size = 8),
+            axis.text.x = element_text(size = 8),
+            axis.title = element_text(size = 8, face = "bold"),
+            title = element_text(size =10, face = "bold"),
+            legend.title = element_text(size = 8),
+            legend.text = element_text(size = 6),
+            legend.key.width = unit(0.5, 'cm'),
+            legend.key.height = unit(0.5, 'cm'),
+            legend.key.size = unit(0.5, 'cm')) + 
+      labs(x = "Year", y = "Temperature (Celsius)", title = "Water Temperature for Ohio Street Beach by Years"))
 ```
 
-## Part 2
+## Graph 2
 
+This graph is to use the ggplotly to demonstrate the distribution density for individual beach's wave height in 2015. The x axis contains the individual beach while the y axis is the wave height in meters.
 
-```{r data2}
-# Wave Height's distribution by Chicago Beaches
-ggplotly(graph2 <- dat %>%
+The following code chunk illustrates how I generated my data set for graph illustration.
+
+```{r Graph 2}
+# Select & Demonstrate the Structure of Tibble
+data2 <- tidy %>%
+  filter(year == "2015")
+  
+
+# Examine Data Structure
+as_tibble(data2)
+
+# Plot Graph
+ggplotly(graph2 <- data2 %>%
            ggplot(aes(x = Beach.Name, y = Wave.Height, fill = Beach.Name)) +
-           geom_boxplot())
+           geom_violin()+ 
+           theme(axis.text.y = element_text(size = 8),
+                 axis.text.x = element_text(size = 8),
+                 axis.title = element_text(size = 8, face = "bold"),
+                 title = element_text(size =10, face = "bold"),
+                 legend.title = element_text(size = 8),
+                 legend.text = element_text(size = 6),
+                 legend.key.width = unit(0.5, 'cm'),
+                 legend.key.height = unit(0.5, 'cm'),
+                 legend.key.size = unit(0.5, 'cm')) + 
+           labs(x = "Chicago Beach Location", y = "Wave Height (m)", title = "Chicago's 2015 Wave Height Distribution Coparison"))
 ```
 
+## Graph 3
 
-## Part 3
+This graph is to use the ggplotly to show average turbidity level for individual beach in 2015. The x axis contains the turbidity level in Nephelometric Turbidity Units (NTU) while y axis is the individual beach.
 
-```{r data3}
-# Average Turbidity by 
-ggplotly(dat3 <- dat %>%
+The following code chunk illustrates how I generated my data set for graph illustration.
+
+```{r Graph 3}
+# Select & Demonstrate the Structure of Tibble
+data3 <- tidy %>%
+    filter(year == "2015")
+
+# Examine Data Structure
+as_tibble(data3)
+
+# Plot the Graph
+ggplotly(graph3 <- data3 %>%
            select(Turbidity,Beach.Name) %>%
            group_by(Beach.Name) %>%
            summarize(avg_turbidity = mean(Turbidity)) %>%
-           ggplot(aes(x = Beach.Name, y = avg_turbidity, fill = Beach.Name))+
-           geom_bar(stat = 'identity'))
+           ggplot(aes(x = avg_turbidity, y = Beach.Name))+
+           geom_point(color = 'red', size = 2)+
+           geom_segment(aes(x = 0, xend = avg_turbidity,y = Beach.Name, yend = Beach.Name), color = "blue") + 
+           theme(axis.text.y = element_text(size = 8),
+                 axis.text.x = element_text(size = 8),
+                 axis.title = element_text(size = 8, face = "bold"),
+                 title = element_text(size =10, face = "bold")) + 
+           labs(y = "Chicago Beach Location", x = "Average Turbidity (NTU)", title = "Average Turbidity Level Calculated in 2015"))
 ```
