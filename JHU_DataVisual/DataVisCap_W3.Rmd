@@ -1,10 +1,10 @@
 ---
-title: "Hsin Chih Chen's Data Visual Capstone"
+title: "Hsin Chih's Data Visual Capstone"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
-    theme: yeti
+    theme: journal
 runtime: shiny
 ---
 
@@ -17,16 +17,21 @@ library(plotly)
 library(shiny)
 library(dplyr)
 library(lubridate)
+
 # Obtain Raw Data from Source
 URL <- "https://data.cityofchicago.org/api/views/qmqz-2xku/rows.csv?accessType=DOWNLOAD"
 download.file(URL,"bwq.csv",method = "curl")
+
 # Execute Data Import while removing the missing data entries.
 dat <- read.csv("bwq.csv", header = TRUE, na.strings = c("","NA","0",0)) 
 dat$Measurement.Timestamp <- parse_date_time(dat$Measurement.Timestamp, "mdy_HMS")
+
 # Rename Beach to Simplify Beach Names
 beach <- recode(dat$Beach.Name, "63rd Street Beach" = "63rd Street", "Calumet Beach" = "Calumet", "Montrose Beach" = "Montrose", "Ohio Street Beach" = "Ohio Street", "Osterman Beach" = "Osterman", "Rainbow Beach" = "Rainbow")
+
 # Replace Parameter Name after Recode
 dat$Beach.Name <- beach
+
 # Mutate with respective year and month
 dat <- dat %>%
   mutate(disp_year = year(Measurement.Timestamp), disp_month = month(Measurement.Timestamp)) %>%
@@ -36,8 +41,10 @@ dat <- dat %>%
   arrange(Measurement.Timestamp)
 dat$disp_year <- as.character(dat$disp_year)
 dat$disp_month <- as.character(dat$disp_month)
+
 # Clean Data with na.values
 tidy <- na.omit(dat)
+
 # Generate the factors for filtering
 year_factor <- seq(min(tidy$disp_year),max(tidy$disp_year),1)
 wave_year <- c(2014, 2015, 2016, 2018, 2019, 2020, 2021)
@@ -50,19 +57,30 @@ Summary
 Column
 ------
 
-Background: </br>
+**Background**: </br>
 
 </br>
 
 The data was gathered from the city of Chicago's beach data accumulated from 2013 to 2021 during the summer time. Data filtering and ensure the correct data was displayed to ensure no missing data or zeroes presented. </br>
 
-For the data link, please see the web address below: </br>
+</br>
+
+**Datalink**: </br>
 https://data.cityofchicago.org/Parks-Recreation/Beach-Water-Quality-Automated-Sensors/qmqz-2xku </br>
 
 </br>
 
-This chart displays the water temperature boxplot distribution for each Chicago Beach recorded started from 2013. </br>
+**Abstract**": </br>
+The following graph has been broken down to 4 different sections to analyze. </br>
 
+</br>
+
+1. Beach Temperature </br>
+2. Beach Wave </br>
+3. Beach Turbidity </br>
+4. Beach Battery Life  </br>
+
+*Remark: Some data in 2013 were missing for some characteristics so it was neglected for data filtering*
 
 Temperature
 ======
@@ -77,7 +95,7 @@ selectInput(inputId = "beach_temp",
             label = "Select the beach to display for temperature progress",
             choices = beach_factor,
             multiple = FALSE,
-            selected = beach_factor)
+            selected = beach_factor[2])
 
 sliderInput(inputId = "year_temp",
             label = "Select the year to display for individual beach's average temperature",
@@ -153,13 +171,13 @@ selectInput(inputId = "beach_wave",
             label = "Select the beach to observe the wave period's distribution",
             choices = beach_factor,
             multiple = FALSE,
-            selected = beach_factor)
+            selected = beach_factor[3])
 ```
 
 Column
 ------
 ### Chicago Beaches' Yearly Wave Height's Distribution
-```{r Wave Height Plot Rendering}
+```{r Graph 3 Setup}
 renderPlotly(
 ggplotly(graph3 <- tidy %>%
            filter(disp_year == input$year_wave) %>%
@@ -183,7 +201,7 @@ ggplotly(graph3 <- tidy %>%
 Column
 ------
 ### Chicago Beaches' Yearly Wave Period's Distribution
-```{r Wave period  Plot Rendering}
+```{r Graph 4 Setup}
 renderPlotly(
 ggplotly(graph4 <- tidy %>%
            filter(Beach.Name == input$beach_wave) %>%
@@ -205,33 +223,33 @@ ggplotly(graph4 <- tidy %>%
 )
 ```
 
-Page 3
+Turbidity
 ======
 
 Input{.sidebar}
 -----------------
-### Turbidity Impact Input
+### Turbidity Graph Input
 ```{r Turbidity Plot Input}
 sliderInput(inputId = "year_turb",
-            label = "Select the year ",
+            label = "Select the year to observe the yearly progress for individual beach's average turbidity",
             min = min(year_factor),
             max = max(year_factor),
             value = year_factor[1])
 
-selectInput(inputId = "beach_name3",
-            label = "Select the beach",
+selectInput(inputId = "beach_turb",
+            label = "Select the beach to observe the turbidity's year by month average",
             choices = beach_factor,
             multiple = FALSE,
-            selected = beach_factor)
+            selected = beach_factor[1])
 ```
 
 Column
 ------
-### Turbidity Average Chart
+### Yearly Chicago Beach's Turbidity Averages
 
-```{r Turbidity Plot Rendering}
+```{r Graph 5 Setup}
 renderPlotly(
-ggplotly(graph77 <- tidy %>%
+ggplotly(graph5 <- tidy %>%
            filter(disp_year == input$year_turb) %>%
            select(Turbidity,Beach.Name) %>%
            group_by(Beach.Name) %>%
@@ -239,47 +257,96 @@ ggplotly(graph77 <- tidy %>%
            ggplot(aes(x = avg_turbidity, y = Beach.Name))+
            geom_point(color = 'red', size = 2)+
            geom_segment(aes(x = 0, xend = avg_turbidity,y = Beach.Name, yend = Beach.Name), color = "blue") + 
-           theme(axis.text.y = element_text(size = 11),
-                 axis.text.x = element_text(size = 11),
-                 axis.title = element_text(size = 12, face = "bold"),
-                 title = element_text(size =13, face = "bold"),
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size = 9, face = "bold"),
                  legend.position = "none") + 
-           labs(y = "Chicago Beach Location", x = "Average Turbidity (NTU)", title = "Average Turbidity Level Calculated"), height = 450)
+           labs(y = "Chicago Beach Location", x = "Average Turbidity (NTU)"))
 )
 ```
 
 Column
 ------
-### Turbidity Average Chart
-```{r Turbidity Dist Rendering}
+### Chicago Beach's Average Turbidity by Year and Month
+
+```{r Graph 6 Setup}
 renderPlotly(
-ggplotly(graph88 <- tidy %>%
-           filter(Beach.Name == input$beach_name2) %>%
+ggplotly(graph6 <- tidy %>%
+           filter(Beach.Name == input$beach_turb) %>%
            select(Turbidity,year_month) %>%
            group_by(year_month) %>%
            summarize(month_avg_turbidity = mean(Turbidity)) %>%
            ggplot(aes(x = month_avg_turbidity, y = year_month))+
-           geom_bar(stat = 'identity')+
-           theme(axis.text.y = element_text(size = 11),
-                 axis.text.x = element_text(size = 11),
-                 axis.title = element_text(size = 12, face = "bold"),
-                 title = element_text(size =13, face = "bold")) + 
-           labs(y = "Year & Month", x = "Average Turbidity (NTU)", title = "Average Turbidity Level for Individual Beach by Time"))
+           geom_bar(stat = 'identity', fill = "#3A718F")+
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size = 9, face = "bold")) + 
+           labs(y = "Year & Month", x = "Average Turbidity (NTU)"))
 )
 ```
 
-### Turbidity Geom
-```{r Turbidity Points}
+Battery Life
+======
+
+Input{.sidebar}
+-----------------
+### Battery Life Graph Input
+```{r Battery Life Plot Input}
+sliderInput(inputId = "year_battery",
+            label = "Select the year ",
+            min = min(year_factor),
+            max = max(year_factor),
+            value = year_factor[1])
+
+selectInput(inputId = "beach_battery",
+            label = "Select the beach",
+            choices = beach_factor,
+            multiple = FALSE,
+            selected = beach_factor[4])
+```
+
+Column
+------
+### Chicago Beaches' Battery Life Average per Year
+
+```{r Graph 7 Setup}
 renderPlotly(
-ggplotly(graph99 <- tidy %>%
-           filter(Beach.Name == input$beach_name3) %>%
-           select(Turbidity, Measurement.Timestamp) %>%
-           ggplot(aes(x = Measurement.Timestamp, y = Turbidity, size = Turbidity))+
-           geom_point(alpha = 0.7)+
+ggplotly(graph7 <- tidy %>%
+           filter(disp_year == input$year_battery) %>%
+           select(Battery.Life, Beach.Name) %>%
+           group_by(Beach.Name) %>%
+           summarize(avg_battery = mean(Battery.Life)) %>%
+           ggplot(aes(x = avg_battery, y = Beach.Name))+
+           geom_point(color = "#FF9611", size = 2)+
+           geom_segment(aes(x = 0, xend = avg_battery, y = Beach.Name, yend = Beach.Name), color = "#1176FF") + 
            theme(axis.text.y = element_text(size = 11),
                  axis.text.x = element_text(size = 11),
                  axis.title = element_text(size = 12, face = "bold"),
-                 title = element_text(size =13, face = "bold")) + 
-           labs(y = "Turbidity (NTU)", x = "Measured Time", title = "Turbidity Distribution"))
+                 title = element_text(size =13, face = "bold"),
+                 legend.position = "none") + 
+           labs(y = "Chicago Beach Location", x = "Average Battery Life for Sensor"))
+)
+```
+
+Column
+------
+### Chicago Beach's Battery Life Distribution by Years
+
+```{r Graph 8 Setup}
+renderPlotly(
+ggplotly(graph8 <- tidy %>%
+           filter(Beach.Name == input$beach_battery & disp_year != "2013") %>%
+           select(Battery.Life, disp_year) %>%
+           group_by(disp_year) %>%
+           ggplot(aes(x = disp_year, y = Battery.Life, fill = disp_year)) +
+           geom_boxplot() +
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size =9, face = "bold"),
+                 legend.position = "none") + 
+           labs(y = "Battery Life", x = "Year & Month"))
 )
 ```
