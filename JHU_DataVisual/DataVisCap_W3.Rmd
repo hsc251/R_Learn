@@ -70,7 +70,7 @@ https://data.cityofchicago.org/Parks-Recreation/Beach-Water-Quality-Automated-Se
 
 </br>
 
-**Abstract**": </br>
+**Abstract**: </br>
 The following graph has been broken down to 4 different sections to analyze. </br>
 
 </br>
