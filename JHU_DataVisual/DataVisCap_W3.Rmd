@@ -219,7 +219,7 @@ ggplotly(graph4 <- tidy %>%
                  legend.key.height = unit(0.5, 'cm'),
                  legend.key.size = unit(0.5, 'cm'),
                  legend.position = "none") + 
-           labs(x = "Chicago Beach Location", y = "Wave Period"))
+           labs(x = "Years", y = "Wave Period"))
 )
 ```
 
@@ -309,7 +309,7 @@ selectInput(inputId = "beach_battery",
 
 Column
 ------
-### Chicago Beaches' Battery Life Average per Year
+### Individual Chicago Beach's Battery Life Average by Years
 
 ```{r Graph 7 Setup}
 renderPlotly(
@@ -321,10 +321,10 @@ ggplotly(graph7 <- tidy %>%
            ggplot(aes(x = avg_battery, y = Beach.Name))+
            geom_point(color = "#FF9611", size = 2)+
            geom_segment(aes(x = 0, xend = avg_battery, y = Beach.Name, yend = Beach.Name), color = "#1176FF") + 
-           theme(axis.text.y = element_text(size = 11),
-                 axis.text.x = element_text(size = 11),
-                 axis.title = element_text(size = 12, face = "bold"),
-                 title = element_text(size =13, face = "bold"),
+           theme(axis.text.y = element_text(size = 9),
+                 axis.text.x = element_text(size = 9),
+                 axis.title = element_text(size = 9, face = "bold"),
+                 title = element_text(size = 9, face = "bold"),
                  legend.position = "none") + 
            labs(y = "Chicago Beach Location", x = "Average Battery Life for Sensor"))
 )
@@ -347,6 +347,6 @@ ggplotly(graph8 <- tidy %>%
                  axis.title = element_text(size = 9, face = "bold"),
                  title = element_text(size =9, face = "bold"),
                  legend.position = "none") + 
-           labs(y = "Battery Life", x = "Year & Month"))
+           labs(y = "Battery Life", x = "Years"))
 )
 ```
