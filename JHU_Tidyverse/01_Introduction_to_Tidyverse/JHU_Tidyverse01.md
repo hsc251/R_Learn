@@ -2,7 +2,7 @@
 
 Author: Colin Chen </br>
 
-This is the summary pages for each quiz and peer grading assignment.</br>
+This is the summary page for each quiz and peer grading assignment.</br>
 
 ## Quizzes
 Quiz # | Link 
