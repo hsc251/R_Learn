@@ -11,5 +11,5 @@ Course # | Link
 2 | [Importing Data in the Tidyverse](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/02_Import_Data_into_Tidyverse/JHU_Tidyverse02.md)
 3 | [Wrangling Data in the Tidyverse](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/03_Wrangling_Data_in_Tidyverse/JHU_Tidyverse03.md)
 4 | [Visualizing Data in the Tidyverse](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/04_Visualizing_Data_in_Tidyverse/JHU_Tidyverse04.md)
-5 | [Modeling Data in the Tidyverse]
+5 | [Modeling Data in the Tidyverse](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/05_Modeling_Data_in_Tidyverse/JHU_Tidyverse05.md)
 </br>
