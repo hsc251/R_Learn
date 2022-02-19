@@ -1,0 +1,60 @@
+---
+title: "HCC_HealthCareReport"
+author: "Hsin Chih Chen"
+date: "2/19/2022"
+output: html_document
+---
+
+## Abstract
+
+This analysis report is to analyze the relationship between USA's healthcare
+spending and coverage. The following section will analyze how the system works
+before finalizing the result.
+
+## Preliminary Setup
+
+This section contains the R code for libraries and parallel computing setups.
+```{r Library Loading, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+## Data Wrangling
+
+After finishing the data wrangling, I observed that the year span between the spent year and coverage year are different. The spent year was gathered from 1991 to 2014, while the coverage year was covered from 2013 to 2016.
+
+I used the total amount from both the spending and coverage data to execute this comparison.
+
+Please refer to the Script Snippet for the data wrangling.
+
+## Trend Plotting
+
+Before making the conclusion, trend was plotted accordingly for both the coverage and the spent for healthcare. Coincidentally, both the coverage and spent amount increases as year progresses. But as the year span's timeline doesn't fully match, I will use `cor` function to validate the correlation between 2013 and 2014 speding.
+```{R Trend Graphing}
+# Plot Trends for Coverage & Spent
+
+spent_graph <- spent %>%
+  ggplot(aes(x = year_spent, y = `United States`)) +
+  geom_bar(stat="identity",fill = '#56B4E9') +
+  labs(title = "USA Health Care Spending by Years", x = "Years", y = "Spending")+
+  theme(axis.text.x = element_text(size = 7),
+        axis.text.y = element_text(size = 7),
+        axis.title = element_text(size = 8.5),
+        title = element_text(size = 9))
+
+cover_graph <- cover %>%
+  ggplot(aes(x = year_cover, y = `United States`)) +
+  geom_bar(stat="identity",fill = '#F23470') +
+  labs(title = "USA Health Care Coverage by Years", x = "Years", y = "Spending")+
+  theme(axis.text.x = element_text(size = 7),
+        axis.text.y = element_text(size = 7),
+        axis.title = element_text(size = 8.5),
+        title = element_text(size = 9))
+```
+
+## Correlation Validation
+
+After confirm the correlation between 2013 and 2014 years for the coverage and spent amount across all states, it indicates both years showed high correlation (0.9997) between the amount of spending and coverage of healthcare grows simultaneously as years go by.
+
+But this is only based on the 2 year timespan, as the timeline between the spending and coverage are not fully aligned
