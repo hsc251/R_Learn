@@ -1,4 +1,4 @@
-# (Tables in R) Visualizing Data in the Tidyverse Quiz 4 Summary
+# (Tables in R) Visualizing Data in the Tidyverse Quiz 5 Summary
 
 Description: This is the summary quiz Colin took during his learning journey for JHU's Tidyverse Skills for Data Science in R Specialization.</br>
 
