@@ -24,7 +24,7 @@ What must each spreadsheet for a multiple-spreadsheet project have? </br>
 - [ ] A column named "id"
 - [ ] Observations that can be summed to one
 - [ ] A first line that starts with a pound sign (#)
-- [ ] A column with the same column name and IDs in each spreadsheet
+- [x] A column with the same column name and IDs in each spreadsheet
 </br>
 
 ### Remarks
