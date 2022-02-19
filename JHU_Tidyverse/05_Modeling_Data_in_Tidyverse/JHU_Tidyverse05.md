@@ -19,5 +19,5 @@ Quiz # | Link
 ## Assignment
 Assignment # | Link 
 --- | --- 
-1 | [Modeling Data in the Tidyverse Project]()
+1 | [Modeling Data in the Tidyverse Project](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/05_Modeling_Data_in_Tidyverse/project/tidyverse_model.md)
 </br>
