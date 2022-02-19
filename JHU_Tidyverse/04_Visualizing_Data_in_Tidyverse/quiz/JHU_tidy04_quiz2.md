@@ -1,4 +1,4 @@
-# (Good Plots) Visualizing Data in the Tidyverse Quiz 1 Summary
+# (Good Plots) Visualizing Data in the Tidyverse Quiz 2 Summary
 
 Description: This is the summary quiz Colin took during his learning journey for JHU's Tidyverse Skills for Data Science in R Specialization.</br>
 
