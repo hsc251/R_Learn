@@ -4,13 +4,13 @@ Description: This is the summary quiz Colin took during his learning journey for
 
 Question 1
 ----------
-Which of these is NOT a feature of tidy data?</br>
+What is a CSV file?</br>
 
 ### Answer
-- [ ] single observation per row
-- [x] empty cells
-- [ ] single variable per column
-- [ ] rectangular
+- [ ] A file readable exclusively by R.
+- [ ] A text data file in which values are separated by tabs.
+- [ ] A file with multiple spreadsheets within a workbook
+- [x] A text data file in which values are separated by commas.
 </br>
 
 ### Remarks
@@ -18,30 +18,42 @@ N/A </br>
 
 Question 2
 ----------
-If a tidy dataset has 30 rows and 4 columns, from how many different people/items/timepoints/etc. were observations collected? </br>
+Which of the following is NOT true about the `read_csv()` command? </br>
 
 ### Answer
-- [ ] 15
-- [ ] 19
-- [x] 30
-- [ ] 4
+- [x] It is a default function within R.
+- [ ] By setting the **col_names** attribute to **TRUE** the first row will be imported as column names.
+- [ ] By using the **skip** attribute equal to **3** the first three rows will be skipped.
+- [ ] It assumes the file it is reading in is comma-separated.
 </br>
 
 ### Remarks
-Observations are seen in rows, while the number of variables are in columns.</br>
+N/A.</br>
 
 Question 3
 ----------
-If a dataset has 30 rows and 6 columns, how many different variables are there in the dataset? </br>
+Which of the following is TRUE about the difference between CSV and Excel files? </br>
 
 ### Answer
-- [x] 6
-- [ ] 24
-- [ ] 30
-- [ ] 19
-- [ ] 4
-- [ ] 36
+- [ ] CSVs can be read into R; Excel files cannot.
+- [x] Excel files allows for cell formatting; CSVs do not.
+- [ ] CSVs allow for cell formatting; Excel files do not.
+- [ ] Excel files can be read into R; CSVs cannot.
 </br>
 
 ### Remarks
-Refer to remarks from question 2 </br>
+N/A </br>
+
+Question 4
+----------
+Which command can be used to read data from a Google Sheet into R? </br>
+
+### Answer
+- [ ] read_gs4()
+- [x] read_sheet()
+- [ ] read_google_sheet()
+- [ ] read_gs()
+</br>
+
+### Remarks
+N/A </br>
