@@ -64,7 +64,7 @@ N/A </br>
 
 Question 5
 ----------
-If you had six different variables in the columns of a dataset (df) and wanted to select three of them (height, weight, bmi) and display them in alphabetical order, which of these would achieve that?
+If you had six different variables in the columns of a dataset (df) and wanted to select three of them (height, weight, bmi) and display them in alphabetical order, which of these would achieve that? </br>
 
 ### Answer
 - [ ] *df %>% filter(height, weight, bmi)*
@@ -79,7 +79,7 @@ N/A </br>
 
 Question 6
 ----------
-If you had six different variables in the columns of a dataset (**df**) and wanted to order the data frame by **height**, then by **weight**, and then by **bmi**, which of these would you use?
+If you had six different variables in the columns of a dataset (**df**) and wanted to order the data frame by **height**, then by **weight**, and then by **bmi**, which of these would you use? </br>
 
 ### Answer
 - [x] *df %>% arrange(height, weight, bmi)*
