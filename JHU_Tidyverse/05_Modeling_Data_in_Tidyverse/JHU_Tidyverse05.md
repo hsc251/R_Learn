@@ -1,4 +1,4 @@
-# Visualizing Data in the Tidyverse
+Modeling Data in the Tidyverse
 
 Author: Colin Chen </br>
 
