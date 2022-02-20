@@ -4,6 +4,8 @@ author: "Hsin Chih Chen"
 date: "11/8/2021"
 ---
 
+Before executing this assignment, the [csv link](https://d3c33hcgiwev3.cloudfront.net/D1LYDGZLRAmS2AxmSxQJHw_244a6af25c32479990d299bf82de1a67_cces_sample_coursera.csv?Expires=1645488000&Signature=cec7Bgyk0UGKrjdcMbPpKFAY7WJNtHWfWw3iM1LKGRx3mNuTK3CZDk2e~lkI-9bi9J544tOLSWCt2u8HNIHH9apJ7BGYg7HVkuGefKlSQL3tgU2k7hbDlfOGLR-kVH1IQja2fgFHCHK2o9SICR9JlciloCRo~NvOSpt-D8ng5zQ_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A) and [code book](https://d3c33hcgiwev3.cloudfront.net/-MGcKK_WSUuBnCiv1glLng_2b365483ac5b41728667c0490df7361f_cces_sample_codebook.txt?Expires=1645488000&Signature=IjgaI2wfdHJ~VYRC15mzLfsfwN0J~iySVGoklz3oslYWTiTebWCi0aYNjTH7F998Qd-0xY9lzr4vHVXy2DjB2kiNE2kPgh1ayPJMSGcOD8gTbzuGtuihDvT8tSJNTmaJBmiLzThrGZLXaVyoC3utXgV7Dqw7KFp2f0Q2EH7X27E_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A) is required to understand the question while navigating your desired parameter.
+
 # Problem 1 
 
 Create a vector of five numbers of your choice between 0 and 10, save that vector to an object, and use the sum() function to calculate the sum of the numbers.
