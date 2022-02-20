@@ -2,7 +2,6 @@
 title: "Tidyverse_Model"
 author: "Hsin Chih Chen"
 date: "12/29/2021"
-output: html_document
 ---
 
 ## Preliminary Setup
