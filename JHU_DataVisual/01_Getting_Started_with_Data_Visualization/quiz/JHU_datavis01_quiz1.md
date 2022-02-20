@@ -55,7 +55,7 @@ R is free to use, making it a great choice for doing open-source data science. <
 
 Question 5
 ----------
-You need to carefully learn and understand all the details about how R works before you start coding.. </br>
+You need to carefully learn and understand all the details about how R works before you start coding. </br>
 
 ### Answer
 - [ ] TRUE
