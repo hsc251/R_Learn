@@ -16,7 +16,7 @@ Quiz # | Link
 </br>
 
 ## Assignment
-Assignment # | Link 
---- | --- 
-1 | [Visualizing Data in the Tidyverse Project](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/04_Visualizing_Data_in_Tidyverse/project/Tidyverse_Visualize.md)
+Assignment # | Script File | Html
+--- | --- | ---
+1 | [Markdown File](https://github.com/hsc251/R-Learn/blob/master/JHU_Tidyverse/04_Visualizing_Data_in_Tidyverse/project/Tidyverse_Visualize.md) | [RPubs Link](https://rpubs.com/hsc251/tidyverse_visual)
 </br>
