@@ -1,0 +1,471 @@
+---
+title: "DS Capstone Mid Report"
+author: "Hsin Chih Chen"
+date: "3/5/2022"
+output: html_document
+---
+## Abstract
+
+This milestone report is for Johns Hopkins University's data Science Capstone, 
+and the scope of the capstone is to use existing text corpus to train the 
+predictive text model. 
+
+The general setup (for milestone analysis and training data preparation) will 
+be applied throughout following section description with attached r codes.
+
+## Preliminary Setup
+
+This section contains the R code for libraries and parallel computing setups.
+
+```{r Library Loading, message = FALSE, warning = FALSE}
+library(doParallel)
+library(tm)
+library(stringr)
+library(stringi)
+library(RWeka)
+library(kableExtra)
+library(tidyverse)
+library(wordcloud)
+library(tm)
+library(readr)
+library(ngram)
+library(data.table)
+library(RColorBrewer)
+```
+
+```{r Parallel Computing Setup, message = FALSE, warning = FALSE}
+set.seed(369)
+core_num <- detectCores() - 2
+registerDoParallel(core_num, cores = core_num)
+```
+
+
+## Data Loading 
+
+This section will setup the connection from the raw files, the English version of the corpus will be applied for analysis.
+
+```{R Environment Setup & Data Download, warning = FALSE}
+# Set the working directory to the designated location.
+setwd("C:/Users/Colin Chen/Documents/DS_Capstone")
+
+# Download Raw Data
+fileURL <- c("https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip")
+
+
+if (!file.exists('rd')) {
+  dir.create('rd')
+}
+
+if (!file.exists("rd/final/en_US")) {
+  tempFile <- tempfile()
+  download.file(fileURL, tempFile)
+  unzip(tempFile, exdir = "rd")
+  unlink(tempFile)
+  rm(tempFile)
+}
+```
+
+```{R Data Import, warning = FALSE}
+# The file path will be depending on where the file is loaded.
+# Remark: rd = raw data directory
+
+# Blog Lines Import
+con_blog <- file("rd/final/en_US/en_US.blogs.txt", "rb")
+eng_blog <- read_lines(con_blog)
+close.connection(con_blog)
+rm(con_blog)
+
+# News Lines Import
+con_news <- file("rd/final/en_US/en_US.news.txt", "rb")
+eng_news <- read_lines(con_news)
+close.connection(con_news)
+rm(con_news)
+
+# Twitter Lines Import
+con_twitter <- file("rd/final/en_US/en_US.twitter.txt", "rb")
+eng_twitter <- read_lines(con_twitter)
+close.connection(con_twitter)
+rm(con_twitter)
+```
+
+After the word of lines are imported, summarizing the respective media files.
+
+```{R Text File Summaries, warning = FALSE}
+# Identify the size for each file
+mega = 2^20
+
+size_blog <- round(file.info("rd/final/en_US/en_US.blogs.txt")$size/mega, 2)
+size_news <- round(file.info("rd/final/en_US/en_US.news.txt")$size/mega, 2)
+size_twitter <- round(file.info("rd/final/en_US/en_US.twitter.txt")$size/mega, 2)
+
+# Identify number of lines in each media
+lines_blog <- length(eng_blog)
+lines_news <- length(eng_news)
+lines_twitter <- length(eng_twitter)
+
+# Identify number of characters in each media
+char_blog <- round(mean(nchar(eng_blog)),2)
+char_news <- round(mean(nchar(eng_news)),2)
+char_twitter <- round(mean(nchar(eng_twitter)),2)
+
+# Identify number of words in each media
+word_blog <- wordcount(eng_blog, sep = " ")
+word_news <- wordcount(eng_news, sep = " ")
+word_twitter <- wordcount(eng_twitter, sep = " ")
+
+# Identify word per line (WPL) in each media
+wpl_blog <- round(word_blog/lines_blog,2)
+wpl_news <- round(word_news/lines_news,2)
+wpl_twitter <- round(word_twitter/lines_twitter,2)
+
+# Summarize the data frame
+file_names <- c("EN Blogs", "EN News", "EN Twitter")
+file_sizes <- c(size_blog, size_news, size_twitter)
+file_char <- c(char_blog, char_news,char_twitter)
+file_lines <- c(lines_blog, lines_news, lines_twitter)
+file_words <- c(word_blog, word_news, word_twitter)
+avg_wpl <- c(wpl_blog, wpl_news, wpl_twitter)
+
+file_summary <- data.frame(file_names, file_sizes, file_lines, file_char, file_words, avg_wpl)
+
+colnames(file_summary) <- c("Media", "Size (MB)", "# Lines", "Avg Chars", "# Words", "Avg WPL")
+
+# Make it as a kable
+kable(file_summary) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Free Up Memory Eraser, message = FALSE, warning = FALSE}
+# Remove Pre-Defined Definition to Free Up Memory Space
+rm(mega, size_blog, size_news, size_twitter)
+rm(word_blog, word_news, word_twitter)
+rm(char_blog, char_news, char_twitter, fileURL)
+rm(wpl_blog, wpl_news, wpl_twitter)
+rm(file_names, file_sizes, file_words, file_char, file_lines, avg_wpl)
+rm(file_summary)
+rm(core_num)
+```
+
+## Sample Fraction from Media Source
+
+After summarizing the file's raw content, sampling fraction of the word gram 
+shall be considered to analyze the words.
+
+```{R Make Word Samples, warning = FALSE}
+# Setup sampling rate (1% of overall sample)
+s_size = 0.01
+
+# Sample the number based on the total fraction of media
+ss_blog <- lines_blog * s_size
+ss_news <- lines_news * s_size
+ss_twitter <- lines_twitter * s_size
+
+# Generate sample
+sample_blog <- sample(eng_blog, ss_blog, replace = FALSE)
+sample_news <- sample(eng_news, ss_news, replace = FALSE)
+sample_twitter <- sample(eng_twitter, ss_twitter, replace = FALSE)
+
+# Remove non-English characters from sampled data
+sample_blog <- iconv(sample_blog, "latin1","ASCII", sub = "")
+sample_news <- iconv(sample_news, "latin1","ASCII", sub = "")
+sample_twitter <- iconv(sample_twitter, "latin1","ASCII", sub = "")
+
+# Combine all data set as one
+sample_sum <- c(sample_blog, sample_news, sample_twitter)
+
+# Remove Pre-Defined Definition to Free Up Memory Space
+rm(lines_blog, lines_news, lines_twitter)
+rm(eng_blog, eng_news, eng_twitter, s_size, ss_blog, ss_news, ss_twitter)
+rm(sample_blog, sample_news, sample_twitter)
+
+# Sampled Text Saving and Verifying the structure
+writeLines(sample_sum, "rd/en_US.sample.txt")
+saveRDS(sample_sum, "rd/en_US.sample.rds")
+```
+
+After defining the required sample, it's time to clean up the sample with 
+ambiguous information and unnecessary symbols. The following code blocks will 
+follow this sequence.
+
+  1. Generate Corpus for Conversion (with demonstration)
+  2. Clean up the raw corpus and convert to a text file.
+  
+In order to generate the 
+
+But before the n-gram calculation, samples shall be cleaned without ambiguous 
+information. The following code will execute it.
+
+```{R Corpus Demonstration, warning = FALSE}
+# Generate text corpus and show example
+sample_corpus <- Corpus(VectorSource(sample_sum)) 
+
+print(as.character(sample_corpus[[1]]))
+```
+
+```{R Corpus Setup, warning = FALSE}
+# Read profanity language for input
+profanity <- read.csv("rd/en_profanity.csv"
+                      , header = FALSE, sep = "\n") %>%
+             iconv("latin1", "ASCII", sub = "") 
+
+# Remove twitter handle
+remove_thdl <- function(x){gsub("@[^\\s]+","", x)}
+
+# Remove hashtag
+remove_hash <- function(x){gsub("#[^\\s]+","", x)}
+
+# Remove URL
+remove_url <- function(x){gsub("http[^[:space:]]*", "", x)}
+
+# Remove Punctuation
+remove_reg <-function(x) {gsub("[^[:alpha:][:space:]]*", "", x)}
+
+# Write a clean Corpus Function
+clean_transform <- function(docu_corpus){
+  docu_corpus <- VCorpus(VectorSource(docu_corpus)) %>%
+    tm_map(content_transformer(tolower)) %>%# to lower case
+    tm_map(content_transformer(removePunctuation)) %>%
+    tm_map(removeNumbers) %>%
+    tm_map(removeWords, stopwords("english")) %>%
+    tm_map(removeWords, profanity) %>%
+    tm_map(content_transformer(remove_url)) %>%
+    tm_map(content_transformer(remove_reg)) %>%
+    tm_map(content_transformer(remove_hash)) %>%
+    tm_map(content_transformer(remove_thdl)) %>%
+    tm_map(stripWhitespace)
+  
+    return(docu_corpus)
+}
+
+clean_corpus <- clean_transform(sample_sum)
+
+# Save clean corpus
+saveRDS(clean_corpus, file = "rd/en_US.clean.rds")
+
+clean_text <- data.frame(text = unlist(sapply(clean_corpus, '[', "content")), stringsAsFactors = FALSE)
+
+writeLines(clean_text$text, "rd/en_US.clean.txt")
+
+# Remove unused terms to spare up memories
+rm(sample_corpus, sample_sum, corpus_clean, space_conv, clean_transform, remove_hash, remove_reg, remove_thdl, remove_url)
+```
+
+## Tokenize the ngrams for disection
+
+After cleaning the media text, now it's time to tokenize the words for
+preliminary analysis, the following codes shall comply the tokenization. 
+
+```{r Tokenize Setup, warning = FALSE, message = FALSE}
+# Unigram
+token_n1 <- function(x){
+  NGramTokenizer(x, Weka_control(min = 1, max = 1))
+}  
+  
+# Bigram
+token_n2 <- function(x){
+  NGramTokenizer(x, Weka_control(min = 2, max = 2))
+}  
+
+# Trigram
+token_n3 <- function(x){
+  NGramTokenizer(x, Weka_control(min = 3, max = 3))
+}
+```
+
+
+## Initial Plotting for Preliminary Analysis
+
+Generate the term document matrix within the corpus (while being tokenized),
+and plot the top 12 unigram, bigram and trigram across the media source.
+
+```{R ngram Matrix Setup, message = FALSE, warning = FALSE}
+# Generate respective matrices for the ngrams
+doc_n1 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n1))
+doc_n2 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n2))
+doc_n3 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n3))
+
+# Convert to Matrix
+doc_n1f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n1, 0.999))), decreasing = TRUE)
+doc_n2f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n2, 0.9999))), decreasing = TRUE)
+doc_n3f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n3, 0.9999))), decreasing = TRUE)
+
+
+# Generate data frame for the plotting in n gram
+df_n1 <- data.frame(word = names(doc_n1f), count = doc_n1f)
+df_n2 <- data.frame(word = names(doc_n2f), count = doc_n2f)
+df_n3 <- data.frame(word = names(doc_n3f), count = doc_n3f)
+```
+
+```{R ngram Plotting, warning = FALSE}
+# Generate the count plots for unigram, bigram and trigram.
+top12_uni <- df_n1[1:12,] %>%
+  ggplot(aes(x = count,y = reorder(word, count))) +
+  geom_bar(stat = "identity", fill = "#25BA95", alpha = 0.8) +
+  labs(x = "Count", y = "Unigram", title = "Top 12 unigram across the media") +
+  theme(axis.text.x = element_text(size = 7),
+                       axis.text.y = element_text(size = 7),
+                       axis.title = element_text(size = 8.5),
+                       title = element_text(size = 9)) +
+  geom_text(aes(label = df_n1[1:12,]$count), 
+                           size = 2, hjust = -0.2) +
+  xlim(0,3500)
+
+top12_bi <- df_n2[1:12,] %>%
+  ggplot(aes(x = count,y = reorder(word, count))) +
+  geom_bar(stat = "identity", fill = "#5e0599", alpha = 0.8) +
+  labs(x = "Count", y = "Bigram", title = "Top 12 bigram across the media") +
+  theme(axis.text.x = element_text(size = 7),
+                       axis.text.y = element_text(size = 7),
+                       axis.title = element_text(size = 8.5),
+                       title = element_text(size = 9)) +
+  geom_text(aes(label = df_n2[1:12,]$count), 
+                           size = 2, hjust = -0.2) +
+  xlim(0,300)
+
+top12_tri <- df_n3[1:12,] %>%
+  ggplot(aes(x = count,y = reorder(word, count))) +
+  geom_bar(stat = "identity", fill = "#bb0000", alpha = 0.8) +
+  labs(x = "Count", y = "Trigram", title = "Top 12 trigram across the media") +
+  theme(axis.text.x = element_text(size = 7),
+                       axis.text.y = element_text(size = 7),
+                       axis.title = element_text(size = 8.5),
+                       title = element_text(size = 9)) +
+  geom_text(aes(label = df_n3[1:12,]$count), 
+                           size = 2, hjust = -0.2) +
+  xlim(0,42)
+
+# Display the count graphs
+top12_uni
+top12_bi
+top12_tri
+```
+
+```{R Unigram Wordcloud, warning = FALSE}
+# Unigram
+png("JHU_DS_Uni.png", width=12 , height=12, units='in', res=300)
+wordcloud(words = df_n1$word, freq =df_n1$count, min.freq = 600, scale = c(9, .1) ,max.words = 500, rot.per = 0.4, colors = brewer.pal(9, "Set3"))
+```
+
+```{R Bigram Wordcloud, warning = FALSE}
+# Bigram
+png("JHU_DS_Bi.png", width=12 , height=12, units='in', res=300)
+wordcloud(words = df_n2$word, freq =df_n2$count, min.freq = 60, scale = c(9, .1),max.words = 250, rot.per = 0.2, colors = brewer.pal(9, "Set3"))
+```
+
+```{R Trigram Wordcloud, warning = FALSE}
+# Trigram
+png("JHU_DS_Tri.png", width=12 , height=12, units='in', res=300)
+wordcloud(words = df_n3$word, freq =df_n3$count, min.freq = 6, scale = c(9, .1),max.words = 50, rot.per = 0.2, colors = brewer.pal(8, "Set2"))
+```
+
+Based on the studying of the graph, the top 5 terms for respective media usage are summarized as follows:
+```{R ngram summary, message = FALSE, warning = FALSE}
+ngrams <- c("unigram", "bigram","trigram")
+no1word <- c(df_n1[1,1],df_n2[1,1],df_n3[1,1])
+no2word <- c(df_n1[2,1],df_n2[2,1],df_n3[2,1])
+no3word <- c(df_n1[3,1],df_n2[3,1],df_n3[3,1])
+no4word <- c(df_n1[4,1],df_n2[4,1],df_n3[4,1])
+no5word <- c(df_n1[5,1],df_n2[5,1],df_n3[5,1])
+
+ngram_summary <- data.frame(ngrams, no1word, no2word, no3word, no4word, no5word)
+
+colnames(ngram_summary) <- c("ngrams", "Top 1", "Top 2", "Top 3", "Top 4", "Top 5")
+
+kable(ngram_summary) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Excess Parameters Batch, include = FALSE, warning = FALSE, message = FALSE}
+rm(ngrams, no1word, no2word, no3word, no4word, no5word)
+rm(ngram_summary)
+rm(profanity)
+rm(doc_n1, doc_n2, doc_n3, doc_n4)
+rm(token_n1, token_n2, token_n3,token_n4)
+rm(df_n1, df_n2, df_n3)
+rm(doc_n1f, doc_n2f, doc_n3f, doc_n4f)
+```
+
+## Data Writing Input for the Shiny App
+
+This section will be describing the write-in data for the unigram, bigram,
+trigram and quadgram based on the sampled words from the media source.
+
+```{R ngram Conversion Functions, warning = FALSE}
+convertGramDF <- function (clean_text, no_grams){
+  n_gram <- NGramTokenizer(clean_text, Weka_control(min = no_grams, max = no_grams))
+  ng_df <- data.frame(table(n_gram))
+  ng_df <- ng_df[order(ng_df$Freq, decreasing = TRUE),]
+  names(ng_df) <- c("word", "count")
+  return(ng_df)
+}
+
+unigram_set <- function(clean_text){
+  ng_df <- convertGramDF(clean_text, 1)
+  ng_df$word <- as.character(ng_df$word)
+  word_split <- strsplit(ng_df$word, split = " ")
+  uni_df <- transform(ng_df, word1 = sapply(word_split, "[[", 1))
+  uni_df <- uni_df[uni_df$count > 1, ]
+  write.csv(uni_df, "unigram2.csv", row.names = FALSE)
+  uni <- read.csv("unigram2.csv", stringsAsFactors = FALSE)
+  saveRDS(uni, "unigram2.RData")
+  return(uni_df)
+}
+
+bigram_set <- function(clean_text){
+  ng_df <- convertGramDF(clean_text, 2)
+  ng_df$word <- as.character(ng_df$word)
+  word_split <- strsplit(ng_df$word, split = " ")
+  bi_df <- transform(ng_df, word1 = sapply(word_split, "[[", 1), word2 = sapply(word_split,"[[",2))
+  bi_df <- bi_df[bi_df$count > 1, ]
+  write.csv(bi_df, "bigram2.csv", row.names = FALSE)
+  bi <- read.csv("bigram2.csv", stringsAsFactors = FALSE)
+  saveRDS(bi, "bigram2.RData")
+  return(bi_df)
+}
+
+trigram_set <- function(clean_text){
+  ng_df <- convertGramDF(clean_text, 3)
+  ng_df$word <- as.character(ng_df$word)
+  word_split <- strsplit(ng_df$word, split = " ")
+  tri_df <- transform(ng_df, word1 = sapply(word_split, "[[", 1), word2 = sapply(word_split,"[[",2), word3 = sapply(word_split,"[[",3))
+  tri_df <- tri_df[tri_df$count > 1, ]
+  write.csv(tri_df, "trigram2.csv", row.names = FALSE)
+  tri <- read.csv("trigram2.csv", stringsAsFactors = FALSE)
+  saveRDS(tri, "trigram2.RData")
+  return(tri_df)
+}
+
+quadgram_set <- function(clean_text){
+  ng_df <- convertGramDF(clean_text, 4)
+  ng_df$word <- as.character(ng_df$word)
+  word_split <- strsplit(ng_df$word, split = " ")
+  quad_df <- transform(ng_df, word1 = sapply(word_split, "[[", 1), word2 = sapply(word_split,"[[",2), word3 = sapply(word_split,"[[",3), word4 = sapply(word_split,"[[",4))
+  quad_df <- quad_df[quad_df$count > 1, ]
+  write.csv(quad_df, "quadgram2.csv", row.names = FALSE)
+  quad <- read.csv("quadgram2.csv", stringsAsFactors = FALSE)
+  saveRDS(quad, "quadgram2.RData")
+  return(quad_df)
+}
+
+```
+
+```{R Train Data Writing, warning = FALSE}
+uni <- unigram_set(clean_text)
+bi <- bigram_set(clean_text)
+tri <- trigram_set(clean_text)
+quad <- quadgram_set(clean_text)
+gc()
+```
+
+## Path Forward
+
+After summarizing the existing data from SwiftKey and understand the current distribution between the words. The upcoming challenge is to establish a predictive model which will be deployed as a Shiny App for predicting in textbox.
+
+The predictive algorithm will be developed via ngram models with word frequency similar towards the milestone report.
+
+The strategy can be breaking down to the following 
+
+  1. Find ways to neutralize the processing time for data sets.
+  2. Use the text mining algorithm to obtain necessary ngrams.
+  3. Decide necessary algorithm or better dictionary for better n-gram splits.
+  4. Use the training set to validate the model.
