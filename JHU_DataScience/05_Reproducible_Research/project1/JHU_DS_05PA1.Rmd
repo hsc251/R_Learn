@@ -1,35 +1,31 @@
 ---
-title: "Reproducible Research 1st Project"
+title: "Reproducible Research PA1"
 author: "Hsin Chih Chen"
 date: "2022/3/9"
 output: html_document
 ---
 
-
 ## Introduction 
 
-This assignment's data sources comes from personal activity monitoring device, 
-the device collects data at 5 mins interval throughout the day. The data 
-contains 2 months of data from an annoymous individual collected between Oct 
-and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. 
+This assignment's data sources comes from personal activity monitoring device, the device collects data at 5 mins interval throughout the day. The data contains 2 months of data from an annoymous individual collected between Oct and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. </br>
 
-The data consists of the following variables:
-  * Steps: Number of steps taking in a 5 min interval (missing values are coded as NA)
-  * date: The date on which the measurement was taken in YYYY-MM-DD format.
-  * interval: Identifier for the 5 mins interval in which measurement was taken.
+The data consists of the following variables:  </br>
+  * Steps: Number of steps taking in a 5 min interval (missing values are coded as NA)  </br>
+  * date: The date on which the measurement was taken in YYYY-MM-DD format.  </br>
+  * interval: Identifier for the 5 mins interval in which measurement was taken.  </br>
 
-The dataset is saved as a CSV file and total of 17,568 observations. Please refer to the [dataset link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) to download.
+The dataset is saved as a CSV file and total of 17,568 observations. Please refer to the [dataset link (https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) to download.  </br>
 
 ## Critical Steps for the project
-  * 1: Execute the environment and data gathering setup before deploy data download & transformation.
+  * 1: Execute the environment and data gathering setup before deploy data download & transformation.  </br>
   
-  * 2: Calculate total number of steps taken per day, this requires data manipulation by filtering desired context while formatting the data into the desired condition before calculate the data. Functions such as subsetting and lapply is essential for the data table extract.
+  * 2: Calculate total number of steps taken per day, this requires data manipulation by filtering desired context while formatting the data into the desired condition before calculate the data. Functions such as subsetting and lapply is essential for the data table extract.  </br>
   
-  * 3: Replace the missing values in the dataset, then export into a completed csv file before reload into the updated database for comparison analysis.
+  * 3: Replace the missing values in the dataset, then export into a completed csv file before reload into the updated database for comparison analysis.  </br>
   
-  * 4: Transform date structure by arranging the date into POSIXct date while add additional factors so weekdays and weekends can be separated.
+  * 4: Transform date structure by arranging the date into POSIXct date while add additional factors so weekdays and weekends can be separated. </br>
   
-  * 5: Plot the respective plots and obtain the desired distribution before making valid conclusion.
+  * 5: Plot the respective plots and obtain the desired distribution before making valid conclusion. </br>
 
 
 ## Execute the environment and data gathering setup before deploy data download & transformation.
