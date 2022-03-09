@@ -1,17 +1,17 @@
 ---
-title: "Reproducible Research Project 1"
+title: "Reproducible Research 1st Project"
 author: "Hsin Chih Chen"
-date: "2021/9/27"
-output:
-  md_document:
-    variant: markdown_github
+date: "2022/3/9"
+output: html_document
 ---
 
-github repo for the record are all within [Hsin Chih Chen's R Learn Repo](https://github.com/hsc251/RLearn)
 
 ## Introduction 
 
-This assignment's data sources comes from personal activity monitoring device, the device collects data at 5 mins interval throughout the day. The data consists of 2 months of data from an annoymous individual collected between Oct and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. 
+This assignment's data sources comes from personal activity monitoring device, 
+the device collects data at 5 mins interval throughout the day. The data 
+contains 2 months of data from an annoymous individual collected between Oct 
+and Nov 2012 while including the number of steps taken in 5 minutes intervals per day. 
 
 The data consists of the following variables:
   * Steps: Number of steps taking in a 5 min interval (missing values are coded as NA)
@@ -32,27 +32,26 @@ The dataset is saved as a CSV file and total of 17,568 observations. Please refe
   * 5: Plot the respective plots and obtain the desired distribution before making valid conclusion.
 
 
-
 ## Execute the environment and data gathering setup before deploy data download & transformation.
 
-```{r}
+```{R Environment Setup, message = FALSE, warning = FALSE}
 ## Load necessary libraries
 library(data.table)
 library(ggplot2)
 
 ## Set URL and download file into designated directory
 PA1URL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
-download.file(PA1URL, "PA01.zip",method = "curl")
-unzip("PA01.zip", exdir = "PA01")
+download.file(PA1URL, "JHU_05_PA01.zip",method = "curl")
+unzip("JHU_05_PA01.zip", exdir = "PA01_Data")
 
 ## Read csv file into data.table
-activity <- fread(input = "PA01/activity.csv")
+activity <- fread(input = "PA01_Data/activity.csv")
 ```
 
 ## Calculate mean total number of steps taken per day?
 
 1. Calculate total number of steps taken per day?
-```{r}
+```{R Sum Steps Calculation}
 ## pre-check the data.table structure
 str(activity)
 
@@ -66,7 +65,7 @@ head(Total_S,10)
 2. Draw the histogram for the particular setup
 ```{r}
 ## Setup the png file for output display.
-png("05_PA1_plot1.png")
+png("JHU_DS_05_PA1_1.png")
 
 ## use ggplot to initiate the setup for bar plot
 ggplot(Total_S, aes(x = steps)) +
@@ -94,7 +93,7 @@ str(activity)
 Inter <- activity[,c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)]
 
 ## Setup the png file for output display.
-png("05_PA1_plot2.png")
+png("JHU_DS_05_PA1_2.png")
 
 ## use ggplot to initiate the setup for line plot.
 ggplot(Inter, aes(x = interval, y = steps)) +
@@ -132,7 +131,7 @@ activity[is.na(steps), "steps"] <- activity[, c(lapply(.SD, mean, na.rm = TRUE))
 
 ```{r}
 ## use fwrite to write out the data set and saved as a different format
-fwrite(x = activity, file = "PA01/fixed.csv", quote = FALSE)
+fwrite(x = activity, file = "PA01_Data/fixed.csv", quote = FALSE)
 ```
 
 4. Create histogram of total number of steps taken each day and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -145,7 +144,7 @@ Total_S2 <- activity[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)]
 Total_S2[,.(Steps_Avg = mean(steps), Steps_Med = median(steps))]
 
 ## Setup the png file for output display.
-png("05_PA1_plot3.png")
+png("JHU_DS_05_PA1_3.png")
 
 ## use ggplot to initiate the setup for bar plot
 ggplot(Total_S2, aes(x = steps)) +
@@ -162,7 +161,7 @@ dev.off()
 
 ```{r}
 ## Read off the original CSV again before manipulate the dataset
-active2 <- fread(input = "PA01/activity.csv")
+active2 <- fread(input = "PA01_Data/activity.csv")
 
 ## Check current dataset structure from the actual CSV
 str(active2)
