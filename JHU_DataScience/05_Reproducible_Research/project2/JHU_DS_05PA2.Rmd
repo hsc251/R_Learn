@@ -1,0 +1,188 @@
+---
+title: "Reproducible Research PA2"
+author: "Hsin Chih Chen"
+date: "2022/3/9"
+output: html_document
+---
+
+## 1: Data Introduction
+
+This assignment's data source comes from the storm's impact towards fatalities, injuries and property damage coming from US National Oceanic and Atmospheric Administration's storm data. Listing when the storm occurs, and estimating of any fatalities, injuries and property damage. </br>
+
+The data set is located in the [dataset link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2) to download.</br>
+
+For detailed explanation for individual parameters, please refer to the [documentation link](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf). </br>
+
+## 2: Data Proceessing
+
+### 2.1: Environment Setup
+
+Obtain raw data file and extract the data into a data frame for filtering. </br>
+
+``` {r Environment Setup, message = FALSE, warning= FALSE}
+## load necessary packages
+library(data.table)
+library(ggplot2)
+library(dplyr)
+# Download the 
+PA02 <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+download.file(PA02, "StormData.csv.bz2")
+stormF <- read.csv("StormData.csv.bz2")
+# Converting data.frame to data.table
+stormT <- as.data.table(stormF)
+```
+
+### 2.2: Verify Data Structure & Column Names
+
+``` {r Data Structure Wrangle, message = FALSE, warning = FALSE}
+# Convert the damage of crop and properties into numeric values
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("PROPDMG")]
+stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("CROPDMG")]
+
+str(stormT)
+```
+
+### 2.3: Data Wrangling
+
+Subset the data only for the interested parameters, in this case will only be 
+occurred event, fatalities, injuries, prop and crop damages </br>
+
+``` {r Data Filtering, results="hide"}
+# Filtering via dplyr command
+stormT <- stormT %>%
+  select(EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP, CROPDMG, CROPDMGEXP) %>%
+  filter(EVTYPE != "?")%>%
+  filter((INJURIES > 0 | FATALITIES > 0 | PROPDMG > 0 | CROPDMG > 0))
+
+# Change all damaged exponents to upper case for correction.
+exp <- c("PROPDMGEXP","CROPDMGEXP")
+stormT[, (exp) := c(lapply(.SD, toupper)), .SDcols = exp]
+              
+# Map property damage alphanumeric exponents to numeric values.
+propDmgExp <- c("\"\"" = 10^0,
+                 "-" = 10^0, 
+                 "+" = 10^0,
+                 "0" = 10^0,
+                 "1" = 10^1,
+                 "2" = 10^2,
+                 "3" = 10^3,
+                 "4" = 10^4,
+                 "5" = 10^5,
+                 "6" = 10^6,
+                 "7" = 10^7,
+                 "8" = 10^8,
+                 "9" = 10^9,
+                 "H" = 10^2,
+                 "K" = 10^3,
+                 "M" = 10^6,
+                 "B" = 10^9)
+
+# Map crop damage alphanumeric exponents to numeric values.
+cropDmgExp <-  c("\"\"" = 10^0,
+                "?" = 10^0, 
+                "0" = 10^0,
+                "K" = 10^3,
+                "M" = 10^6,
+                "B" = 10^9)
+                
+# Replace the data set's value with characters before using the logical vector to convert to numeric.
+stormT[, PROPDMGEXP := propDmgExp[as.character(stormT[, PROPDMGEXP])]]
+stormT[, CROPDMGEXP := cropDmgExp[as.character(stormT[, CROPDMGEXP])]] 
+
+# Convert the zero values to default numeric (which is 10^0)
+stormT[is.na(PROPDMGEXP), PROPDMGEXP := 10^0]
+stormT[is.na(CROPDMGEXP), CROPDMGEXP := 10^0]
+```
+
+
+### 2.4: Calculate Economic/Injury Summary.
+
+
+``` {r Cost Preliminary Setup, warning = FALSE}
+# Mutate data table by add extra columns for the calculation
+stormT <- stormT %>%
+  mutate(Cost_Prop = PROPDMG * PROPDMGEXP,Cost_Crop = CROPDMG * CROPDMGEXP)
+```
+
+``` {r Economic Cost Setup}
+# Perform the Total Cost summary by having the 3 data columns for Prop Cost, Crop Cost and Total Cost by Event Type Classification
+Cost_Total <- stormT[, .(Cost_Prop = sum(Cost_Prop), 
+                         Cost_Crop = sum(Cost_Crop), 
+                         Cost_Total = sum(Cost_Prop + Cost_Crop))
+                     , by =.(EVTYPE)]
+
+# Order by Reverse with Total Cost to see the top 10 EVTYPE failure
+Cost_Total <- Cost_Total %>%
+                arrange(desc(Cost_Total))
+
+Cost_Total <- Cost_Total [1:10, ]
+
+# Check the structure by only showing the top 5 EVTYPE which caused high costs.
+head(Cost_Total, 5)
+```
+
+``` {r Injury Summary Setup}
+# Perform the Total Injuries summary by having the 3 data columns for Injuries, Fatalities and Total Injuries by Event Type Classification
+Inj_Tot <- stormT[, .(FATALITIES = sum(FATALITIES), INJURIES = sum(INJURIES), TOTAL_INJURIES = sum(FATALITIES + INJURIES)), by =.(EVTYPE)]
+
+# Order by Reverse with fatality count to see the top 10 EVTYPE failure
+Inj_Tot <- Inj_Tot[order(-FATALITIES), ]
+Inj_Tot <- Inj_Tot[1:10, ]
+head(Inj_Tot, 5)
+```
+
+## 3: Results
+
+### 3.1: Economic Chart Summary
+
+This chart will display and rank the event which caused high economic impact
+for crop and property damages. </br>
+
+```{r Cost Split, Message = FALSE}
+# Melt the data.table for bar graph format with sub levels
+eimpact <- melt(Cost_Total, id.vars="EVTYPE", variable.name = "Damage_Type")
+head(eimpact, 5)
+```
+
+```{r Cost Chart, Message = FALSE}
+# Generate Chart
+econChart <- ggplot(eimpact, aes(x = reorder(EVTYPE, -value), y = value)) + 
+  geom_bar(stat = "identity", aes(fill = Damage_Type), position ="dodge") + 
+  labs(x = "Event Types", y = "Frequency Count", title = "Top 10 US Storm Events with Strong Economic Impact")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+        axis.text.y = element_text(size = 8),
+        axis.title = element_text(size = 8),
+        plot.title = element_text(hjust = 0.5, size = 11),
+        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 7))+
+  scale_fill_manual(values = c("#45B39D","#8A14B3","#E02A5F"))
+
+econChart
+```
+
+### 3.2: Fatality Chart Summary
+
+This chart will display and rank the event which caused the severe fatality and
+injuries for the populations </br>
+
+```{r Injury Split, warning = FALSE}
+# Melt the data.table for bar graph format with sub levels
+chaos <- melt(Inj_Tot, id.vars="EVTYPE", variable.name = "Chaos_Level")
+head(chaos, 5)
+```
+
+```{r Injury Chart}
+# Generate Chart
+InjuryChart <- ggplot(chaos, aes(x = reorder(EVTYPE, -value), y = value)) +
+  geom_bar(stat = "identity", aes(fill = Chaos_Level), position ="dodge") +
+  labs(x = "Event Types", y = "Frequency", title = "Top 10 US Fatalities Events")+
+  theme(plot.title = element_text(hjust = 0.5, size = 10),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+        axis.text.y = element_text(size = 8),
+        axis.title = element_text(size = 8),
+        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 7))+
+  scale_fill_manual(values = c("#45B39D","#8A14B3","#E02A5F"))
+
+InjuryChart
+```
