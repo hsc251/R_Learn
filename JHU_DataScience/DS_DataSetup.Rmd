@@ -27,7 +27,7 @@ library(kableExtra)
 library(tidyverse)
 library(wordcloud)
 library(tm)
-library(readr)
+library(NLP)
 library(ngram)
 library(data.table)
 library(RColorBrewer)
@@ -46,7 +46,7 @@ This section will setup the connection from the raw files, the English version o
 
 ```{R Environment Setup & Data Download, warning = FALSE}
 # Set the working directory to the designated location.
-setwd("C:/Users/Colin Chen/Documents/DS_Capstone")
+setwd("C:/Users/Colin Chen/Documents/R_Codes/DS_Capstone")
 
 # Download Raw Data
 fileURL <- c("https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip")
@@ -70,22 +70,13 @@ if (!file.exists("rd/final/en_US")) {
 # Remark: rd = raw data directory
 
 # Blog Lines Import
-con_blog <- file("rd/final/en_US/en_US.blogs.txt", "rb")
-eng_blog <- read_lines(con_blog)
-close.connection(con_blog)
-rm(con_blog)
+blog <- readLines("rd/final/en_US/en_US.blogs.txt", skipNul = TRUE, warn = TRUE)
 
 # News Lines Import
-con_news <- file("rd/final/en_US/en_US.news.txt", "rb")
-eng_news <- read_lines(con_news)
-close.connection(con_news)
-rm(con_news)
+news <- readLines("rd/final/en_US/en_US.news.txt", skipNul = TRUE, warn = TRUE)
 
 # Twitter Lines Import
-con_twitter <- file("rd/final/en_US/en_US.twitter.txt", "rb")
-eng_twitter <- read_lines(con_twitter)
-close.connection(con_twitter)
-rm(con_twitter)
+twitter <- readLines("rd/final/en_US/en_US.twitter.txt", skipNul = TRUE, warn = TRUE)
 ```
 
 After the word of lines are imported, summarizing the respective media files.
@@ -99,19 +90,19 @@ size_news <- round(file.info("rd/final/en_US/en_US.news.txt")$size/mega, 2)
 size_twitter <- round(file.info("rd/final/en_US/en_US.twitter.txt")$size/mega, 2)
 
 # Identify number of lines in each media
-lines_blog <- length(eng_blog)
-lines_news <- length(eng_news)
-lines_twitter <- length(eng_twitter)
+lines_blog <- length(blog)
+lines_news <- length(news)
+lines_twitter <- length(twitter)
 
 # Identify number of characters in each media
-char_blog <- round(mean(nchar(eng_blog)),2)
-char_news <- round(mean(nchar(eng_news)),2)
-char_twitter <- round(mean(nchar(eng_twitter)),2)
+char_blog <- round(mean(nchar(blog)),2)
+char_news <- round(mean(nchar(news)),2)
+char_twitter <- round(mean(nchar(twitter)),2)
 
 # Identify number of words in each media
-word_blog <- wordcount(eng_blog, sep = " ")
-word_news <- wordcount(eng_news, sep = " ")
-word_twitter <- wordcount(eng_twitter, sep = " ")
+word_blog <- wordcount(blog, sep = " ")
+word_news <- wordcount(news, sep = " ")
+word_twitter <- wordcount(twitter, sep = " ")
 
 # Identify word per line (WPL) in each media
 wpl_blog <- round(word_blog/lines_blog,2)
@@ -161,9 +152,9 @@ ss_news <- lines_news * s_size
 ss_twitter <- lines_twitter * s_size
 
 # Generate sample
-sample_blog <- sample(eng_blog, ss_blog, replace = FALSE)
-sample_news <- sample(eng_news, ss_news, replace = FALSE)
-sample_twitter <- sample(eng_twitter, ss_twitter, replace = FALSE)
+sample_blog <- sample(blog, ss_blog, replace = FALSE)
+sample_news <- sample(news, ss_news, replace = FALSE)
+sample_twitter <- sample(twitter, ss_twitter, replace = FALSE)
 
 # Remove non-English characters from sampled data
 sample_blog <- iconv(sample_blog, "latin1","ASCII", sub = "")
@@ -177,6 +168,7 @@ sample_sum <- c(sample_blog, sample_news, sample_twitter)
 rm(lines_blog, lines_news, lines_twitter)
 rm(eng_blog, eng_news, eng_twitter, s_size, ss_blog, ss_news, ss_twitter)
 rm(sample_blog, sample_news, sample_twitter)
+rm(blog, news, twitter)
 
 # Sampled Text Saving and Verifying the structure
 writeLines(sample_sum, "rd/en_US.sample.txt")
@@ -189,18 +181,9 @@ follow this sequence.
 
   1. Generate Corpus for Conversion (with demonstration)
   2. Clean up the raw corpus and convert to a text file.
-  
-In order to generate the 
 
 But before the n-gram calculation, samples shall be cleaned without ambiguous 
 information. The following code will execute it.
-
-```{R Corpus Demonstration, warning = FALSE}
-# Generate text corpus and show example
-sample_corpus <- Corpus(VectorSource(sample_sum)) 
-
-print(as.character(sample_corpus[[1]]))
-```
 
 ```{R Corpus Setup, warning = FALSE}
 # Read profanity language for input
@@ -270,6 +253,11 @@ token_n2 <- function(x){
 token_n3 <- function(x){
   NGramTokenizer(x, Weka_control(min = 3, max = 3))
 }
+
+# Quadgram
+token_n4 <- function(x){
+  NGramTokenizer(x, Weka_control(min = 4, max = 4))
+}
 ```
 
 
@@ -283,12 +271,10 @@ and plot the top 12 unigram, bigram and trigram across the media source.
 doc_n1 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n1))
 doc_n2 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n2))
 doc_n3 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n3))
+doc_n4 <- TermDocumentMatrix(clean_corpus, control = list(tokenize = token_n4))
+```
 
-# Convert to Matrix
-doc_n1f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n1, 0.999))), decreasing = TRUE)
-doc_n2f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n2, 0.9999))), decreasing = TRUE)
-doc_n3f <- sort(rowSums(as.matrix(removeSparseTerms(doc_n3, 0.9999))), decreasing = TRUE)
-
+```{R = Setup, }
 
 # Generate data frame for the plotting in n gram
 df_n1 <- data.frame(word = names(doc_n1f), count = doc_n1f)
