@@ -1,0 +1,236 @@
+---
+title: "R Programming PA1"
+author: "Hsin Chih Chen"
+date: "2022/3/31"
+output: html_document
+---
+
+For this first programming assignment, three functions are written to interact with datasets within the assignment. The dataset is contained in a zipfile *specdata.zip* which can be download in the course website. </br>
+
+This R-markdown file will summarize the program code execution while execute the code. </br>
+
+The zip file containing link is given [here](https://d396qusza40orc.cloudfront.net/rprog%2Fdata%2Fspecdata.zip) </br>
+
+The zip file constains 332 .csv file for pollution monitoring data for the particular matter (PM) air pollution at 332 location across the USA. </br>
+
+Each file contains data from single monitor and ID number for each monitor is contained in the file name. And the file contains three variable. </br>
+
+* Date: Date of the observation in YYYY-MM-DD (year-month-day) </br>
+* sulfate: level of sulfate PM in the air on that date (in micrograms per cubic meter) </br>
+* nitrate: level of nitrate PM in the air on that date (in micrograms per cubic meter) </br>
+
+For the R-script functions, please refer to the following R-codes. </br>
+
+For the alternative solution from M.Galarnyk, please refer to this [link](https://github.com/mGalarnyk/datasciencecoursera/blob/master/2_R_Programming/projects/project1.md) </br>
+
+
+### Part 1
+
+```{R pollutantmean}
+pollutantmean <- function(directory,pollutant,id=1:332){
+
+# generate the loading of file list by list.files while have directory input and put full.names = TRUE to obtain the specdata's csv files.
+  files_list <- list.files(directory, full.names = TRUE)
+
+# generate empty data frame for the data storage.
+  dat <- data.frame() #empty data frame
+
+# Generate the for loop while consider the input for the sensor ID to bind the data)
+  for (i in id){
+    dat <- rbind(dat, read.csv(files_list[i]))
+  }
+
+# use if and else if condition to calculate the averages for sulfate or nitrate averages
+  if (pollutant == "sulfate")
+  {
+    sulf <-dat[, "sulfate"] 
+    sulf_mean <- mean(sulf,na.rm = TRUE)
+    print (sulf_mean)
+  }
+    
+  else if (pollutant == "nitrate")
+  {
+    nitr <- dat [,"nitrate"]
+    nitr_mean <- mean(nitr,na.rm = TRUE)
+    print (nitr_mean)
+  }
+}
+```
+
+### Part 1 Alternative
+
+```{R pollutantmean alternative}
+library('data.table')
+
+pollutantmeanA <- function(directory, pollutant, id = 1:332){
+  
+  # Format number with fixed width and cover .csv to numbers accordingly
+  filez <- paste0(directory, '/', formatC(id, width=3, flag="0"),".csv")
+
+  # Read in all files with fast read and combine as a large data table 
+  # by rbindlist to compile the list
+  lst <- lapply(filez, data.table::fread)
+  tbl <- rbindlist(lst)  
+  
+  # use the if condition to filter sulfate or nitrate and use return
+  # and lapply for combining data table. And usage of .SD and .SDcols
+  # for subsetting the data according by the conditions while na.rm
+  # is applied to remove the NA values in the data.
+  
+  if(c(pollutant) %in% names(tbl)){
+    return(tbl[, lapply(.SD, mean, na.rm = TRUE), .SDcols = pollutant][[1]])
+  }
+}
+```
+
+### Part 2
+
+```{R complete}
+complete <- function(directory, id = 1:332){
+  
+  # create the full file list for reading.
+  fl <- list.files(directory, full.names = TRUE) #create full file list
+  
+  # have the number of FULL data stored as an empty numeric values
+  nobs <- numeric()
+  
+  # use for loop to accumulate the data set for selected data
+  # then use complete cases to count the number of full information cases.
+  # And have the summed counts while associated with the number of data.
+  
+  for (i in id){
+    ok <- complete.cases(read.csv(fl[i]))
+    nr <- sum(ok)
+    nobs <-c(nobs,nr)
+  }
+  
+  # once obtained the number of okay measurements, then use the sensor id join
+  # the number of okays for data frame completion.
+  result <- data.frame(id,nobs)
+  return(result)
+}
+```
+
+### Part 2 Alternative
+
+```{R pollutantmean alternative}
+library('data.table')
+
+completeA <- function(directory, pollutant, id = 1:332){
+  
+  # Format number with fixed width and cover .csv to numbers accordingly
+  filez <- paste0(directory, '/', formatC(id, width=3, flag="0"),".csv")
+  
+  # Read in all files with fast read and combine as a large data table 
+  # by rbindlist to compile the list
+  lst <- lapply(filez, data.table::fread)
+  tbl <- rbindlist(lst)  
+  
+  # once gathered all data, then use the complete.cases to read 
+  # number of completed entries, while have the sorting order by
+  # the identification.
+  
+  return(tbl[complete.cases(tbl), .(nobs = .N), by = ID])
+}
+```
+
+### Part 3
+
+```{R corr}
+corr <- function(directory, threshold = 0) {
+  
+  # Reading in all files and making a large data.table
+  fl <- lapply(file.path(directory, list.files(path = directory, pattern="*.csv")), data.table::fread)
+  d_table <- rbindlist(fl)
+  
+  # Maintain completed observed cases only
+  d_table <- d_table[complete.cases(d_table),]
+   
+  # Apply threshold for correlation
+  d_table <- d_table[, .(nobs = .N, corr = cor(x = sulfate, y = nitrate)), by = ID][nobs > threshold]
+  return(d_table[, corr])
+}
+```
+
+### Part 3 Alternative
+
+```{R corrA}
+library('data.table')
+corrA <- function(directory, threshold = 0) {
+  
+  # Reading in all files and making a large data.table
+  # with fread and list all files before rbindlist them.
+  lst <- lapply(file.path(directory, list.files(path = directory, pattern="*.csv")), data.table::fread)
+  tbl <- rbindlist(lst)
+  
+  # Only keep completely observed cases by doing the subsetting.
+  tbl <- tbl[complete.cases(tbl),]
+  
+  # Apply threshold and use subsetting function to calculate correlation
+  # between the sulfate and nitrate concentration.
+  tbl <- tbl[, .(nobs = .N, corr = cor(x = sulfate, y = nitrate)), by = ID][nobs > threshold]
+  return(tbl[, corr])
+}
+```
+
+### Quiz Command
+```{R Q1}
+pollutantmean("specdata", "sulfate", 1:10)
+```
+
+```{R Q2}
+pollutantmean("specdata", "nitrate", 70:72)
+```
+
+```{R Q3}
+pollutantmean("specdata", "sulfate", 34)
+```
+
+```{R Q4}
+pollutantmean("specdata", "nitrate")
+```
+
+```{R Q5}
+cc <- complete("specdata", c(6, 10, 20, 34, 100, 200, 310))
+print(cc$nobs)
+```
+
+```{R Q6}
+cc <- complete("specdata", 54)
+print(cc$nobs)
+```
+
+```{R Q7}
+RNGversion("3.5.1")  
+set.seed(42)
+cc <- complete("specdata", 332:1)
+use <- sample(332, 10)
+print(cc[use, "nobs"])
+```
+
+```{R Q8}
+cr <- corr("specdata")                
+cr <- sort(cr)   
+RNGversion("3.5.1")
+set.seed(868)                
+out <- round(cr[sample(length(cr), 5)], 4)
+print(out)
+```
+
+```{R Q9}
+cr <- corr("specdata", 129)                
+cr <- sort(cr)                
+n <- length(cr)    
+RNGversion("3.5.1")
+set.seed(197)                
+out <- c(n, round(cr[sample(n, 5)], 4))
+print(out)
+```
+
+```{R Q10}
+cr <- corr("specdata", 2000)                
+n <- length(cr)                
+cr <- corrA("specdata", 1000)                
+cr <- sort(cr)
+print(c(n, round(cr, 4)))
+```
