@@ -47,7 +47,7 @@ pollutantmean <- function(directory,pollutant,id=1:332){
 
 # Example usage
 ## If we want to analyze the nitrate concentration data from sensor 70 to sensor 72, use the following code for output.
-source("pollutantmeanA.R")
+source("pollutantmean.R")
 pollutantmean('specdata','nitrate', 70:72)
 
 #Solution
