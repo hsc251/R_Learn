@@ -1,9 +1,10 @@
 ---
-title: "More ggplot Figures Peer Review"
+title: "Advanced Data Visualization with R: Week 1"
 output: html_document
 ---
 
 # Hsin Chih Chen
+# More ggplot Figures Peer Review
 
 ## Problem 1
 
@@ -223,5 +224,3 @@ my_color<-brewer.pal(5,"Spectral")
 pie(pie_dat, col = my_color)
 
 ```
-
-
