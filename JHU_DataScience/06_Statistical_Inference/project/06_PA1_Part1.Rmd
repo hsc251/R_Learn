@@ -1,9 +1,10 @@
 ---
-title: "Statistical Inference Project Pt 1"
+title: "Statistical Inference PA Pt1"
 author: "Hsin Chih Chen"
-date: "10/6/2021"
+date: "2022/4/2"
 output: html_document
 ---
+
 ## Instructions
 
 1. Demonstrate sample mean and compare to theoretical mean of distribution
@@ -19,7 +20,7 @@ library("ggplot2")
 
 ## Preliminary Setup for the random exponential generation
 
-```{r Stuff}
+```{r Random Expo Setup}
 # set seed for random number consistency
 set.seed(69)
 
@@ -40,21 +41,25 @@ means_exp <- apply(sim_exp, 2, mean)
 ## Section 1
 Demonstrate distribution's center line for experimental and theoretical mean
 
-```{r}
+```{r Exponential Mean Calculation}
 # calculate mean of the experimental simulation
 e_mean <- mean(means_exp)
 e_mean
 ```
 
-```{r}
+```{r Theoretical Mean Calculation} 
 # calculate mean from theoretical expression
 t_mean <- 1/lambda
 t_mean
 ```
 
-```{r}
+```{r Plot Comparison}
 # Generate the histogram for the experimental mean simulation while add the averages of 
-hist(means_exp, xlab = "Mean", main = "Exponential Function Simulation", col = "#FEFFAC")
+hist(means_exp, 
+     xlab = "Mean", 
+     main = "Exponential Function Simulation", 
+     col = "#FEFFAC")
+
 abline(v = e_mean, col = "#BB0000")
 abline(v = t_mean, col = "#1191D3")
 ```
@@ -65,25 +70,25 @@ The experimental mean is 5.015158 and the theoretical mean 5. The center of dist
 
 Demonstrate distribution's variance for experimental and theoretical distribution.
 
-```{r}
+```{r Exponential SD Calculation}
 # standard deviation of the exponential simulation
 stdev_e <- sd(means_exp)
 stdev_e
 ```
 
-```{r}
+```{r Theoretical SD Calculation}}
 # standard deviation from theoretical expression
 stdev_t <- (1/lambda)/sqrt(n)
 stdev_t
 ```
 
-```{r}
+```{r Distribution Variance}
 # variance of distribution
 var_dist <- stdev_e^2
 var_dist
 ```
 
-```{r}
+```{r Analytical Comparison Check}
 # variance from analytical expression
 var_t <- ((1/lambda)*(1/sqrt(n)))^2
 var_t
@@ -94,17 +99,25 @@ Experimental stdev is 0.7982937 with the theoretical stdev calculated as 0.79056
 ## Section 3
 Indicate the distribution is approximately normal.
 
-```{r}
+```{r Distribution Check}
 x_set <- seq(min(means_exp), max(means_exp), length=100)
 y_set <- dnorm(x_set, mean=1/lambda, sd=(1/lambda/sqrt(n)))
-hist(means_exp,breaks=n,prob=T,col="#1191D3",xlab = "Means",main="Density of Means",ylab="Density")
+
+hist(means_exp,
+     breaks=n,
+     prob=TRUE,
+     col="#1191D3",
+     xlab = "Means",
+     main="Density of Means",
+     ylab="Density")
+
 lines(x_set, y_set, pch=22, col="#BB0000", lty=5)
 ```
 
-```{r}
+```{r Comparison for Distribution}
 # Compare the distribution of averages of 40 exponentials to a normal distribution
 qqnorm(means_exp)
 qqline(means_exp, col = 2)
-```
 
-Based on Central Limit Theorem (CLT), the distribution of 40 exponentials averages is very close to a normal distribution.
+gc()
+```
