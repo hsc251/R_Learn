@@ -1,7 +1,7 @@
 ---
-title: "Tidyverse_Model"
+title: "Modeling in Tidyverse Course Project"
 author: "Hsin Chih Chen"
-date: "12/29/2021"
+date: "2022/04/02"
 output: html_document
 ---
 
@@ -17,6 +17,14 @@ library(tidyverse) # to manipulate df
 library(tidymodels) # for machine learning build up
 library(tm) # to manipulate text
 library(parallel) # to speed up the processing
+
+# Download File
+train_url <- c("https://d3c33hcgiwev3.cloudfront.net/JhHJz2SSRCqRyc9kkgQqxA_8d34147955154de4a6176086946d07b3_data_complaints_train.csv?Expires=1649030400&Signature=dNCTDLYAqaz~bjvv47Nby6dnDAMad7UOfAaUDgY2FpcFWq-lWsF7TZCGilaQUFEaj2~jyPSv3f7kibUp1PSUf62rNwm4e9WRVRiVntwqac2AD5VaNgtk8X~TWxienrw7RszWYDMSmwUL9GXYZnYPFfpv1oeKzmy4qaLrt-~DNy0_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
+
+test_url <- c("https://d3c33hcgiwev3.cloudfront.net/aEBWUxehSGyAVlMXoThsoQ_edf53641edca416fa00a78d9e4b16ced_data_complaints_test.csv?Expires=1649030400&Signature=Z5yiMq74RU9EQAsoIq7lAdPM6ute6qcCTiX46GGwXHRaUA7uF55tXVIfLahyHiUZgeWSUcCxAw9aHS93SOqAUaNtcOJydmRkP1leVdmXR5jgbQPnHbUVe1IPsjKAHfBzWYgdUSctjdPEwrPGW~RlFSG-FxL9KXn69EIGkJuW6Kc_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
+
+download.file(train_url, "data_complaints_train.csv")
+download.file(test_url, "data_complaints_test.csv")
 
 # Read csv files
 df <- read_csv("data_complaints_train.csv")
@@ -34,8 +42,15 @@ Let's look at the complain category distribution before filtering the data.
 ```{r Pre-Filter Count}
 ggplot(df, aes(x = Product, fill = Product))+
   geom_bar() +
-  labs(x = "Product Category", y = "Count", title = "Claim Category Summary") +
-  theme(legend.position = "none")  
+  labs(x = "Product Category", 
+       y = "Count", 
+       title = "Claim Category Summary") +
+  theme(legend.position = "none",
+        axis.text.y = element_text(size = 7),
+        axis.text.x = element_text(size = 7),
+        plot.title = element_text(size = 10),
+        axis.title = element_text(size = 8)) +
+  scale_fill_manual(values = c("#45B39D","#8A14B3","#E02A5F", "#6699FF"))
 ```
 
 ## Data Structure Inspection
@@ -81,7 +96,7 @@ dfc <-df %>%
 ```
 
 ```{R Clean Complains, warning = FALSE}
-Complain<-Corpus(VectorSource(dfc$Complains)) %>%
+Complain <- Corpus(VectorSource(dfc$Complains)) %>%
     tm_map(removeWords, stopwords())
 ```
 
@@ -323,7 +338,7 @@ collect_metrics(final_fit)
 
 ```{R Final Prediction Setup}
 # Test Prediction Data
-final_pred <- collect_prediction(final_fit)
+final_pred <- collect_predictions(final_fit)
 head(final_pred)
 
 # Plot product distribution
@@ -335,14 +350,18 @@ ggplot(final_pred, aes(x = Product, fill = .pred_class)) +
        fill = "Predicted Outcome",
        title = "Model Prediction Distribution") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 30, hjust = 1, vjust =1))
+  theme(legend.position = "none",
+        axis.text.y = element_text(size = 7),
+        axis.text.x = element_text(angle = 30, hjust = 1, vjust =1, size = 7),
+        plot.title = element_text(size = 10),
+        axis.title = element_text(size = 8))  
 ```
 
 ## Final Test Data Prediction
 
 ```{R Test Data Setup }
-dft <- read_("data_complaints_test.csv") %>%
-    rename(Complains = `Consumer complaint narative`) %>%
+dft <- read_csv("data_complaints_test.csv") %>%
+    rename(Complains = `Consumer complaint narrative`) %>%
     select(Complains) %>%
     mutate(Complains=gsub("[XX]+", "", Complains)) %>%
     mutate(Complains=str_to_lower(Complains)) %>%
@@ -369,6 +388,8 @@ dtm_tm <- dtm_t %>%
 ```
 
 ```{R Test Data Predictions}
-model_f <- fit(dtm_worktune, dtm_train)
+model_f <- fit(dtm_worktune, dtm_tr)
 predict(model_f, newdata = dtm_tm)
+
+gc()
 ```
