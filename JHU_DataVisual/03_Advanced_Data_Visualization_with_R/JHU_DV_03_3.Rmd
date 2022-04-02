@@ -1,9 +1,12 @@
 ---
-title: "Animations and Interactivity"
+title: 'Advanced Data Visualization with R: Week 3'
+author: "Hsin Chih Chen"
+date: "2022/4/2"
 output: html_document
 ---
 
 # Hsin Chih Chen
+# Animations and Interactivity
 
 ## Problem 1
 
