@@ -1,5 +1,5 @@
 ---
-title: "Week 2 Peer Review"
+title: "Data Visualization in R with ggplot2: Week 2 Peer Review"
 output: html_document
 ---
 
