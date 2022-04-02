@@ -1,15 +1,15 @@
 ---
-title: "Data Product - R Markdown and Leaflet"
+title: "Develop Data Products: R-Markdown Leaflet"
 author: "Hsin Chih Chen"
-date: "10/19/2021"
+date: "2022/4/2"
 output: html_document
 ---
 
 # Project Description
-This project is to demonstrate the maps via Leaflet function while display the designed widget via hosts like GitHub, RPubs or NeoCities. The webpage must contain the date which the document is created.
+This project is to demonstrate the maps via Leaflet function while display the designed widget via hosts like GitHub, RPubs or NeoCities. The webpage must contain the date which the document is created. </br>
 
 # The Spin Off
-My map will demonstrate my favorite spots from Taiwan where as the spots have the responsive cooridnates to be displayed. 
+My map will demonstrate my favorite spots from Taiwan where as the spots have the responsive coordinates to be displayed. </br>
 
 ```{R}
 # Load leaflet library for setup.
