@@ -1,21 +1,22 @@
 ---
-title: "Regression Models Project"
+title: "Regression Model PA"
 author: "Hsin Chih Chen"
-date: "10/13/2021"
+date: "2022/4/2"
 output: html_document
 ---
 
 # Project Introduction
 
-This project assignment is to look at a data set of car collections in 1974 (**mtcars**), and the two main questions this project would like to know the following questions.
+This project assignment is to look at a data set of car collections in 1974 (**mtcars**), and the two main questions this project would like to know the following questions. </br>
 
-1. "Is automatic or manual transmission better for MPG"?
-2. "Quantify the MPG difference between automatic and manual transmissions"
+1. "Is automatic or manual transmission better for MPG"? </br>
+2. "Quantify the MPG difference between automatic and manual transmissions" </br>
 
 # Preliminary Setup & Understanding the Data Structure.
 
-Load the respective libraries for data obtainment, plotting statistical evaluation before executing the codes.
-```{r}
+Load the respective libraries for data obtainment, plotting statistical evaluation before executing the codes.</br>
+
+```{R Library & Dataset Loading}
 # load datasets to obtain the mtcars within the library.
 library(datasets)
 
@@ -31,22 +32,24 @@ mtc <- mtcars
 # Understand the data structure
 sapply(mtc, class)
 ```
-
-And by looking at the data structure, variable *am* is the transmission type (where 0 = automatic and 1 = manual from **?mtcars**'s justification). Therefore the model will definitely have this as an inclusion.
+</br>
+ 
+And by looking at the data structure, variable *am* is the transmission type (where 0 = automatic and 1 = manual from **?mtcars**'s justification). Therefore the model will definitely have this as an inclusion. </br>
 
 # Default Model Setup.
 
-In this particular model, we have used the factor labels to place the am as an identified parameter to indicate the 2 different population for comparison. The associated plot is attached with the code below:
+In this particular model, we have used the factor labels to place the am as an identified parameter to indicate the 2 different population for comparison. The associated plot is attached with the code below: </br>
 
-```{R}
+```{R Data Wrangle and Plot}
 # Use factor to label transmission
 mtc$am <- factor(mtc$am, labels = c("Auto", "Manual"))
 
 # Use ggplot to obtain the boxplot between the 2 transmission type
 ggplot(data = mtc, aes(x = am, y = mpg)) + 
-geom_boxplot(aes(fill = am)) +
-ggtitle("Transmission Type's Miles Per Gallon Comparison Plot")
+  geom_boxplot(aes(fill = am)) +
+  ggtitle("Transmission Type's Miles Per Gallon Comparison Plot")
 ```
+</br>
 
 ```{R mpg vs transmission setup}
 # Create model for mpg and transmission type ONLY.
@@ -54,47 +57,53 @@ fit_t0 <- lm(mpg ~ am, data = mtc)
 summary(fit_t0)$coef
 anova(fit_t0)
 ```
-By default, the ANOVA's hypothesis testing is given below.
+</br>
 
-H0 = Manual & Automatic will impact the mpg in the same way.
-H1 = Manual & Automatic will impact the mpg in the different way.
+By default, the ANOVA's hypothesis testing is given below. </br>
 
-Based on the ANOVA summary and given box-plot, it indicates that the H0 should be rejected which indicates the contribution between transmission type certainly will impact the mpg output.
+H0 = Manual & Automatic will impact the mpg in the same way. </br>
+H1 = Manual & Automatic will impact the mpg in the different way. </br>
+
+Based on the ANOVA summary and given box-plot, it indicates that the H0 should be rejected which indicates the contribution between transmission type certainly will impact the mpg output. </br>
 
 # More Thorough Model Selection Approach
 
 ## Correlation & VIF Confirmations
 
-Before evaluating the collinearities between the input variable, finding the correlations between variables.
+Before evaluating the collinearities between the input variable, finding the correlations between variables. </br>
 
 ```{R Correlation Plot Setup}
 library(GGally)
 cor_plot <- ggpairs(mtcars, lower = list(continuous = "smooth"))
 cor_plot
 ```
+</br>
 
-In general, all parameters within the data frame shall be considered to evaluate the plotting. Therefore, this section will initiate the VIF examination while considering the collinearities within the parameters. 
+In general, all parameters within the data frame shall be considered to evaluate the plotting. Therefore, this section will initiate the VIF examination while considering the collinearities within the parameters. </br>
 
-The VIF criteria is given below with the rule of thumb:
+The VIF criteria is given below with the rule of thumb: </br>
 
 | VIF | Status of Parameters |
 | --- | --- |
 | VIF = 1 | Uncorrelated (and zero inflation) |
 | 1 < VIF < 5 | Moderately correlated |
 | VIF > 5 to 10 | Highly correlated |
+</br>
 
-Based on the VIF information for the entire data set (by setting mpg as the output variable), the VIF factors are given below.
+Based on the VIF information for the entire data set (by setting mpg as the output variable), the VIF factors are given below. </br>
 
-```{R}
+```{R VIF Check}
 # Generate original setup for the full dataset model.
 fit_full <- lm(mpg ~. , data = mtc)
 
 # Check collinearity for full data set.
 vif(fit_full)
 ```
-Based on observation, cyl and disp has high variance within the model, therefore removing the cylinder and disp shall reduce the VIF level for other factors.
+</br>
 
-```{R}
+Based on observation, cyl and disp has high variance within the model, therefore removing the cylinder and disp shall reduce the VIF level for other factors. </br>
+
+```{R Model Fitting Part 1}
 # Removing cyl and disp first for adjusted model
 fit_t1 <- lm(mpg ~. -cyl -disp  , data = mtc)
 summary(fit_t1)
@@ -102,11 +111,13 @@ summary(fit_t1)
 # Re-Check collinearity after removing the high variant factors
 vif(fit_t1)
 ```
+</br>
+
 ## Model Elimination & Fitting
 
-After remove the top 2 confounding factors which caused the high collinearity, elimination of additional factors which does not have correlation with respect to the mpg output will be slowly eliminated based on the p-value of 95% confidence level. 
+After remove the top 2 confounding factors which caused the high collinearity, elimination of additional factors which does not have correlation with respect to the mpg output will be slowly eliminated based on the p-value of 95% confidence level. </br>
 
-```{R}
+```{R Additional Model Fit}
 # Remove cyl, disp and vs  
 fit_t2 <- lm(mpg ~. -cyl -disp -vs, data = mtc)
 
@@ -126,7 +137,7 @@ fit_t6 <- lm(mpg ~. -cyl -disp -vs -gear -hp -drat -carb, data = mtc)
 
 ## Residual and Inference Analysis
 
-In this section, the linear model for mpg vs transmission type and the ideal model based on prediction from **transmission type**, **weight** and **qsec** will be applied for the calculation values will plotting the regression line.
+In this section, the linear model for mpg vs transmission type and the ideal model based on prediction from **transmission type**, **weight** and **qsec** will be applied for the calculation values will plotting the regression line. </br>
 
 ```{R Residual Plot}
 # setup the residuals and predicted values for plotting based on the linear model by transmission vs mpg model.
@@ -144,8 +155,9 @@ ggplot(data = fit_t6s, aes(x = Fitted, y = Residuals, color = transmission)) +
 geom_point(size = 3, alpha = 0.7)+
   ggtitle("MPG Residual Plot vs Prediction from Transmission, Weight & qsec")
 ```
+</br>
 
-The following codes are the respective factors within the model.
+The following codes are the respective factors within the model. </br>
 
 ```{R Constant Calculation, eval=FALSE}
 # Change in outcome
@@ -167,13 +179,13 @@ hatvalues(fit_t6)
 
 # Conclusion
 
-Based on the given information, the following conclusion can be made.
+Based on the given information, the following conclusion can be made. </br>
 
-1. The transmission type **does** effect the mpg differently and is considered as a two separate population within the mtcars data set. The residual plots and p-value validates this hypothesis
+1. The transmission type **does** effect the mpg differently and is considered as a two separate population within the mtcars data set. The residual plots and p-value validates this hypothesis </br>
 
-2. After consolidating the correlation factors, the best way to predict the miles per gallon besides transmission type are the **wt** and **qsec** variables. 
+2. After consolidating the correlation factors, the best way to predict the miles per gallon besides transmission type are the **wt** and **qsec** variables. </br>
 
-3. The confidence interval for both automatic transmission & predictive value range is given below.
+3. The confidence interval for both automatic transmission & predictive value range is given below. </br>
 
 | Type | Mean | Lower | Upper |
 | --- | ---  | ---   | ---   |
@@ -181,6 +193,7 @@ Based on the given information, the following conclusion can be made.
 | Automatic (Prediction)|  17.15 | 6.88 | 27.42 |
 | Manual (Confidence Interval)| 24.39 | 21.62 | 27.17 |
 | Manual (Prediction)| 24.39 | 14.00 | 34.78 |
+</br>
 
 # Appendix 
 
@@ -192,8 +205,9 @@ summary(fit_t4)
 summary(fit_t5)
 summary(fit_t6)
 ```
+</br>
 
-The inference analysis is calculated below without the intercepts.
+The inference analysis is calculated below without the intercepts. </br>
 
 ```{R Inference Calc}
 # Store the coefficient summary without intercepts
@@ -205,3 +219,4 @@ fit_t0c <- summary(fit_t0t)$coef
 predict(fit_t0, newdata = data.frame(am = as.factor(c("Auto", "Manual"))), interval = "confidence")
 predict(fit_t0, newdata = data.frame(am = as.factor(c("Auto", "Manual"))), interval = "prediction")
 ```
+</br>
