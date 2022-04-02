@@ -1,7 +1,7 @@
 ---
-title: "Data Visualization Final Exercise"
+title: "Getting Started with Data Visualization Final Exercise"
 author: "Hsin Chih Chen"
-date: "11/8/2021"
+date: "2022/04/02"
 output: html_document
 ---
 
@@ -10,6 +10,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr)
+
 #####DO NOT MODIFY THIS CODE - This will import the survey data we have been working with in this course.
 dat <- drop_na(read.csv(url("https://www.dropbox.com/s/uhfstf6g36ghxwp/cces_sample_coursera.csv?raw=1")))
 ```
