@@ -1,0 +1,50 @@
+---
+title: 'Data Visualization in R with ggplot2: Week 3 Peer Review'
+author: "Hsin Chih Chen"
+date: "2022/4/2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+######DO NOT MODIFY. This will load required packages and data.
+
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+cces <- drop_na(read_csv(url("https://www.dropbox.com/s/ahmt12y39unicd2/cces_sample_coursera.csv?raw=1")))
+
+cel <- drop_na(read_csv(url("https://www.dropbox.com/s/4ebgnkdhhxo5rac/cel_volden_wiseman%20_coursera.csv?raw=1")))
+
+
+```
+
+Following the directions on the Coursera assignment page, you will make four original visualizations. Note that the data for the CCES and CEL data are imported in code in the R Markdown file.
+
+### Put your name here: Hsin Chih Chen
+
+## Exercise 1
+
+Explain what you are visualizing here:
+
+In this exercise, I have generated random temperature between 15 to 30 degrees Celsius for Taiwan's major cities in year 2020. The line plot shows each city's temperature trend respectively.
+
+Put your figure here:
+
+```{r exercise1,echo=FALSE}
+# Generate necessary vectors before compile into data frame
+monthly <- rep(c(1:12), each = 6)
+location <- c("Taipei", "Taichung", "Tainan", "Kaoshiung", "Changhua", "Miaoli")
+temperature <- runif(n = 72, min = 15, max = 30)
+
+# place into data frame
+temper_trend <- data.frame(monthly, location, temperature)
+
+# Generate Trend Plot for Grades
+ggplot(data = temper_trend, aes(x = monthly, y = temperature, color = location)) + 
+  geom_line()+
+  facet_wrap(.~ location)+
+  ggtitle("Taiwan's City Temperature Trend in 2020")+
+  labs(x = "Month",y = "Temperature (Celsius)") + 
+  theme(legend.position = "none")
+```
