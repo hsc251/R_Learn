@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research PA2"
 author: "Hsin Chih Chen"
-date: "2022/3/9"
+date: "2022/4/2"
 output: html_document
 ---
 
@@ -24,10 +24,12 @@ Obtain raw data file and extract the data into a data frame for filtering. </br>
 library(data.table)
 library(ggplot2)
 library(dplyr)
-# Download the 
+
+# Download the file
 PA02 <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
 download.file(PA02, "StormData.csv.bz2")
 stormF <- read.csv("StormData.csv.bz2")
+
 # Converting data.frame to data.table
 stormT <- as.data.table(stormF)
 ```
@@ -35,9 +37,15 @@ stormT <- as.data.table(stormF)
 ### 2.2: Verify Data Structure & Column Names
 
 ``` {r Data Structure Wrangle, message = FALSE, warning = FALSE}
+# Extract valuable data input due to the bz file extract while remove 
+# non-value adding entries.
+stormT <- stormT[1:547362, ]
+
 # Convert the damage of crop and properties into numeric values
-stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("PROPDMG")]
-stormT[,c(lapply(.SD, as.numeric, na.rm = FALSE)), .SDcols = c("CROPDMG")]
+stormT$PROPDMG <- as.numeric(stormT$PROPDMG, na.rm = FALSE)
+stormT$CROPDMG <- as.numeric(stormT$CROPDMG, na.rm = FALSE)
+stormT$FATALITIES <- as.numeric(stormT$FATALITIES, na.rm = FALSE)
+stormT$INJURIES <- as.numeric(stormT$INJURIES, na.rm = FALSE)
 
 str(stormT)
 ```
@@ -101,7 +109,7 @@ stormT[is.na(CROPDMGEXP), CROPDMGEXP := 10^0]
 ``` {r Cost Preliminary Setup, warning = FALSE}
 # Mutate data table by add extra columns for the calculation
 stormT <- stormT %>%
-  mutate(Cost_Prop = PROPDMG * PROPDMGEXP,Cost_Crop = CROPDMG * CROPDMGEXP)
+  mutate(Cost_Prop = as.numeric(PROPDMG) * PROPDMGEXP, Cost_Crop = as.numeric(CROPDMG )* CROPDMGEXP)
 ```
 
 ``` {r Economic Cost Setup}
