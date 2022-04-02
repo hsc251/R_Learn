@@ -1,14 +1,14 @@
 ---
-title: "Data Products - Plotly"
+title: 'Developing Data Product: Plotly'
 author: "Hsin Chih Chen"
-date: "10/19/2021"
+date: "2022/4/2"
 output: ioslides_presentation
 ---
 
 ## Project Description
-This project will demonstrate the `plotly` package's practice and demonstrate with the datasets built within in R for description. 
+This project will demonstrate the `plotly` package's practice and demonstrate with the datasets built within in R for description. </br>
 
-In this case, I have selected the air quality data (removing the NA values) to evaluate the comparison by months for wind level and Ozone level. 
+In this case, I have selected the air quality data (removing the NA values) to evaluate the comparison by months for wind level and Ozone level. </br>
 
 ```{R Library Loading, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -38,6 +38,6 @@ plot_ly(air_clean, x = air_clean$Month, y=air_clean$Ozone, color=air_clean$Month
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 format(Sys.time(), "%a %b %d %X %Y")
-plot_ly(air_clean, x = air_clean$Month, y=air_clean$Wind, color=air_clean$Month, type="box")%>% 
+plot_ly(air_clean, x = air_clean$Month, y=air_clean$Wind, color=air_clean$Month, type="violin")%>% 
   layout(title='Wind Level by Month')
 ```
