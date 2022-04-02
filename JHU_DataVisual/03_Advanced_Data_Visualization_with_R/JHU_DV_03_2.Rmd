@@ -1,8 +1,12 @@
 ---
-title: "Spatial Figures Peer Review"
+title: 'Advanced Data Visualization with R: Week 2'
+author: "Hsin Chih Chen"
+date: "2022/4/2"
 output: html_document
 ---
+
 # Hsin Chih Chen
+# Spatial Figures
 
 ## Problem 1
 
@@ -123,5 +127,3 @@ ggplot(s_america) + geom_sf(aes(fill = pop_est)) +
   scale_fill_distiller(palette = 10)
 
 ```
-
-
