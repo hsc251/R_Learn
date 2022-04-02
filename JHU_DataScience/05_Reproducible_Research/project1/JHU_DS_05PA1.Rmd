@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research PA1"
 author: "Hsin Chih Chen"
-date: "2022/3/9"
+date: "2022/4/2"
 output: html_document
 ---
 
@@ -59,7 +59,7 @@ head(Total_S,10)
 ```
 
 2. Draw the histogram for the particular setup
-```{r}
+```{R Daily Steps Distribution}
 ## Setup the png file for output display.
 png("JHU_DS_05_PA1_1.png")
 
@@ -73,7 +73,7 @@ dev.off()
 ```
 
 3. Calculate & report the mean and median of total number of steps taken per day.
-```{r}
+```{R Steps Statistics Calculation}
 Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.rm = TRUE))]
 ```
 
@@ -81,7 +81,7 @@ Total_S[,.(Steps_Avg = mean(steps, na.rm = TRUE), Steps_Med = median(steps, na.r
 
 1. Generate a time series plot of the 5 min interval and average steps taken, averaged across the entire days
 
-```{r}
+```{R Average Daily Step Calculation}
 ## pre-check the data.table structure
 str(activity)
 
@@ -103,7 +103,7 @@ dev.off()
 head(Total_S,10)
 ```
 2. Which 5-mins interval, on average across all the days in the dataset, contains the maximum number of steps?
-```{r}
+```{R Interval Step Calculation}
 Inter[steps == max(steps), .(max_inter = interval)]
 ```
 
@@ -111,28 +111,28 @@ Inter[steps == max(steps), .(max_inter = interval)]
 
 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
+```{R Row Calculation}
 ## Count amount of rows where the steps are missing in the column.
 nrow(activity[is.na(steps),])
 ```
 
 2. Use either the mean or median while deploying the value to replace the current missing values
 
-```{R}
+```{R Average Calculation with Replacement}
 ## Fill the missing values by subsetting the steps' mean value .
 activity[is.na(steps), "steps"] <- activity[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps")]
 ```
 
 3. Generate the new data set which is equivalent to original set except with filled missing values.
 
-```{r}
+```{R Output Data Summary}
 ## use fwrite to write out the data set and saved as a different format
 fwrite(x = activity, file = "PA01_Data/fixed.csv", quote = FALSE)
 ```
 
 4. Create histogram of total number of steps taken each day and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r}
+```{R Histogram Step Distribution Setup 2}
 ## total number of steps per day
 Total_S2 <- activity[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)]
 
@@ -155,7 +155,7 @@ dev.off()
 
 1. Create new factor variable in dataset with 2 levels to identify weekdays and weekends, this requires
 
-```{r}
+```{R Difference Comparison}
 ## Read off the original CSV again before manipulate the dataset
 active2 <- fread(input = "PA01_Data/activity.csv")
 
@@ -167,15 +167,20 @@ active2[, date := as.POSIXct(date, format = "%Y-%m-%d")]
 active2[, `Day of Week` := weekdays(x = date)]
 
 ## Use grepl to search similar pattern strings and categorize them as factors
-active2[grepl(pattern = "Monday|Tuesday|Wednesday|Thursday|Friday", x = `Day of Week`), "weekday or weekend"] <- "weekday"
-active2[grepl(pattern = "Saturday|Sunday", x = `Day of Week`), "weekday or weekend"] <- "weekend"
+## This depends on what is your weekday input, since mycomputer is in Chinese
+## string for dates, therefore this has to be switched. 
+
+## Otherwise it can be depend on the original weekdays input accordingly.
+
+active2[grepl(pattern = "星期一|星期二|星期三|星期四|星期五", x = `Day of Week`), "weekday or weekend"] <- "weekday"
+active2[grepl(pattern = "星期六|星期日", x = `Day of Week`), "weekday or weekend"] <- "weekend"
 active2[, `weekday or weekend` := as.factor(`weekday or weekend`)]
 head(active2,10)
 ```
 
 2. Make plot containing time series plot based on the weekend or weekday data.
 
-```{r}
+```{R Weekday vs Weekend Comparison}
 ## Replace the data with average of steps first
 active2[is.na(steps), "steps"] <- active2[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps")]
 
@@ -186,8 +191,11 @@ Inter2 <- active2[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by
 png("05_PA1_plot4.png")
 
 ## Plot
-ggplot(Inter2 , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Week Type", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
+ggplot(Inter2 , aes(x = interval , y = steps, color = `weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Week Type", x = "Interval", y = "No. of Steps") + facet_wrap(~ `weekday or weekend` , ncol = 1, nrow=2)
 
 ## close png write in.
 dev.off()
+
+## free up memories
+gc()
 ```
