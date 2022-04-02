@@ -1,7 +1,7 @@
 ---
-title: "Tidyverse_Visualize"
+title: "Visualizing Data in Tidyverse Project"
 author: "Hsin Chih Chen"
-date: "12/27/2021"
+date: "2022/04/02"
 output: html_document
 ---
 
@@ -9,15 +9,15 @@ output: html_document
 
 This section helps to identify the file source and download respective CSV files. 
 
-```{r Data Obtainment}
+```{r Data Obtainment, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(ggrepel)
 library(scales)
 
 # Record URLs for data source
-url1 <- c("https://d3c33hcgiwev3.cloudfront.net/ERgbPUSBTj2YGz1Egd49gA_64d91f329b334df59109113c3084708f_data_fastfood_sales.csv?Expires=1640908800&Signature=VTargrQ4JpJHLBj1yxV2Pb5KguzmoMxRKA2ExRc8jAqRNMMO3qvrrIGiFeXnFd52eSlqQlkj4QbuPQf1TkYvwcMUDKnJAdGK9bjfY0vpd2zM5CZ~rphwBL7FhKBI7IO~gWRSJkzbNLfx1lnMQLbPhG~oWSr4ANkWoNKykBGCBFk_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
+url1 <- c("https://d3c33hcgiwev3.cloudfront.net/ERgbPUSBTj2YGz1Egd49gA_64d91f329b334df59109113c3084708f_data_fastfood_sales.csv?Expires=1649030400&Signature=KlMKgzrmchTaOXz6X9vkDAn3W7devc6Wk07eO~mz3HN3slwd2u7kfwHwOwYQ73CivVbr-hF9CKifxnVJOuUA3oAiVYaqHveVX-GtdaxFRF12HiWdcaGpa50HqgxkGWHN1sAGI89tl6Ay5kVH6XG0fmhfjUohRiqUnyiMNASeFqU_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
 
-url2 <- c("https://d3c33hcgiwev3.cloudfront.net/-LjVvbxIR5G41b28SMeReA_1a02baf08f0c4c479cbd944461c41ced_data_fastfood_calories.csv?Expires=1640908800&Signature=AKxkqEp49gOrsnV-rwelByW4Q7Uwr06U0AwRr1x06FkTkm7CKAIdahwpkz5usC8nTPCh3XUDJZRPCu-XfBY9qR5Ja9B7zXSyefIbGwQWTJSoA9blYZhTtVgr8vGnZJdUtaFUtcpHHDW6z2JmO4rcfmDy~E97Eh-p-p8g8uGLTZ8_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
+url2 <- c("https://d3c33hcgiwev3.cloudfront.net/-LjVvbxIR5G41b28SMeReA_1a02baf08f0c4c479cbd944461c41ced_data_fastfood_calories.csv?Expires=1649030400&Signature=F8AmOAyISagGKYxUH-ZuV1-uIANJG9KsK9nTwx-3mMLG0tz8h8So03n~AV9wpSztNmb8SdfRzAeeUrTjD3DGQgix8IWCQ7Zyo0skiXqnWeesooV6AYNqGzy~~XSuI9wI9eXLW7tq3EepUE0BbOa-IroSepMUD-eK3TTI446xm5s_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A")
 
 # Download csv files
 download.file(url1, "ffsales.csv")
