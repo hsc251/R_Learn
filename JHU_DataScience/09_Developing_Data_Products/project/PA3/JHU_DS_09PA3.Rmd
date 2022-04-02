@@ -1,0 +1,86 @@
+---
+title: 'Developing Data Products: Final Assignment'
+author: "Hsin Chih Chen"
+date: "2022/4/2"
+output: ioslides_presentation
+---
+
+## Project Description
+
+Instructions: </br>
+
+1. Write a shiny application with associated supporting documentation. The documentation should be thought of as whatever a user will need to get started using your application. </br>
+2. Deploy the application on Rstudio's shiny server. </br>
+3. Share the application link by pasting it into the provided text box. </br>
+4. Share your server.R and ui.R code on github. </br>
+
+## Response
+
+I applied with Tamsui's air data from Taiwan Executive Yuan's EPA gathered at 1PM for everyday in 2020. The data source can be found in the [source link](https://airtw.epa.gov.tw/CHT/Query/His_Data.aspx) </br>
+
+Data was applied to predict PM 2.5 level from SO2 gas, Ozone and CO gas </br>
+
+And the application will run on [this shinyapp link](https://hsc251.shinyapps.io/JHU_DS_09PA3) </br>
+
+R-Codes for the server and UI associated with tidy data sets are given in this [repository](https://github.com/hsc251/R_Learn/tree/master/JHU_DataScience/09_Developing_Data_Products/project/PA3) </br>
+
+## Application Usage
+
+On the left hand side, just enter the required quantity for interested predictor then the right hand side will have the designated tabs for the predicted model data point versus the existing data. </br>
+
+And the following are the limits for each predictor </br>
+
+| Predictor | Input Min | Input Max |
+| --- | --- | --- |
+| SO2 | 0 | 5 |
+| O3 | 0 | 100 |
+| CO | 0 | 0.8 |
+</br>
+
+
+```{R, Library Setup, echo=FALSE, warning = FALSE}
+library(plotly)
+library(reshape2)
+library(data.table)
+library(tidyr)
+library(countrycode)
+```
+</br>
+
+```{r, Directory Setup, warning=FALSE, message=FALSE, results='hide', echo=FALSE}
+# Obtain the source file
+setwd("C:/Users/hsc21/Documents/06_Data Science/R_Codes/JHU_DS_09/JHU_DS_09PA3")
+TS_Raw <- read.csv("TS2020.csv", na.strings = c("NA",0,"0"), header = TRUE)
+
+# Check Structure of Raw File
+str(TS_Raw)
+```
+
+```{r, Data Wrangle, warning=FALSE, message=FALSE, results='hide', echo=FALSE}
+## Convert the PM2.5 and PM10 indicator to numeric output
+TS_Raw$PM2.5 <- as.numeric(TS_Raw$PM2.5)
+TS_Raw$PM10 <- as.numeric(TS_Raw$PM10)
+
+## Covert the date as official date
+TS_Raw$Time <- as.Date(TS_Raw$Time)
+
+## Filter Data for complete cases and verify structure agian
+TS_Clean <- TS_Raw[complete.cases(TS_Raw),]
+str(TS_Clean)
+```
+
+## Example Plots
+
+This plot is just an example obtained from the data set, While showing the possible presentations of </br>
+
+```{r, Plotting Example, echo=FALSE}
+# First Plot to demonstrate the SO2 prediction for PM 2.5
+fit1 <- lm(PM2.5 ~ SO2, data = TS_Clean)
+
+            x1min = min(TS_Clean$SO2) - 0.5
+            x1max = max(TS_Clean$SO2) + 0.5
+            y1min = min(TS_Clean$PM2.5) + 0.5
+            y1max = max(TS_Clean$PM2.5) + 0.5
+
+plot_ly(TS_Clean, x = TS_Clean$SO2, y = TS_Clean$PM2.5, mode = "markers", color = TS_Clean$SO2,size = TS_Clean$PM2.5)
+```
