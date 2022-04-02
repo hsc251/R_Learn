@@ -1,96 +1,108 @@
 ---
-title: "Statistical Inference Project Pt 2"
+title: "Statistical Inference PA Pt2"
 author: "Hsin Chih Chen"
-date: "10/6/2021"
+date: "2022/4/2"
 output: html_document
 ---
 
 ## Introduction
 
-The ToothGrowth data in R datasets will be analyzed accordingly to find the data summary and use hypothesis tests to compare the tooth growth factor by either the supplement type and does type.
+The ToothGrowth data in R datasets will be analyzed accordingly to find the data summary and use hypothesis tests to compare the tooth growth factor by either the supplement type and does type. </br>
 
 ## Preliminary Setup & Store Data
 
-```{r}
+```{R Data Loading}
 # load graphing tool interface package
 library(ggplot2)
 
 # initialize data category
 Tooth <- ToothGrowth
 ```
+</br>
 
 ## Provide Initial Summaries for the data structure.
-```{r}
+```{R Initial Summary for Data Structure}
 # General summaries for the data frame
 summary(Tooth)
 
 # Examine the characteristics for each section
 str(Tooth)
 ```
+</br>
 
 ## Plot Tooth grow length and dose by splitting the supplement
-```{r}
+```{R Tool Growth by Supplement}
 # Use boxplot by having the classified grid for supplement
-  ggplot(aes(x = as.factor(dose),y = len), data = Tooth) +     geom_boxplot(aes(fill = dose)) + 
-  xlab("Dose (mg)") + 
-  ylab("Tooth Length")+ 
-  facet_grid(~ supp) + 
-  ggtitle("Tooth Length & Dose Amount by Supplement")
+  ggplot(aes(x = as.factor(dose),y = len), data = Tooth) +     
+        geom_boxplot(aes(fill = dose)) + 
+        labs(x = "dose (mg)", 
+             y = "Tooth Length", 
+             title = "Tooth Length & Dose Amount by Supplement") + 
+        facet_grid(~ supp)
 ```
+</br>
 
 ## Plot Tooth grow length and supplement by splitting the dosage amount
-```{r}
+```{R Tool Growth by Dosage}
 # Use boxplot by having the classified grid for dosage
   ggplot(aes(x = supp,y = len), data = Tooth)+ 
-  geom_boxplot(aes(fill = supp)) + 
-  xlab("Supplement") + 
-  ylab("Tooth Length") + 
-  facet_grid(~ dose) + 
-  ggtitle("Tooth Length & Dose Amount by Dosage")
+      geom_boxplot(aes(fill = supp)) + 
+      labs(x = "Supplement", 
+           y = "Tooth Length", 
+           title = "Tooth Length & Dose Amount by Dosage") +
+  facet_grid(~ dose)
 ```
+</br>
 
 ## Have Initial Hypothesis Test for the supplement classification
 
-In this Hypothesis testing, the following hypothesis test is listed below:
+In this Hypothesis testing, the following hypothesis test is listed below: </br>
 
-H0 = Both supplement will generate the same impact towards tooth length growth.
-H1 = Both supplement will generate different impact towards tooth length growth.
+H0 = Both supplement will generate the same impact towards tooth length growth. </br>
+H1 = Both supplement will generate different impact towards tooth length growth. </br>
 
-```{r}
+```{R T-Test Comparison}
 # Use 2 sample t-test to compare
 t.test(len ~ supp, data = Tooth)
 ```
+</br>
 
 ## Have Initial Hypothesis Test for the dosage classification
 
-In this Hypothesis testing, the following hypothesis test is listed below:
+In this Hypothesis testing, the following hypothesis test is listed below: </br>
 
-H0 = Both dosage will generate the same impact towards tooth length growth.
-H1 = Both dosage will generate different impact towards tooth length growth.
+H0 = Both dosage will generate the same impact towards tooth length growth. </br>
+H1 = Both dosage will generate different impact towards tooth length growth. </br>
 
-```{r}
+```{R T-Test via Dosage 0.5mg and 1mg}
 # Use 2 sample t-test to compare where the dosage is 0.5 and 1
 Tooth1 <- subset(Tooth, Tooth$dose %in% c(0.5,1))
 t.test(len ~ dose, data = Tooth1)
 ```
+</br>
 
-```{r}
+```{R T-Test via Dosage 1mg and 2mg}
 # Use 2 sample t-test to compare where the dosage is 1 and 2
 Tooth2 <- subset(Tooth, Tooth$dose %in% c(1,2))
 t.test(len ~ dose, data = Tooth2)
 ```
+</br>
 
-```{r}
+```{R T-Test via Dosage 0.5mg and 2mg}
 # Use 2 sample t-test to compare where the dosage is 0.5 and 2
 Tooth3 <- subset(Tooth, Tooth$dose %in% c(0.5,2))
 t.test(len ~ dose, data = Tooth3)
 ```
+</br>
 
+```{R Clear Memory Output}
+gc()
+```
+</br>
+ 
 ## Statistical Conclusion
 
-Based on the t-test results and p-value description, the following conclusions are made.
+Based on the t-test results and p-value description, the following conclusions are made. </br>
 
-1. Supplement type will NOT contribute different impact towards the tooth length based on the given p-value. 
-
-
-2. Dosage type will contribute different impact towards the tooth length based on the given p-value across all 3 factors of dosage. (H0 was rejected)
+1. Supplement type will NOT contribute different impact towards the tooth length based on the given p-value.  </br>
+2. Dosage type will contribute different impact towards the tooth length based on the given p-value across all 3 factors of dosage. (H0 was rejected) </br>
