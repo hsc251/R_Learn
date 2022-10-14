@@ -1,0 +1,877 @@
+---
+title: "PQE SA5 DVT OQC Data Summary"
+author: "Colin Chen"
+date: "2022-08-17"
+output: html_document
+---
+
+## Abstract
+
+This particular report emphasizes on the OQC results for the DVT Bikes, PQE have logged *262* DVT bikes across three different contracted manufacturers (CM) from TConn, Ideal and Speedtech.
+
+The detailed DVT bikes which were OQCed at the CM site are as follows:
+```{R Table Summary Distribution, include = FALSE, warning = FALSE}
+total_qty <- c(222, 15, 25)
+names(total_qty) <- c("TConn", "Ideal", "Speedtech")
+```
+
+```{R Show Table Summary, include = TRUE}
+total_qty
+```
+
+The latter section will be split into preliminary data setup, then the display of yield rate distribution and visualized distribution for the pass/fail fraction.
+
+```{R Library Loading, include = FALSE, warning = FALSE}
+# Read Necessary Library
+
+library(readr)
+library(tidyverse)
+library(kableExtra)
+library(plotly)
+```
+
+```{R Data Filtering, include = FALSE, warning = FALSE}
+# Import Summary
+oqc_df <- read_csv("SA5_DVT_OQC.csv", col_names = TRUE, col_types = "ccccccci")
+
+# Filter Overall Statistics from the data table
+oqc_overall <- oqc_df %>%
+  filter(CM == "Overall") 
+
+# Breakdown to Overall Static and Dynamic Test Result
+overall_static <- oqc_overall %>%
+  filter(Inspection_Style == "Static") %>%
+  mutate(Percent = round(Qty/262*100,2))
+
+overall_dynamic <- oqc_overall %>%
+  filter(Inspection_Style == "Dynamic") %>%
+  mutate(Percent = round(Qty/262*100,2))
+
+# Filter TConn Statistics from the data table
+oqc_tconn <- oqc_df %>%
+  filter(CM == "TConn") 
+
+# Breakdown to TConn Static and Dynamic Test Result
+tconn_static <- oqc_tconn %>%
+  filter(Inspection_Style == "Static") %>%
+  mutate(Percent = round(Qty/222*100,2))
+
+tconn_dynamic <- oqc_tconn %>%
+  filter(Inspection_Style == "Dynamic") %>%
+  mutate(Percent = round(Qty/222*100,2))
+
+# Filter Ideal Statistics from the data table
+oqc_ideal <- oqc_df %>%
+  filter(CM == "Ideal") 
+
+# Breakdown to Ideal Static and Dynamic Test Result
+ideal_static <- oqc_ideal %>%
+  filter(Inspection_Style == "Static") %>%
+  mutate(Percent = round(Qty/15*100,2))
+
+ideal_dynamic <- oqc_ideal %>%
+  filter(Inspection_Style == "Dynamic") %>%
+  mutate(Percent = round(Qty/15*100,2))
+
+# Filter Speedtech Statistics from the data table
+oqc_speedtech <- oqc_df %>%
+  filter(CM == "Speedtech") 
+
+# Breakdown to Ideal Static and Dynamic Test Result
+speedtech_static <- oqc_speedtech %>%
+  filter(Inspection_Style == "Static") %>%
+  mutate(Percent = round(Qty/25*100,2))
+
+speedtech_dynamic <- oqc_speedtech %>%
+  filter(Inspection_Style == "Dynamic") %>%
+  mutate(Percent = round(Qty/25*100,2))
+```
+
+## Inspection Item Description
+
+For the OQC inspection items, the component type will be split into `Mechanical` and `Eletrical` for the classification. And the aspects will be split into `Function`, `Cosmetics` and `Safety`. Lastly, the inspection style will also be split as `Static` and `Dynamic`.
+
+Therefore, for individual OQC items, there will be split into the following pseudo code rule.
+
+e.g SF01 where `S` means Static inspection style, `F` means Function and `01` is the 1st serial item. 
+
+
+## Cumulative DVT OQC Statistics
+
+This section will summarize cumulative data based on all 3 CMs, the following code will illustrate the brief % of pass, fail and did not inspect (DNI)% for both static and dynamic test for DVT bikes.
+
+```{r Cumulative Static Data Summary, include = FALSE}
+# Summarize the data frame
+SF01_Overall <- overall_static$Percent[1:3]
+SF02_Overall <- overall_static$Percent[4:6]
+SF03_Overall <- overall_static$Percent[7:9]
+SC01_Overall <- overall_static$Percent[10:12]
+SC02_Overall <- overall_static$Percent[13:15]
+SF04_Overall <- overall_static$Percent[16:18]
+SC02_Overall <- overall_static$Percent[19:21]
+SC03_Overall <- overall_static$Percent[22:24]
+SS01_Overall <- overall_static$Percent[25:27]
+SF05_Overall <- overall_static$Percent[28:30]
+SF06_Overall <- overall_static$Percent[31:33]
+SF07_Overall <- overall_static$Percent[34:36]
+SF08_Overall <- overall_static$Percent[37:39]
+SC04_Overall <- overall_static$Percent[40:42]
+SC05_Overall <- overall_static$Percent[43:45]
+SC06_Overall <- overall_static$Percent[46:48]
+SC07_Overall <- overall_static$Percent[49:51]
+SC08_Overall <- overall_static$Percent[52:54]
+SF09_Overall <- overall_static$Percent[55:57]
+
+overall_static_sum <- rbind.data.frame(SF01_Overall,
+                                 SF02_Overall,
+                                 SF03_Overall,
+                                 SC01_Overall,
+                                 SC02_Overall,
+                                 SF04_Overall,
+                                 SC02_Overall,
+                                 SC03_Overall,
+                                 SS01_Overall,
+                                 SF05_Overall,
+                                 SF06_Overall,
+                                 SF07_Overall,
+                                 SF08_Overall,
+                                 SC04_Overall,
+                                 SC05_Overall,
+                                 SC06_Overall,
+                                 SC07_Overall,
+                                 SC08_Overall,
+                                 SF09_Overall)
+
+colnames(overall_static_sum) <- c("Overall Pass %", "Overall Fail %", "Overall DNI %")
+rownames(overall_static_sum) <- c("Front Light (SF01)",
+                                  "Rear Light (SF02)",
+                                  "LED Ring (SF03)",
+                                  "Frame Noise (SC01)",
+                                  "Handlebar Cosmetics (SC02)",
+                                  "Kickstand Noise (SF04)",
+                                  "E-Shifter Plug Cosmetics (SC02)",
+                                  "Charger Plug Cosmetics (SC03)",
+                                  "Brake Tube (SS01)",
+                                  "Battery Function (SF05)",
+                                  "Kicklock Function (SF06)",
+                                  "Main ECU (SF07)",
+                                  "Horn Function (SF08)",
+                                  "Frame Cosmetics (SC04)",
+                                  "Front Fork Cosmetics (SC05)",
+                                  "Front Fender Cosmetics (SC06)",
+                                  "Rear Fender Cosmetics (SC07)",
+                                  "Handlebar Grip Gap (SC08)",
+                                  "Assistance Level Change (SF09)")
+```
+
+```{R Overall Static Table, warning = FALSE, include = TRUE}
+# Make it as a kable
+kable(overall_static_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 1, include = FALSE, warning = FALSE}
+# Remove additional variables
+rm(SF01_Overall, 
+   SF02_Overall,
+   SF03_Overall,
+   SC01_Overall,
+   SC02_Overall, 
+   SF04_Overall,
+   SC02_Overall,
+   SC03_Overall,
+   SS01_Overall,
+   SF05_Overall,
+   SF06_Overall,
+   SF07_Overall,
+   SF08_Overall,
+   SC04_Overall,
+   SC05_Overall,
+   SC06_Overall,
+   SC07_Overall,
+   SC08_Overall,
+   SF09_Overall)
+```
+
+```{R Cumulative Static Graph Setup, echo = TRUE, include = FALSE}
+# Graph Static Overview
+static_1 <- overall_static %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") +
+  labs(x = "Inspection Item", y = "Percent Fraction", title = "SA5 DVT Overall Static QQC Distribution")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Overall Static Graph Demo}
+ggplotly(static_1)
+```
+
+```{R Cumulative Dynamic Data Summary, warning = FALSE, include = FALSE}
+# Summarize the data frame
+DS01_Overall <- overall_dynamic$Percent[1:3]
+DF01_Overall <- overall_dynamic$Percent[4:6]
+DF02_Overall <- overall_dynamic$Percent[7:9]
+DF03_Overall <- overall_dynamic$Percent[10:12]
+DF04_Overall <- overall_dynamic$Percent[13:15]
+DS02_Overall <- overall_dynamic$Percent[16:18]
+DF05_Overall <- overall_dynamic$Percent[19:21]
+DF06_Overall <- overall_dynamic$Percent[22:24]
+DF07_Overall <- overall_dynamic$Percent[25:27]
+DF08_Overall <- overall_dynamic$Percent[28:30]
+
+overall_dynamic_sum <- rbind.data.frame(DS01_Overall,
+                                 DF01_Overall,
+                                 DF02_Overall,
+                                 DF03_Overall,
+                                 DF04_Overall,
+                                 DS02_Overall,
+                                 DF05_Overall,
+                                 DF06_Overall,
+                                 DF07_Overall,
+                                 DF08_Overall)
+
+colnames(overall_dynamic_sum) <- c("Overall Pass %", "Overall Fail %", "Overall DNI %")
+rownames(overall_dynamic_sum) <- c("Brake System (DS01)",
+                                  "BB Sensor (DF01)",
+                                  "Front Brake Disc Noise (DF02)",
+                                  "Rear Brake Disc Noise (DF03)",
+                                  "Chain Guard Issue (DF04)",
+                                  "Wheelset Wobble (DS02)",
+                                  "Dynamic E-Shifter Gear Shifting (DF05)",
+                                  "Motor (DF06)",
+                                  "Kicklock Noise (DF07)",
+                                  "Rear Hub Noise (DF08)")
+```
+
+```{R Overall Dynamic Table, warning = FALSE, include = TRUE}
+# Make it as a kable
+kable(overall_dynamic_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 2, include = FALSE, warning = FALSE}
+# Remove additional variables to save space
+rm(DS01_Overall,
+   DF01_Overall, 
+   DF02_Overall,
+   DF03_Overall,
+   DF04_Overall,
+   DS02_Overall,
+   DF05_Overall,
+   DF06_Overall,
+   DF07_Overall,
+   DF08_Overall)
+```
+
+```{R Cumulative Dynamic Graph Setup, echo = TRUE, include = FALSE}
+# Graph Dynamic Overview
+dynamic_1 <- overall_dynamic %>%
+  mutate(Percent = round(Qty/262*100,2)) %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") + 
+    labs(x = "Inspection Item", y = "Percentage Fraction", title = "SA5 DVT Overall Dynamic QQC Distribution")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Overall Dynamic Graph Demo}
+ggplotly(dynamic_1)
+```
+
+## TConn DVT OQC Statistics.
+
+This section will summarize data from TConn, the following code will illustrate the brief % of pass, fail and did not inspect (DNI)% for both static and dynamic test for DVT bikes.
+
+```{r TConn Static Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+SF01_tconn <- tconn_static$Percent[1:3]
+SF02_tconn <- tconn_static$Percent[4:6]
+SF03_tconn <- tconn_static$Percent[7:9]
+SC01_tconn <- tconn_static$Percent[10:12]
+SC02_tconn <- tconn_static$Percent[13:15]
+SF04_tconn <- tconn_static$Percent[16:18]
+SC02_tconn <- tconn_static$Percent[19:21]
+SC03_tconn <- tconn_static$Percent[22:24]
+SS01_tconn <- tconn_static$Percent[25:27]
+SF05_tconn <- tconn_static$Percent[28:30]
+SF06_tconn <- tconn_static$Percent[31:33]
+SF07_tconn <- tconn_static$Percent[34:36]
+SF08_tconn <- tconn_static$Percent[37:39]
+SC04_tconn <- tconn_static$Percent[40:42]
+SC05_tconn <- tconn_static$Percent[43:45]
+SC06_tconn <- tconn_static$Percent[46:48]
+SC07_tconn <- tconn_static$Percent[49:51]
+SC08_tconn <- tconn_static$Percent[52:54]
+SF09_tconn <- tconn_static$Percent[55:57]
+
+tconn_static_sum <- rbind.data.frame(SF01_tconn,
+                                 SF02_tconn,
+                                 SF03_tconn,
+                                 SC01_tconn,
+                                 SC02_tconn,
+                                 SF04_tconn,
+                                 SC02_tconn,
+                                 SC03_tconn,
+                                 SS01_tconn,
+                                 SF05_tconn,
+                                 SF06_tconn,
+                                 SF07_tconn,
+                                 SF08_tconn,
+                                 SC04_tconn,
+                                 SC05_tconn,
+                                 SC06_tconn,
+                                 SC07_tconn,
+                                 SC08_tconn,
+                                 SF09_tconn)
+
+colnames(tconn_static_sum) <- c("TConn Pass %", "TConn Fail %", "TConn DNI %")
+rownames(tconn_static_sum) <- c("Front Light (SF01)",
+                                  "Rear Light (SF02)",
+                                  "LED Ring (SF03)",
+                                  "Frame Noise (SC01)",
+                                  "Handlebar Cosmetics (SC02)",
+                                  "Kickstand Noise (SF04)",
+                                  "E-Shifter Plug Cosmetics (SC02)",
+                                  "Charger Plug Cosmetics (SC03)",
+                                  "Brake Tube (SS01)",
+                                  "Battery Function (SF05)",
+                                  "Kicklock Function (SF06)",
+                                  "Main ECU (SF07)",
+                                  "Horn Function (SF08)",
+                                  "Frame Cosmetics (SC04)",
+                                  "Front Fork Cosmetics (SC05)",
+                                  "Front Fender Cosmetics (SC06)",
+                                  "Rear Fender Cosmetics (SC07)",
+                                  "Handlebar Grip Gap (SC08)",
+                                  "Assistance Level Change (SF09)")
+```
+
+```{R TConn Static Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(tconn_static_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 3, include = FALSE, warning = FALSE}
+# Remove additional variables
+rm(SF01_tconn, 
+   SF02_tconn,
+   SF03_tconn,
+   SC01_tconn,
+   SC02_tconn, 
+   SF04_tconn,
+   SC02_tconn,
+   SC03_tconn,
+   SS01_tconn,
+   SF05_tconn,
+   SF06_tconn,
+   SF07_tconn,
+   SF08_tconn,
+   SC04_tconn,
+   SC05_tconn,
+   SC06_tconn,
+   SC07_tconn,
+   SC08_tconn,
+   SF09_tconn)
+```
+
+```{R TConn Static Graph Setup, echo = TRUE, include = FALSE}
+# Graph Static Overview
+static_2 <- tconn_static %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") +
+  labs(x = "Inspection Item", y = "Percent Fraction", title = "SA5 DVT TConn Static QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R TConn Static Graph Demo}
+ggplotly(static_2)
+```
+
+```{R TConn Dynamic Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+DS01_tconn <- tconn_dynamic$Percent[1:3]
+DF01_tconn <- tconn_dynamic$Percent[4:6]
+DF02_tconn <- tconn_dynamic$Percent[7:9]
+DF03_tconn <- tconn_dynamic$Percent[10:12]
+DF04_tconn <- tconn_dynamic$Percent[13:15]
+DS02_tconn <- tconn_dynamic$Percent[16:18]
+DF05_tconn <- tconn_dynamic$Percent[19:21]
+DF06_tconn <- tconn_dynamic$Percent[22:24]
+DF07_tconn <- tconn_dynamic$Percent[25:27]
+DF08_tconn <- tconn_dynamic$Percent[28:30]
+
+tconn_dynamic_sum <- rbind.data.frame(DS01_tconn,
+                                 DF01_tconn,
+                                 DF02_tconn,
+                                 DF03_tconn,
+                                 DF04_tconn,
+                                 DS02_tconn,
+                                 DF05_tconn,
+                                 DF06_tconn,
+                                 DF07_tconn,
+                                 DF08_tconn)
+
+colnames(tconn_dynamic_sum) <- c("TConn Pass %", "TConn Fail %", "TConn DNI %")
+rownames(tconn_dynamic_sum) <- c("Brake System (DS01)",
+                                  "BB Sensor (DF01)",
+                                  "Front Brake Disc Noise (DF02)",
+                                  "Rear Brake Disc Noise (DF03)",
+                                  "Chain Guard Issue (DF04)",
+                                  "Wheelset Wobble (DS02)",
+                                  "Dynamic E-Shifter Gear Shifting (DF05)",
+                                  "Motor (DF06)",
+                                  "Kicklock Noise (DF07)",
+                                  "Rear Hub Noise (DF08)")
+```
+
+```{R TConn Dynamic Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(tconn_dynamic_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 4, include = FALSE, warning = FALSE}
+# Remove additional variables to save space
+rm(DS01_tconn,
+   DF01_tconn, 
+   DF02_tconn,
+   DF03_tconn,
+   DF04_tconn,
+   DS02_tconn,
+   DF05_tconn,
+   DF06_tconn,
+   DF07_tconn,
+   DF08_tconn)
+```
+
+```{R TConn Dynamic Graph Distribution, echo = TRUE, include = FALSE}
+# Graph Dynamic Overview
+dynamic_2 <- tconn_dynamic %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") + 
+    labs(x = "Inspection Item", y = "Percentage Fraction", title = "SA5 DVT TConn Dynamic QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R TConn Dynamic Graph Demo}
+ggplotly(dynamic_2)
+```
+
+## Ideal DVT OQC Statistics.
+
+This section will summarize data from Ideal, the following code will illustrate the brief % of pass, fail and did not inspect (DNI)% for both static and dynamic test for DVT bikes.
+
+```{r Ideal Static Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+SF01_ideal <- ideal_static$Percent[1:3]
+SF02_ideal <- ideal_static$Percent[4:6]
+SF03_ideal <- ideal_static$Percent[7:9]
+SC01_ideal <- ideal_static$Percent[10:12]
+SC02_ideal <- ideal_static$Percent[13:15]
+SF04_ideal <- ideal_static$Percent[16:18]
+SC02_ideal <- ideal_static$Percent[19:21]
+SC03_ideal <- ideal_static$Percent[22:24]
+SS01_ideal <- ideal_static$Percent[25:27]
+SF05_ideal <- ideal_static$Percent[28:30]
+SF06_ideal <- ideal_static$Percent[31:33]
+SF07_ideal <- ideal_static$Percent[34:36]
+SF08_ideal <- ideal_static$Percent[37:39]
+SC04_ideal <- ideal_static$Percent[40:42]
+SC05_ideal <- ideal_static$Percent[43:45]
+SC06_ideal <- ideal_static$Percent[46:48]
+SC07_ideal <- ideal_static$Percent[49:51]
+SC08_ideal <- ideal_static$Percent[52:54]
+SF09_ideal <- ideal_static$Percent[55:57]
+
+ideal_static_sum <- rbind.data.frame(SF01_ideal,
+                                 SF02_ideal,
+                                 SF03_ideal,
+                                 SC01_ideal,
+                                 SC02_ideal,
+                                 SF04_ideal,
+                                 SC02_ideal,
+                                 SC03_ideal,
+                                 SS01_ideal,
+                                 SF05_ideal,
+                                 SF06_ideal,
+                                 SF07_ideal,
+                                 SF08_ideal,
+                                 SC04_ideal,
+                                 SC05_ideal,
+                                 SC06_ideal,
+                                 SC07_ideal,
+                                 SC08_ideal,
+                                 SF09_ideal)
+
+colnames(ideal_static_sum) <- c("Ideal Pass %", "Ideal Fail %", "Ideal DNI %")
+rownames(ideal_static_sum) <- c("Front Light (SF01)",
+                                  "Rear Light (SF02)",
+                                  "LED Ring (SF03)",
+                                  "Frame Noise (SC01)",
+                                  "Handlebar Cosmetics (SC02)",
+                                  "Kickstand Noise (SF04)",
+                                  "E-Shifter Plug Cosmetics (SC02)",
+                                  "Charger Plug Cosmetics (SC03)",
+                                  "Brake Tube (SS01)",
+                                  "Battery Function (SF05)",
+                                  "Kicklock Function (SF06)",
+                                  "Main ECU (SF07)",
+                                  "Horn Function (SF08)",
+                                  "Frame Cosmetics (SC04)",
+                                  "Front Fork Cosmetics (SC05)",
+                                  "Front Fender Cosmetics (SC06)",
+                                  "Rear Fender Cosmetics (SC07)",
+                                  "Handlebar Grip Gap (SC08)",
+                                  "Assistance Level Change (SF09)")
+```
+
+```{R Ideal Static Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(ideal_static_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 5, include = FALSE, warning = FALSE}
+# Remove additional variables
+rm(SF01_ideal, 
+   SF02_ideal,
+   SF03_ideal,
+   SC01_ideal,
+   SC02_ideal, 
+   SF04_ideal,
+   SC02_ideal,
+   SC03_ideal,
+   SS01_ideal,
+   SF05_ideal,
+   SF06_ideal,
+   SF07_ideal,
+   SF08_ideal,
+   SC04_ideal,
+   SC05_ideal,
+   SC06_ideal,
+   SC07_ideal,
+   SC08_ideal,
+   SF09_ideal)
+```
+
+```{R Ideal Static Graph Setup, echo = TRUE, include = FALSE}
+# Graph Static Overview
+static_3 <- ideal_static %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") +
+  labs(x = "Inspection Item", y = "Percent Fraction", title = "SA5 DVT Ideal Static QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Ideal Static Graph Demo}
+ggplotly(static_3)
+```
+
+```{R Ideal Dynamic Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+DS01_ideal <- ideal_dynamic$Percent[1:3]
+DF01_ideal <- ideal_dynamic$Percent[4:6]
+DF02_ideal <- ideal_dynamic$Percent[7:9]
+DF03_ideal <- ideal_dynamic$Percent[10:12]
+DF04_ideal <- ideal_dynamic$Percent[13:15]
+DS02_ideal <- ideal_dynamic$Percent[16:18]
+DF05_ideal <- ideal_dynamic$Percent[19:21]
+DF06_ideal <- ideal_dynamic$Percent[22:24]
+DF07_ideal <- ideal_dynamic$Percent[25:27]
+DF08_ideal <- ideal_dynamic$Percent[28:30]
+
+ideal_dynamic_sum <- rbind.data.frame(DS01_ideal,
+                                 DF01_ideal,
+                                 DF02_ideal,
+                                 DF03_ideal,
+                                 DF04_ideal,
+                                 DS02_ideal,
+                                 DF05_ideal,
+                                 DF06_ideal,
+                                 DF07_ideal,
+                                 DF08_ideal)
+
+colnames(ideal_dynamic_sum) <- c("Ideal Pass %", "Ideal Fail %", "Ideal DNI %")
+rownames(ideal_dynamic_sum) <- c("Brake System (DS01)",
+                                  "BB Sensor (DF01)",
+                                  "Front Brake Disc Noise (DF02)",
+                                  "Rear Brake Disc Noise (DF03)",
+                                  "Chain Guard Issue (DF04)",
+                                  "Wheelset Wobble (DS02)",
+                                  "Dynamic E-Shifter Gear Shifting (DF05)",
+                                  "Motor (DF06)",
+                                  "Kicklock Noise (DF07)",
+                                  "Rear Hub Noise (DF08)")
+```
+
+```{R Ideal Dynamic Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(ideal_dynamic_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 6, include = FALSE, warning = FALSE}
+# Remove additional variables to save space
+rm(DS01_ideal,
+   DF01_ideal, 
+   DF02_ideal,
+   DF03_ideal,
+   DF04_ideal,
+   DS02_ideal,
+   DF05_ideal,
+   DF06_ideal,
+   DF07_ideal,
+   DF08_ideal)
+```
+
+```{R Ideal Dynamic Graph Distribution, echo = TRUE, include = FALSE}
+# Graph Dynamic Overview
+dynamic_3 <- ideal_dynamic %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") + 
+    labs(x = "Inspection Item", y = "Percentage Fraction", title = "SA5 DVT Ideal Dynamic QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Ideal Dynamic Graph Demo}
+ggplotly(dynamic_3)
+```
+
+## Speedtech DVT OQC Statistics.
+
+This section will summarize data from Speedtech, the following code will illustrate the brief % of pass, fail and did not inspect (DNI)% for both static and dynamic test for DVT bikes.
+
+```{r Speectech Static Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+SF01_speedtech <- speedtech_static$Percent[1:3]
+SF02_speedtech <- speedtech_static$Percent[4:6]
+SF03_speedtech <- speedtech_static$Percent[7:9]
+SC01_speedtech <- speedtech_static$Percent[10:12]
+SC02_speedtech <- speedtech_static$Percent[13:15]
+SF04_speedtech <- speedtech_static$Percent[16:18]
+SC02_speedtech <- speedtech_static$Percent[19:21]
+SC03_speedtech <- speedtech_static$Percent[22:24]
+SS01_speedtech <- speedtech_static$Percent[25:27]
+SF05_speedtech <- speedtech_static$Percent[28:30]
+SF06_speedtech <- speedtech_static$Percent[31:33]
+SF07_speedtech <- speedtech_static$Percent[34:36]
+SF08_speedtech <- speedtech_static$Percent[37:39]
+SC04_speedtech <- speedtech_static$Percent[40:42]
+SC05_speedtech <- speedtech_static$Percent[43:45]
+SC06_speedtech <- speedtech_static$Percent[46:48]
+SC07_speedtech <- speedtech_static$Percent[49:51]
+SC08_speedtech <- speedtech_static$Percent[52:54]
+SF09_speedtech <- speedtech_static$Percent[55:57]
+
+speedtech_static_sum <- rbind.data.frame(SF01_speedtech,
+                                 SF02_speedtech,
+                                 SF03_speedtech,
+                                 SC01_speedtech,
+                                 SC02_speedtech,
+                                 SF04_speedtech,
+                                 SC02_speedtech,
+                                 SC03_speedtech,
+                                 SS01_speedtech,
+                                 SF05_speedtech,
+                                 SF06_speedtech,
+                                 SF07_speedtech,
+                                 SF08_speedtech,
+                                 SC04_speedtech,
+                                 SC05_speedtech,
+                                 SC06_speedtech,
+                                 SC07_speedtech,
+                                 SC08_speedtech,
+                                 SF09_speedtech)
+
+colnames(speedtech_static_sum) <- c("Speedtech Pass %", "Speedtech Fail %", "Speedtech DNI %")
+rownames(speedtech_static_sum) <- c("Front Light (SF01)",
+                                  "Rear Light (SF02)",
+                                  "LED Ring (SF03)",
+                                  "Frame Noise (SC01)",
+                                  "Handlebar Cosmetics (SC02)",
+                                  "Kickstand Noise (SF04)",
+                                  "E-Shifter Plug Cosmetics (SC02)",
+                                  "Charger Plug Cosmetics (SC03)",
+                                  "Brake Tube (SS01)",
+                                  "Battery Function (SF05)",
+                                  "Kicklock Function (SF06)",
+                                  "Main ECU (SF07)",
+                                  "Horn Function (SF08)",
+                                  "Frame Cosmetics (SC04)",
+                                  "Front Fork Cosmetics (SC05)",
+                                  "Front Fender Cosmetics (SC06)",
+                                  "Rear Fender Cosmetics (SC07)",
+                                  "Handlebar Grip Gap (SC08)",
+                                  "Assistance Level Change (SF09)")
+```
+
+```{R Speedtech Static Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(speedtech_static_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 7, include = FALSE, warning = FALSE}
+# Remove additional variables
+rm(SF01_speedtech, 
+   SF02_speedtech,
+   SF03_speedtech,
+   SC01_speedtech,
+   SC02_speedtech, 
+   SF04_speedtech,
+   SC02_speedtech,
+   SC03_speedtech,
+   SS01_speedtech,
+   SF05_speedtech,
+   SF06_speedtech,
+   SF07_speedtech,
+   SF08_speedtech,
+   SC04_speedtech,
+   SC05_speedtech,
+   SC06_speedtech,
+   SC07_speedtech,
+   SC08_speedtech,
+   SF09_speedtech)
+```
+
+```{R Speedtech Static Graph Setup, echo = TRUE, include = FALSE}
+# Graph Static Overview
+static_4 <- speedtech_static %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") +
+  labs(x = "Inspection Item", y = "Percent Fraction", title = "SA5 DVT Speedtech Static QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Speedtech Static Graph Demo}
+ggplotly(static_4)
+```
+
+```{R Speedtech Dynamic Data Summary, include = FALSE, warning = FALSE}
+# Summarize the data frame
+DS01_speedtech <- speedtech_dynamic$Percent[1:3]
+DF01_speedtech <- speedtech_dynamic$Percent[4:6]
+DF02_speedtech <- speedtech_dynamic$Percent[7:9]
+DF03_speedtech <- speedtech_dynamic$Percent[10:12]
+DF04_speedtech <- speedtech_dynamic$Percent[13:15]
+DS02_speedtech <- speedtech_dynamic$Percent[16:18]
+DF05_speedtech <- speedtech_dynamic$Percent[19:21]
+DF06_speedtech <- speedtech_dynamic$Percent[22:24]
+DF07_speedtech <- speedtech_dynamic$Percent[25:27]
+DF08_speedtech <- speedtech_dynamic$Percent[28:30]
+
+speedtech_dynamic_sum <- rbind.data.frame(DS01_speedtech,
+                                 DF01_speedtech,
+                                 DF02_speedtech,
+                                 DF03_speedtech,
+                                 DF04_speedtech,
+                                 DS02_speedtech,
+                                 DF05_speedtech,
+                                 DF06_speedtech,
+                                 DF07_speedtech,
+                                 DF08_speedtech)
+
+colnames(speedtech_dynamic_sum) <- c("Speedtech Pass %", "Speedtech Fail %", "Speedtech DNI %")
+rownames(speedtech_dynamic_sum) <- c("Brake System (DS01)",
+                                  "BB Sensor (DF01)",
+                                  "Front Brake Disc Noise (DF02)",
+                                  "Rear Brake Disc Noise (DF03)",
+                                  "Chain Guard Issue (DF04)",
+                                  "Wheelset Wobble (DS02)",
+                                  "Dynamic E-Shifter Gear Shifting (DF05)",
+                                  "Motor (DF06)",
+                                  "Kicklock Noise (DF07)",
+                                  "Rear Hub Noise (DF08)")
+```
+
+```{R Speedtech Dynamic Table, include = TRUE, warning = FALSE}
+# Make it as a kable
+kable(speedtech_dynamic_sum) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{R Remove Part 8, include = FALSE, warning = FALSE}
+# Remove additional variables to save space
+rm(DS01_speedtech,
+   DF01_speedtech, 
+   DF02_speedtech,
+   DF03_speedtech,
+   DF04_speedtech,
+   DS02_speedtech,
+   DF05_speedtech,
+   DF06_speedtech,
+   DF07_speedtech,
+   DF08_speedtech)
+```
+
+```{R Speedtech Dynamic Graph Distribution, echo = TRUE, include = FALSE}
+# Graph Dynamic Overview
+dynamic_4 <- speedtech_dynamic %>%
+  ggplot(aes(x = Pseudo_Code, y = Qty, fill = Result)) +
+  geom_bar(position = "fill",stat = "identity") + 
+    labs(x = "Inspection Item", y = "Percentage Fraction", title = "SA5 DVT Speedtech Dynamic QQC Summary")+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  scale_fill_manual(values = c("#FAFF8C","#FA0947","#09DE87"))
+```
+
+```{R Speedtech Dynamic Graph Demo}
+ggplotly(dynamic_4)
+```
+
+```{R Remove part 9, include = FALSE}
+rm(oqc_ideal, oqc_overall, oqc_speedtech, oqc_tconn, overall_dynamic, overall_static, tconn_dynamic, tconn_static, speedtech_dynamic, speedtech_static, ideal_dynamic, ideal_static)
+```
+## Conclusion
+
+Based on the observation and required criteria, the first past yield for PQE is to consider a *passed* bike is a bike which passes ALL the inspection items without rework done or being concessioned.
+
+After observing all the DVT bikes, the yield rate for PQE's observation is 0% due to all of the DVT bikes require rework process or concession. Reasons such as e-shifter stuck at gear 3 during test ride and other concession items from brake malfunction or kickstand hitting frames shall be considered for significant improvement before going to PVT or even mass production.
+
+Due to the instability within the component of SA5 Bike, PQE does not recommend to proceed PVT unless these open findings from DVT is solved or improvised.
